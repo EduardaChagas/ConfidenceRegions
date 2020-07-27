@@ -26,8 +26,8 @@ fBm.HC.generator <- function(){
       for(j in 1:100){
         i = i + 1
         cat("fBm: ", i, '\n')
-        ts = read.csv("../../fBm.csv")[j, 2:50001]
-        probs = bandt.pompe(random.series[j,], d, t)
+        ts = read.csv("../../fBm.csv")[j,]
+        probs = bandt.pompe(ts, d, t)
         hc.50k$H[j + a] = shannon.entropy.normalized(probs)
         hc.50k$C[j + a] = Ccomplexity(probs)
         hc.50k$D[j + a] = d
