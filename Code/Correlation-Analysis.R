@@ -42,7 +42,7 @@ correlation.analysis.point <- function(){
                              "#60d394"))
   D = 6
   N = 50000
-  k = c(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3)
+  k = c(0, 0.1, 0.2, 0.3)
   
   ts = read.csv("../Data/Emblematic-series-D6-N50000.csv")[,2]
   probs.ts = bandt.pompe(ts, 6, 1)
@@ -101,6 +101,18 @@ correlation.analysis.point <- function(){
 
 
 correlation.analysis.dotted <- function(){
+  
+  rainbow_colors = palette(c("#fca311",#amarelo
+                             "#000000", #preto
+                             "#ff006e", #rosa
+                             "#40916c", #verde
+                             "#6a040f", #vermelho
+                             "#eb5e28", #laranja
+                             "#6a4c93", #roxo
+                             "#50514f", #cinza
+                             "#5e3023", #marrom
+                             "#3f88c5", #azul
+                             "#60d394"))
   D = 6
   N = 50000
   k = c(3, 2.5, 2, 1.5, 1, 0.5, 0)
@@ -153,4 +165,4 @@ correlation.analysis.dotted <- function(){
   dev.off()
 }
 
-correlation.analysis.point()
+correlation.analysis.dotted()

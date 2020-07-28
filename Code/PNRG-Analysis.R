@@ -222,7 +222,7 @@ PNRG.test.confidence.regions <- function(D = 3, N = 50000, generator = 1, table.
   GNR.models = c('Wichmann-Hill', 'Marsaglia-Multicarry', 'Super-Duper', 
                  'Knuth-TAOCP-2002', 'Knuth-TAOCP', 'LEcuyer-CMRG',
                  'pcg64', 'Threefry', 'Xoroshiro128+', 'Xoshiro256+', 
-                 'mersenne', 'randu', 'lcg', 'Lehmer')
+                 'mersenne', 'randu', 'lcg', 'Lehmer', 'fBm', 'fGn')
   
   generator = GNR.models[generator]
   
@@ -254,12 +254,16 @@ PNRG.test.confidence.regions <- function(D = 3, N = 50000, generator = 1, table.
     hc.data = read.csv("../Data/PRNG/HC-Threefry-50k.csv")[2:5]
   }else if(generator == 'Lehmer'){
     hc.data = read.csv("../Data/PRNG/HC-Lehmer-50k.csv")[2:5]
+  }else if(generator == 'fBm'){
+    hc.data = read.csv("../Data/PRNG/HC-fBm-50k.csv")[2:5]
+  }else if(generator == 'fGn'){
+    hc.data = read.csv("../Data/PRNG/HC-fGn-50k.csv")[2:5]
   }
   index = which(hc.data['D'] == D)
   hc.D = hc.data[index,]
   result.95 = p.value.set.point(hc.D, D, N, 95)
   result.99 = p.value.set.point(hc.D, D, N, 99)
-  table.code = paste0(table.code, generator, " & ", D, " & ", result.95, " & ", result.99, "\\ ")
+  table.code = paste0(table.code, generator, " & ", D, " & ", round(result.95, 4), " & ", round(result.99, 4), "\\ ")
   return(table.code)
 }
 
@@ -302,6 +306,10 @@ PNRG.HC.confidence.regions <- function(D = 3, tau = 1, N = 50000, generator = 'l
     hc.data = read.csv("../Data/PRNG/HC-Threefry-50k.csv")[2:5]
   }else if(generator == 'Lehmer'){
     hc.data = read.csv("../Data/PRNG/HC-Lehmer-50k.csv")[2:5]
+  }else if(generator == 'fBm'){
+    hc.data = read.csv("../Data/PRNG/HC-fBm-50k.csv")[2:5]
+  }else if(generator == 'fGn'){
+    hc.data = read.csv("../Data/PRNG/HC-fGn-50k.csv")[2:5]
   }
   
   hc.confidence.regions = read.csv(paste0("../Data/Regions-HC/regions-hc-D", D,"-N", N, ".csv"))[2:4]
@@ -376,6 +384,10 @@ plot.PNRG.analysis <- function(N = 50000, generator = 'lcg'){
     hc.data = read.csv("../Data/PRNG/HC-Threefry-50k.csv")[2:5]
   }else if(generator == 'Lehmer'){
     hc.data = read.csv("../Data/PRNG/HC-Lehmer-50k.csv")[2:5]
+  }else if(generator == 'fBm'){
+    hc.data = read.csv("../Data/PRNG/HC-fBm-50k.csv")[2:5]
+  }else if(generator == 'fGn'){
+    hc.data = read.csv("../Data/PRNG/HC-fGn-50k.csv")[2:5]
   }
   
   i = 0
@@ -424,7 +436,7 @@ generator.all <- function(){
 test.all <- function(){
   #registerDoParallel(cores = 6)
   table.code = ""
-  for(i in 14){
+  for(i in 1:16){
     table.code = PNRG.test.confidence.regions(D = 3, N = 50000, generator = i, table.code)
     table.code = PNRG.test.confidence.regions(D = 4, N = 50000, generator = i, table.code)
     table.code = PNRG.test.confidence.regions(D = 5, N = 50000, generator = i, table.code)

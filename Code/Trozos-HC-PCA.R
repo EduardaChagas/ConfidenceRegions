@@ -128,13 +128,13 @@ plot.HC.PCA.trozos <- function(N, dim, lengend ,x.lim = NULL, y.lim = NULL){
   return(p)
 }
 
-png("p1.png", width = 800, height = 500)
+png("HC-PCA-Trozos-D3N1000.png", width = 800, height = 500)
 p1 = plot.HC.PCA.trozos(1000, 3)
 p1 = p1 + ggtitle(expression(italic("N = 1000, D = 3")))
 print(p1)
 dev.off() 
 
-png("p2.png", width = 800, height = 500)
+png("HC-PCA-Trozos-D6N1000.png", width = 800, height = 500)
 p2 = plot.HC.PCA.trozos(1000, 6)
 p2 = p2 + ggtitle(expression(italic("N = 1000, D = 6")))
 print(p2)

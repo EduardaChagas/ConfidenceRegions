@@ -69,7 +69,7 @@ k.fold.confidence.regions <- function(d = 3, N = 50000){
   }
 }
 
-save.confidence.regions <- function(HC, D, N, i){
+save.confidence.regions <- function(HC, D, N){
   
   pca_HC = prcomp(x = HC[,-3], 
                   retx = TRUE, 
@@ -78,12 +78,30 @@ save.confidence.regions <- function(HC, D, N, i){
   
   attach(PC)
   # Regions of 90%, 95%, 99% and 99.9% around the median
-  (qpc1 = quantile(PC1, probs = c(0.001, 0.01, 0.05, 0.1, 0.5, 1-0.1, 1-0.05, 1-0.01, 1-0.001)))
-  (yqpc1 = c(
-    max(abs(PC2[PC1 > qpc1[4] & PC1 < qpc1[6]])),
-    max(abs(PC2[PC1 > qpc1[3] & PC1 < qpc1[7]])),
-    max(abs(PC2[PC1 > qpc1[2] & PC1 < qpc1[8]])),
-    max(abs(PC2[PC1 > qpc1[1] & PC1 < qpc1[9]]))
+  (qpc1 = quantile(PC1, probs = c(0.0005, 0.005, 0.025, 0.05, 0.5, 1-0.05, 1-0.025, 1-0.005, 1-0.0005)))
+  (x.pc.1 = c(
+    PC1[which(min(abs(PC1- qpc1[1])) == abs(PC1- qpc1[1]))],
+    PC1[which(min(abs(PC1- qpc1[2])) == abs(PC1- qpc1[2]))],
+    PC1[which(min(abs(PC1- qpc1[3])) == abs(PC1- qpc1[3]))],
+    PC1[which(min(abs(PC1- qpc1[4])) == abs(PC1- qpc1[4]))]
+  ))
+  (x.pc.2 = c(
+    PC1[which(min(abs(PC1- qpc1[6])) == abs(PC1- qpc1[6]))],
+    PC1[which(min(abs(PC1- qpc1[7])) == abs(PC1- qpc1[7]))],
+    PC1[which(min(abs(PC1- qpc1[8])) == abs(PC1- qpc1[8]))],
+    PC1[which(min(abs(PC1- qpc1[9])) == abs(PC1- qpc1[9]))]
+  ))
+  (y.pc.1 = c(
+    min(PC2[PC1 > x.pc.1[1] & PC1 < x.pc.2[1]]),
+    min(PC2[PC1 > x.pc.1[2] & PC1 < x.pc.2[2]]),
+    min(PC2[PC1 > x.pc.1[3] & PC1 < x.pc.2[3]]),
+    min(PC2[PC1 > x.pc.1[4] & PC1 < x.pc.2[4]])
+  ))
+  (y.pc.2 = c(
+    max(PC2[PC1 > x.pc.1[1] & PC1 < x.pc.2[1]]),
+    max(PC2[PC1 > x.pc.1[2] & PC1 < x.pc.2[2]]),
+    max(PC2[PC1 > x.pc.1[3] & PC1 < x.pc.2[3]]),
+    max(PC2[PC1 > x.pc.1[4] & PC1 < x.pc.2[4]])
   ))
   detach(PC)
   
@@ -94,38 +112,42 @@ save.confidence.regions <- function(HC, D, N, i){
                            "region" = c("90", "95", "99", "99.9", "median"))
   
   # geom_rect uses the locations of the four corners (xmin, xmax, ymin and ymax)
-  regions.PCA$xmin[1] = qpc1[4]
-  regions.PCA$xmax[1] = qpc1[6]
-  regions.PCA$ymin[1] = -yqpc1[1]
-  regions.PCA$ymax[1] = yqpc1[1]
+  regions.PCA$xmin[1] = x.pc.1[1]
+  regions.PCA$xmax[1] = x.pc.2[1]
+  regions.PCA$ymin[1] = y.pc.1[1]
+  regions.PCA$ymax[1] = y.pc.2[1]
   
-  regions.PCA$xmin[2] = qpc1[3]
-  regions.PCA$xmax[2] = qpc1[7]
-  regions.PCA$ymin[2] = -yqpc1[2]
-  regions.PCA$ymax[2] = yqpc1[2]
+  regions.PCA$xmin[2] = x.pc.1[2]
+  regions.PCA$xmax[2] = x.pc.2[2]
+  regions.PCA$ymin[2] = y.pc.1[2]
+  regions.PCA$ymax[2] = y.pc.2[2]
   
-  regions.PCA$xmin[3] = qpc1[2]
-  regions.PCA$xmax[3] = qpc1[8]
-  regions.PCA$ymin[3] = -yqpc1[3]
-  regions.PCA$ymax[3] = yqpc1[3]
+  regions.PCA$xmin[3] = x.pc.1[3]
+  regions.PCA$xmax[3] = x.pc.2[3]
+  regions.PCA$ymin[3] = y.pc.1[3]
+  regions.PCA$ymax[3] = y.pc.2[3]
   
-  regions.PCA$xmin[4] = qpc1[1]
-  regions.PCA$xmax[4] = qpc1[9]
-  regions.PCA$ymin[4] = -yqpc1[4]
-  regions.PCA$ymax[4] = yqpc1[4]
+  regions.PCA$xmin[4] = x.pc.1[4]
+  regions.PCA$xmax[4] = x.pc.2[4]
+  regions.PCA$ymin[4] = y.pc.1[4]
+  regions.PCA$ymax[4] = y.pc.2[4]
   
   regions.PCA$xmin[5] = median(PC$PC1)
   regions.PCA$xmax[5] = median(PC$PC1)
   regions.PCA$ymin[5] = median(PC$PC2)
   regions.PCA$ymax[5] = median(PC$PC2)
   
-  #write.csv(regions.PCA, paste0("../Data/Regions-PCA/regions-pca-D", D, "-N", N, i, ".csv"))
-  write.csv(regions.PCA, paste0("../Data/Regions-PCA/N50kD", D, "/pca", i, ".csv"))
+  write.csv(regions.PCA, paste0("../Data/Regions-PCA/regions-pca-D", D, "-N", N, ".csv"))
+  #write.csv(regions.PCA, paste0("../Data/Regions-PCA/N50kD", D, "/pca", i, ".csv"))
   
-  rect90 = data.frame(xmin=qpc1[4], xmax=qpc1[6], ymin=-yqpc1[1], ymax=yqpc1[1])
-  rect95 = data.frame(xmin=qpc1[3], xmax=qpc1[7], ymin=-yqpc1[2], ymax=yqpc1[2])
-  rect99 = data.frame(xmin=qpc1[2], xmax=qpc1[8], ymin=-yqpc1[3], ymax=yqpc1[3])
-  rect999 = data.frame(xmin=qpc1[1], xmax=qpc1[9], ymin=-yqpc1[4], ymax=yqpc1[4])
+  rect90 = data.frame(xmin = regions.PCA$xmin[1], xmax = regions.PCA$xmax[1], 
+                      ymin = regions.PCA$ymin[1], ymax = regions.PCA$ymax[1])
+  rect95 = data.frame(xmin = regions.PCA$xmin[2], xmax = regions.PCA$xmax[2], 
+                      ymin = regions.PCA$ymin[2], ymax = regions.PCA$ymax[2])
+  rect99 = data.frame(xmin = regions.PCA$xmin[3], xmax = regions.PCA$xmax[3], 
+                      ymin = regions.PCA$ymin[3], ymax = regions.PCA$ymax[3])
+  rect999 = data.frame(xmin = regions.PCA$xmin[4], xmax = regions.PCA$xmax[4], 
+                      ymin = regions.PCA$ymin[4], ymax = regions.PCA$ymax[4])
   
   #PCA to HC
   H = t(t(pca_HC$x %*% t(pca_HC$rotation)) * pca_HC$scale + pca_HC$center)
@@ -198,8 +220,8 @@ save.confidence.regions <- function(HC, D, N, i){
                           "C" = c(rect90$C, rect95$C, rect99$C, rect999$C, median.HC[2]),
                           "region" = c(rep("90", 4), rep("95", 4), rep("99", 4), rep("99.9", 4), "median"))
   
-  #write.csv(regions.HC, paste0("../Data/Regions-HC/regions-hc-D", D, "-N", N, i, ".csv"))
-  write.csv(regions.HC, paste0("../Data/Regions-HC/N50kD", D, "/hc", i, ".csv"))
+  write.csv(regions.HC, paste0("../Data/Regions-HC/regions-hc-D", D, "-N", N, ".csv"))
+  #write.csv(regions.HC, paste0("../Data/Regions-HC/N50kD", D, "/hc", i, ".csv"))
 }
 
 plot.pca.space <- function(HC, D, N){
@@ -253,7 +275,7 @@ plot.hc.pca.points <- function(HC, D, N, title){
                   "C" = H[,2],
                   stringsAsFactors=FALSE)
   
-  hc.points = read.csv(paste0("../../Data/Regions-HC/regions-hc-D", D, "-N", N, ".csv"))[2:4]
+  hc.points = read.csv(paste0("../Data/Regions-HC/regions-hc-D", D, "-N", N, ".csv"))[2:4]
   
   colors = coloring.regions.HC(HC, D, N)
   colors = colors + 1
@@ -295,7 +317,7 @@ plot.hc.pca.boxes <- function(HC, D, N, title){
                      "C" = H[,2],
                      stringsAsFactors=FALSE)
   
-  hc.points = read.csv(paste0("../../Data/Regions-HC/regions-hc-D", D, "-N", N, ".csv"))[2:4]
+  hc.points = read.csv(paste0("../Data/Regions-HC/regions-hc-D", D, "-N", N, ".csv"))[2:4]
   rect90 = data.frame(H = hc.points$H[1:4], C = hc.points$C[1:4])
   rect95 = data.frame(H = hc.points$H[5:8], C = hc.points$C[5:8])
   rect99 = data.frame(H = hc.points$H[9:12], C = hc.points$C[9:12])

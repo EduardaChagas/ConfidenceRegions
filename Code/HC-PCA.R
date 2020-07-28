@@ -38,7 +38,14 @@ names(HC) = c("H", "C", "n")
 HC$n = as.factor(HC$n)
 
 HC.3 = subset(HC, n==3)[,-3]
-#save.confidence.regions(HC.3, D = 3, N = 1000)
+save.confidence.regions(HC.3, D = 3, N = 1000)
+HC.4 = subset(HC, n==4)[,-3]
+save.confidence.regions(HC.4, D = 4, N = 1000)
+HC.5 = subset(HC, n==5)[,-3]
+save.confidence.regions(HC.5, D = 5, N = 1000)
+HC.6 = subset(HC, n==6)[,-3]
+save.confidence.regions(HC.6, D = 6, N = 1000)
+
 p.3.1 = plot.pca.space(HC.3, D = 3, N = 1000)
 p.3.2 = plot.hc.pca.points(HC.3, D = 3, N = 1000, "D = 3")
 
@@ -64,6 +71,15 @@ dev.off()
 HC = read.csv("../Data/HC/HC_50k.csv")[,2:4]
 names(HC) = c("H", "C", "n")
 HC$n = as.factor(HC$n)
+
+HC.3 = subset(HC, n==3)[,-3]
+save.confidence.regions(HC.3, D = 3, N = 50000)
+HC.4 = subset(HC, n==4)[,-3]
+save.confidence.regions(HC.4, D = 4, N = 50000)
+HC.5 = subset(HC, n==5)[,-3]
+save.confidence.regions(HC.5, D = 5, N = 50000)
+HC.6 = subset(HC, n==6)[,-3]
+save.confidence.regions(HC.6, D = 6, N = 50000)
 
 HC.3 = subset(HC, n==3)[,-3]
 p.3.1 = plot.pca.space(HC.3, D = 3, N = 50000)
