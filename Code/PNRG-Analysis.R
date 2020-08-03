@@ -559,7 +559,7 @@ generator.all <- function(){
 test.all <- function(){
   #registerDoParallel(cores = 6)
   table.code = ""
-  for(i in 15:17){
+  for(i in 18){
     table.code = PNRG.test.confidence.regions(D = 3, N = 50000, generator = i, table.code)
     table.code = PNRG.test.confidence.regions(D = 4, N = 50000, generator = i, table.code)
     table.code = PNRG.test.confidence.regions(D = 5, N = 50000, generator = i, table.code)
@@ -568,7 +568,7 @@ test.all <- function(){
   return(table.code)
 }
 
-generator.all()
+test.all()
 
 #pdf("pcg64-50000.pdf", width = 24, height = 16)
 #p = plot.PNRG.analysis(N = 50000, generator = 'pcg64')

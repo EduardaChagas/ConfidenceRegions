@@ -1,0 +1,96 @@
+\documentclass[sts]{imsart}
+
+%\usepackage{amsthm,amsmath,natbib}
+%\RequirePackage[colorlinks,citecolor=blue,urlcolor=blue]{hyperref}
+
+% put your definitions there:
+%\startlocaldefs
+%\endlocaldefs
+
+\usepackage[author-year]{amsrefs}
+\usepackage{bm,bbm}
+\usepackage{siunitx}
+\usepackage{hyperref} 
+
+\usepackage{natbib}
+%\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{color}
+\usepackage{url}
+
+\usepackage[caption=false]{subfig}
+\usepackage{graphicx}
+\graphicspath{{./Figures/}}
+\usepackage{booktabs}
+\usepackage{float}
+\usepackage[figuresright]{rotating}
+
+
+\usepackage{comment}   
+\DeclareSIUnit{\minusalphapercent}{(1-\alpha)\%}
+\DeclareSIUnit{\alphapercent}{\alpha\%}
+
+\begin{document}
+
+\begin{frontmatter}
+
+\title{Confidence Regions for Information-Theoretic Descriptors of Time Series}
+\runtitle{Confidence Regions}
+
+%%% ACF Eduarda é a primeira autora; editar os endereços
+\author{\fnms{Eduarda T.\ C.} \snm{Chagas}\ead[label=e1]{eduarda.chagas@dcc.ufmg.br}}
+\and
+\author{\fnms{Marcelo} \snm{Queiroz}\corref{}\ead[label=e2]{marceloqao@gmail.com}}
+\and\\
+\author{\fnms{Osvaldo A.} \snm{Rosso}\ead[label=e3]{oarosso@if.ufal.br}}
+\and
+\author{\fnms{Heitor S.} \snm{Ramos}\ead[label=e4]{ramosh@dcc.ufmg.br}}
+\and\\
+\author{\fnms{Christopher G.\ S.} \snm{Freitas}\ead[label=e5]{christopher@laccan.ufal.br}}
+\and
+\author{\fnms{Leonardo V.} \snm{Pereira}\ead[label=e6]{lviana@ic.ufal.br}}
+\and\\
+\author{\fnms{Alejandro C.} \snm{Frery}\ead[label=e7]{alejandro.frery@vuw.ac.nz}}
+\address{Victoria University of Wellington\\
+PO Box 600\\
+Wellington 6140, New Zealand \printead{e7}}
+\affiliation{School of Mathematics and Statistics}
+
+
+\runauthor{E.\ Chagas}
+
+\begin{abstract}
+The \citeauthor{Bandt2002Permutation} methodology has been used with success in time series analysis.
+It consists in computing Information-Theoretic descriptors, from a histogram of ordinal patterns, which lie in a 2D manifold: the Entropy-Complexity plane.
+So far, the analysis of the dynamics underlying the time series has been performed using two reference points: those corresponding to a deterministic and to white noise time series.
+In this paper, we provide confidence regions for white noise models, and we used these regions as a method for analyzing PRNGs randomness.
+These regions allow testing whether a sequence belongs to one of these models.
+\end{abstract}
+
+\begin{keyword}[class=MSC]
+\kwd[Primary ]{37M10}
+\kwd[; secondary ]{68Q30}
+\end{keyword}
+
+\begin{keyword}
+\kwd{Nonparametric time series analysis}
+\kwd{ordinal patterns}
+\kwd{Information Theory}
+\end{keyword}
+
+\end{frontmatter}
+
+\tableofcontents
+
+\input{Chapters/Introduction}
+\input{Chapters/Methodology}
+\input{Chapters/Results}
+\input{Chapters/Conclusions}
+\input{Chapters/Source}
+\input{Chapters/acknowledgements}
+
+\bibliographystyle{abbrvnat}
+\bibliography{references}
+
+\end{document}
+
