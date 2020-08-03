@@ -45,7 +45,7 @@ RANDU <- function(){
   return(seed)
 }
 
-lehmer.rng <- function(n=10) {
+lehmer.rng <- function(n) {
   
   rng <- vector(length = n)
   
@@ -75,9 +75,90 @@ lehmer.rng <- function(n=10) {
   return(rng)
 }
 
+MWC.rng <- function(n) {
+  
+  rng <- vector(length = n)
+  
+  a <- 2131995753
+  x <- 1947362876
+  m <- 4294967296
+  
+  for (i in 1:n) {
+    c <- floor(x/m)
+    x <- (a * x) + c
+    x <- x %% m
+    rng[i] <- x
+  }
+  
+  return(rng)
+}
+
+Mother.rng <- function(n) {
+  
+  rng <- vector(length = n)
+  
+  m <- 4294967296
+  
+  a <- 2111111111
+  b <- 1492
+  c <- 1776
+  d <- 5115
+  
+  x.n_1 <- 1143897285
+  x.n_2 <- 1549345678
+  x.n_3 <- 205987485
+  x.n_4 <- 164987491
+  
+  for (i in 1:n) {
+    c <- floor(x.n_1/m)
+    x <- (a * x.n_4) + (b * x.n_3) + (c * x.n_2) + (d * x.n_1) + c
+    x <- x %% m
+    rng[i] <- x
+    x.n_4 <- x.n_3
+    x.n_3 <- x.n_2
+    x.n_2 <- x.n_1
+    x.n_1 <- x
+  }
+  
+  return(rng)
+}
+
+Combo.rng <- function(n) {
+  
+  rng <- vector(length = n)
+  
+  m1 <- 4294967296
+  m2 <- 65536
+  a <- 30903
+  
+  x <- 356819112
+  x.n_1 <- 455997113
+  y.n_1 <- 158644912
+  
+  for (i in 1:n) {
+    c <- floor(x/m2)
+    
+    x <- x * x.n_1
+    x <- x %% m1
+    
+    y <- (a * y.n_1) + c
+    y <- y %% m2
+    
+    z <- x + y
+    z <- z %% m2
+    
+    rng[i] <- z
+    
+    x.n_1 <- x
+    y.n_1 <- y
+  }
+  
+  return(rng)
+}
+
 # The parameters we will use for our implementation of the linear congruential generator are the same as 
 # the ANSI C implementation (Saucier, 2000.)
-lcg.rand <- function(n = 10) {
+lcg.rand <- function(n) {
   
   rng = vector(length = n)
   
@@ -178,6 +259,18 @@ PNRG <- function(n.series, size.series, generator = 'randu'){
     for(i in 1:n.series){
       random.vector[i,] = lehmer.rng(size.series)
     }
+  }else if(generator == 'mwc'){
+    for(i in 1:n.series){
+      random.vector[i,] = MWC.rng(size.series)
+    }
+  }else if(generator == 'mother'){
+    for(i in 1:n.series){
+      random.vector[i,] = Mother.rng(size.series)
+    }
+  }else if(generator == 'combo'){
+    for(i in 1:n.series){
+      random.vector[i,] = Combo.rng(size.series)
+    }
   }
   return(random.vector)
 }
@@ -189,7 +282,7 @@ PNRG.HC.generator <- function(i){
   GNR.models = c('Wichmann-Hill', 'Marsaglia-Multicarry', 'Super-Duper', 
                  'Knuth-TAOCP-2002', 'Knuth-TAOCP', 'LEcuyer-CMRG',
                  'pcg64', 'Threefry', 'Xoroshiro128+', 'Xoshiro256+', 
-                 'mersenne', 'randu', 'lcg', 'Lehmer')
+                 'mersenne', 'randu', 'lcg', 'Lehmer', 'mwc', 'mother', 'combo')
   
   i = GNR.models[i]
   
@@ -222,7 +315,7 @@ PNRG.test.confidence.regions <- function(D = 3, N = 50000, generator = 1, table.
   GNR.models = c('Wichmann-Hill', 'Marsaglia-Multicarry', 'Super-Duper', 
                  'Knuth-TAOCP-2002', 'Knuth-TAOCP', 'LEcuyer-CMRG',
                  'pcg64', 'Threefry', 'Xoroshiro128+', 'Xoshiro256+', 
-                 'mersenne', 'randu', 'lcg', 'Lehmer', 'fBm', 'fGn')
+                 'mersenne', 'randu', 'lcg', 'Lehmer', 'mwc', 'mother', 'combo')
   
   generator = GNR.models[generator]
   
@@ -258,6 +351,12 @@ PNRG.test.confidence.regions <- function(D = 3, N = 50000, generator = 1, table.
     hc.data = read.csv("../Data/PRNG/HC-fBm-50k.csv")[2:5]
   }else if(generator == 'fGn'){
     hc.data = read.csv("../Data/PRNG/HC-fGn-50k.csv")[2:5]
+  }else if(generator == 'mwc'){
+    hc.data = read.csv("../Data/PRNG/HC-mwc-50k.csv")[2:5]
+  }else if(generator == 'mother'){
+    hc.data = read.csv("../Data/PRNG/HC-mother-50k.csv")[2:5]
+  }else if(generator == 'combo'){
+    hc.data = read.csv("../Data/PRNG/HC-combo-50k.csv")[2:5]
   }
   index = which(hc.data['D'] == D)
   hc.D = hc.data[index,]
@@ -310,6 +409,12 @@ PNRG.HC.confidence.regions <- function(D = 3, tau = 1, N = 50000, generator = 'l
     hc.data = read.csv("../Data/PRNG/HC-fBm-50k.csv")[2:5]
   }else if(generator == 'fGn'){
     hc.data = read.csv("../Data/PRNG/HC-fGn-50k.csv")[2:5]
+  }else if(generator == 'mwc'){
+    hc.data = read.csv("../Data/PRNG/HC-mwc-50k.csv")[2:5]
+  }else if(generator == 'mother'){
+    hc.data = read.csv("../Data/PRNG/HC-mother-50k.csv")[2:5]
+  }else if(generator == 'combo'){
+    hc.data = read.csv("../Data/PRNG/HC-combo-50k.csv")[2:5]
   }
   
   hc.confidence.regions = read.csv(paste0("../Data/Regions-HC/regions-hc-D", D,"-N", N, ".csv"))[2:4]
@@ -388,6 +493,12 @@ plot.PNRG.analysis <- function(N = 50000, generator = 'lcg'){
     hc.data = read.csv("../Data/PRNG/HC-fBm-50k.csv")[2:5]
   }else if(generator == 'fGn'){
     hc.data = read.csv("../Data/PRNG/HC-fGn-50k.csv")[2:5]
+  }else if(generator == 'mwc'){
+    hc.data = read.csv("../Data/PRNG/HC-mwc-50k.csv")[2:5]
+  }else if(generator == 'mother'){
+    hc.data = read.csv("../Data/PRNG/HC-mother-50k.csv")[2:5]
+  }else if(generator == 'combo'){
+    hc.data = read.csv("../Data/PRNG/HC-combo-50k.csv")[2:5]
   }
   
   i = 0
@@ -426,8 +537,8 @@ plot.PNRG.analysis <- function(N = 50000, generator = 'lcg'){
 }
 
 generator.all <- function(){
-  registerDoParallel(cores = 6)
-  foreach(i = 11:13) %dopar% {
+  registerDoParallel(cores = 3)
+  foreach(i = 15:17) %dopar% {
     PNRG.HC.generator(i)
     cat("Generating PRNG ", i, "\n")
   }
@@ -436,7 +547,7 @@ generator.all <- function(){
 test.all <- function(){
   #registerDoParallel(cores = 6)
   table.code = ""
-  for(i in 1:16){
+  for(i in 15:17){
     table.code = PNRG.test.confidence.regions(D = 3, N = 50000, generator = i, table.code)
     table.code = PNRG.test.confidence.regions(D = 4, N = 50000, generator = i, table.code)
     table.code = PNRG.test.confidence.regions(D = 5, N = 50000, generator = i, table.code)
@@ -445,7 +556,7 @@ test.all <- function(){
   return(table.code)
 }
 
-test.all()
+generator.all()
 
 #pdf("pcg64-50000.pdf", width = 24, height = 16)
 #p = plot.PNRG.analysis(N = 50000, generator = 'pcg64')
