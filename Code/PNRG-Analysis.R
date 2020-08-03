@@ -277,6 +277,8 @@ PNRG <- function(n.series, size.series, generator = 'randu'){
       random.vector[i,] = rand.borland[(((i-1)*n.series) + 1):(n.series*i)]
       print(i)
     }
+  }else if(generator == 'matlab'){
+    random.vector = read.csv("../../matlab-rand.csv")
   }
   return(random.vector)
 }
@@ -288,7 +290,7 @@ PNRG.HC.generator <- function(i){
   GNR.models = c('Wichmann-Hill', 'Marsaglia-Multicarry', 'Super-Duper', 
                  'Knuth-TAOCP-2002', 'Knuth-TAOCP', 'LEcuyer-CMRG',
                  'pcg64', 'Threefry', 'Xoroshiro128+', 'Xoshiro256+', 
-                 'mersenne', 'randu', 'lcg', 'Lehmer', 'mwc', 'mother', 'combo', 'borland')
+                 'mersenne', 'randu', 'lcg', 'Lehmer', 'mwc', 'mother', 'combo', 'borland', 'matlab')
   
   i = GNR.models[i]
   
@@ -321,7 +323,7 @@ PNRG.test.confidence.regions <- function(D = 3, N = 50000, generator = 1, table.
   GNR.models = c('Wichmann-Hill', 'Marsaglia-Multicarry', 'Super-Duper', 
                  'Knuth-TAOCP-2002', 'Knuth-TAOCP', 'LEcuyer-CMRG',
                  'pcg64', 'Threefry', 'Xoroshiro128+', 'Xoshiro256+', 
-                 'mersenne', 'randu', 'lcg', 'Lehmer', 'mwc', 'mother', 'combo', 'borland')
+                 'mersenne', 'randu', 'lcg', 'Lehmer', 'mwc', 'mother', 'combo', 'borland', 'matlab')
   
   generator = GNR.models[generator]
   
@@ -365,6 +367,8 @@ PNRG.test.confidence.regions <- function(D = 3, N = 50000, generator = 1, table.
     hc.data = read.csv("../Data/PRNG/HC-combo-50k.csv")[2:5]
   }else if(generator == 'borland'){
     hc.data = read.csv("../Data/PRNG/HC-borland-50k.csv")[2:5]
+  }else if(generator == 'matlab'){
+    hc.data = read.csv("../Data/PRNG/HC-matlab-50k.csv")[2:5]
   }
   index = which(hc.data['D'] == D)
   hc.D = hc.data[index,]
@@ -425,6 +429,8 @@ PNRG.HC.confidence.regions <- function(D = 3, tau = 1, N = 50000, generator = 'l
     hc.data = read.csv("../Data/PRNG/HC-combo-50k.csv")[2:5]
   }else if(generator == 'borland'){
     hc.data = read.csv("../Data/PRNG/HC-borland-50k.csv")[2:5]
+  }else if(generator == 'matlab'){
+    hc.data = read.csv("../Data/PRNG/HC-matlab-50k.csv")[2:5]
   }
   
   hc.confidence.regions = read.csv(paste0("../Data/Regions-HC/regions-hc-D", D,"-N", N, ".csv"))[2:4]
@@ -511,6 +517,8 @@ plot.PNRG.analysis <- function(N = 50000, generator = 'lcg'){
     hc.data = read.csv("../Data/PRNG/HC-combo-50k.csv")[2:5]
   }else if(generator == 'borland'){
     hc.data = read.csv("../Data/PRNG/HC-borland-50k.csv")[2:5]
+  }else if(generator == 'matlab'){
+    hc.data = read.csv("../Data/PRNG/HC-matlab-50k.csv")[2:5]
   }
   
   i = 0
@@ -550,7 +558,7 @@ plot.PNRG.analysis <- function(N = 50000, generator = 'lcg'){
 
 generator.all <- function(){
   #registerDoParallel(cores = 3)
-  foreach(i = 18) %dopar% {
+  foreach(i = 19) %dopar% {
     PNRG.HC.generator(i)
     cat("Generating PRNG ", i, "\n")
   }
@@ -568,7 +576,7 @@ test.all <- function(){
   return(table.code)
 }
 
-test.all()
+generator.all()
 
 #pdf("pcg64-50000.pdf", width = 24, height = 16)
 #p = plot.PNRG.analysis(N = 50000, generator = 'pcg64')
