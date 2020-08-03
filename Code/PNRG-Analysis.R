@@ -556,7 +556,7 @@ test.all <- function(){
   return(table.code)
 }
 
-generator.all()
+test.all()
 
 #pdf("pcg64-50000.pdf", width = 24, height = 16)
 #p = plot.PNRG.analysis(N = 50000, generator = 'pcg64')
