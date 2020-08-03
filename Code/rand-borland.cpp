@@ -7,8 +7,7 @@
 using namespace std;
 
 unsigned int myseed = 0x015A4E36;
-const int N = 50000;
-//const int N = 5;
+const int N = 500001;
 
 int myrand(void)
 {
