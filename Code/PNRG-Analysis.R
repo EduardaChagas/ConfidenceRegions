@@ -285,6 +285,33 @@ PNRG <- function(n.series, size.series, generator = 'randu'){
 
 # Analysis functions -----------------------------------------------------------------------------------
 
+matlab.generator <- function(){
+  
+  # N = 50000 -------------------
+  a = -99
+  N = 50000
+  D = c(3, 4, 5, 6)
+  tau = c(1, 10, 30, 50)
+  random.series = PNRG(100, N, 'matlab')
+  hc.50k = data.frame(H = numeric(1584), C = numeric(1584), D = numeric(1584), tau = numeric(1584))
+  
+  for(t in tau){
+    for(d in D){
+      a = a + 99
+      for(j in 1:99){
+        cat("N: ", N, " D: ", d, " tau: ", t, " series: ", j, '\n')
+        probs = bandt.pompe(random.series[j,], d, t)
+        hc.50k$H[j + a] = shannon.entropy.normalized(probs)
+        hc.50k$C[j + a] = Ccomplexity(probs)
+        hc.50k$D[j + a] = d
+        hc.50k$tau[j + a] = t
+      }
+    }
+  }
+  write.csv(hc.50k, file = "../Data/PRNG/HC-matlab-50k.csv")
+}
+
+
 PNRG.HC.generator <- function(i){
   
   GNR.models = c('Wichmann-Hill', 'Marsaglia-Multicarry', 'Super-Duper', 
@@ -576,7 +603,7 @@ test.all <- function(){
   return(table.code)
 }
 
-generator.all()
+matlab.generator()
 
 #pdf("pcg64-50000.pdf", width = 24, height = 16)
 #p = plot.PNRG.analysis(N = 50000, generator = 'pcg64')
