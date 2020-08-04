@@ -292,7 +292,7 @@ matlab.generator <- function(){
   N = 50000
   D = c(3, 4, 5, 6)
   tau = c(1, 10, 30, 50)
-  random.series = PNRG(100, N, 'matlab')
+  random.series = PNRG(100, N, 'matlab')[1:99,]
   hc.50k = data.frame(H = numeric(1584), C = numeric(1584), D = numeric(1584), tau = numeric(1584))
   
   for(t in tau){
@@ -300,7 +300,7 @@ matlab.generator <- function(){
       a = a + 99
       for(j in 1:99){
         cat("N: ", N, " D: ", d, " tau: ", t, " series: ", j, '\n')
-        probs = bandt.pompe(random.series[j,], d, t)
+        probs = bandt.pompe(unlist(random.series[j,]), d, t)
         hc.50k$H[j + a] = shannon.entropy.normalized(probs)
         hc.50k$C[j + a] = Ccomplexity(probs)
         hc.50k$D[j + a] = d
