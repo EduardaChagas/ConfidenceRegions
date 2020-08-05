@@ -121,7 +121,7 @@ PNRG.test.p.values <- function(D = 3, N = 50000, generator = 1, table.code){
   }
   index = which(hc.data['D'] == D)
   hc.data = hc.data[index,]
-  result = calculate.p.value.samples(hc.data, D)
+  result = calculate.p.value.samples(hc.data, N, D)
   result.95 = p.value.set.point(hc.data, D, N, 95)
   result.99 = p.value.set.point(hc.data, D, N, 99)
   table.code = paste0(table.code, generator, " & ", D, " & ", round(result.95, 4), " & ", round(result.99, 4), " & ", result,"\\ ")
