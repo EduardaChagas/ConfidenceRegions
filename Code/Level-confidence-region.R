@@ -10,7 +10,6 @@ source("Confidence-regions-functions.R")
 # Analysis functions -----------------------------------------------------------------------------------
 
 get.confidence.region <- function(HC, ph, pc, D, N){
-  
   pca_HC = prcomp(x = HC[,-3], retx = TRUE, 
                   center=TRUE, scale. = TRUE)
   PC = data.frame(PC1 = pca_HC$x[,1], PC2 = pca_HC$x[,2])
