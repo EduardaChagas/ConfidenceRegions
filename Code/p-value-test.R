@@ -1,3 +1,10 @@
+########################################################################################################
+# Author: Eduarda Chagas
+# Date : Aug 5, 2020
+# Contact: eduarda.chagas@dcc.ufmg.br
+########################################################################################################
+
+# Packages and sources ---------------------------------------------------------------------------------
 source("Test-point.R")
 if(!require(plot3D)){
   install.packages("plot3D")
@@ -8,6 +15,7 @@ if(!require(doParallel)){
   require(doParallel)
 }
 
+# Analysis functions -----------------------------------------------------------------------------------
 calculate.p.value.samples <- function(samples, N, D){
   if(N == 1000){
     HC = read.csv("../Data/HC/HC_1000.csv")[,2:4]
@@ -128,6 +136,27 @@ PNRG.test.p.values <- function(D = 3, N = 50000, generator = 1, table.code){
   return(table.code)
 }
 
+RNG.test.p.values <- function(D = 3, N = 50000, table.code){
+  
+  if(N == 1000){
+    filePath = read.table(paste0("../../Random_/Random_", 1, "k_D", D, "-T1.dat"), header=TRUE)
+  }else{
+    filePath = read.table(paste0("../../Random_/Random_", 50, "k_D", D, "-T1.dat"), header=TRUE)
+  }
+  
+  HC = matrix(data = filePath$x, nrow = 100, ncol = 3, byrow = TRUE, dimnames = NULL)
+  
+  HC = data.frame(H = HC[,1], 
+                  C = HC[,2], 
+                  D = factor(c(rep(D, 100))))
+  
+  result = calculate.p.value.samples(HC, N, D)
+  result.95 = p.value.set.point(HC, D, N, 95)
+  result.99 = p.value.set.point(HC, D, N, 99)
+  table.code = paste0(table.code,"True-Random & ", N," & ", D, " & ", round(result.95, 4), " & ", round(result.99, 4), " & ", result,"\\ ")
+  return(table.code)
+}
+
 p.value.all.prng <- function(){
   registerDoParallel(cores = 6)
   table.code = ""
@@ -140,4 +169,17 @@ p.value.all.prng <- function(){
   return(table.code)
 }
 
-p.value.all.prng()
+p.value.all.rng <- function(){
+  table.code = ""
+  table.code = RNG.test.p.values(D = 3, N = 1000, table.code)
+  table.code = RNG.test.p.values(D = 4, N = 1000, table.code)
+  table.code = RNG.test.p.values(D = 5, N = 1000, table.code)
+  table.code = RNG.test.p.values(D = 6, N = 1000, table.code)
+  table.code = RNG.test.p.values(D = 3, N = 50000, table.code)
+  table.code = RNG.test.p.values(D = 4, N = 50000, table.code)
+  table.code = RNG.test.p.values(D = 5, N = 50000, table.code)
+  table.code = RNG.test.p.values(D = 6, N = 50000, table.code)
+  return(table.code)
+}
+
+p.value.all.rng()
