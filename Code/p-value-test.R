@@ -158,9 +158,9 @@ RNG.test.p.values <- function(D = 3, N = 50000, table.code){
 }
 
 p.value.all.prng <- function(){
-  registerDoParallel(cores = 6)
+  #registerDoParallel(cores = 6)
   table.code = ""
-  foreach(i = 1:19) %dopar% {
+  for(i in 1:19){
     table.code = PNRG.test.p.values(D = 3, N = 50000, generator = i, table.code)
     table.code = PNRG.test.p.values(D = 4, N = 50000, generator = i, table.code)
     table.code = PNRG.test.p.values(D = 5, N = 50000, generator = i, table.code)
@@ -182,4 +182,4 @@ p.value.all.rng <- function(){
   return(table.code)
 }
 
-p.value.all.rng()
+p.value.all.prng()
