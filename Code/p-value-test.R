@@ -132,10 +132,10 @@ p.value.all.prng <- function(){
   registerDoParallel(cores = 6)
   table.code = ""
   for(i in 19){
-    table.code = PNRG.test.confidence.regions(D = 3, N = 50000, generator = i, table.code)
-    table.code = PNRG.test.confidence.regions(D = 4, N = 50000, generator = i, table.code)
-    table.code = PNRG.test.confidence.regions(D = 5, N = 50000, generator = i, table.code)
-    table.code = PNRG.test.confidence.regions(D = 6, N = 50000, generator = i, table.code)
+    table.code = PNRG.test.p.values(D = 3, N = 50000, generator = i, table.code)
+    table.code = PNRG.test.p.values(D = 4, N = 50000, generator = i, table.code)
+    table.code = PNRG.test.p.values(D = 5, N = 50000, generator = i, table.code)
+    table.code = PNRG.test.p.values(D = 6, N = 50000, generator = i, table.code)
   }
   return(table.code)
 }
