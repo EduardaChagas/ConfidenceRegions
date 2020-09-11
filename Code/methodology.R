@@ -57,11 +57,13 @@ ggplot(HC, aes(x = H, y = C)) + geom_point() +
   theme(plot.title = element_text(hjust=0.5)) + 
   theme_clean(base_size = 12, base_family = "serif") 
 
-ggplot(HC, aes(x = H, y = C)) + geom_point() +
+ggplot(HC, aes(x = H, y = C)) + geom_point(size = 4) +
   geom_line(data = cotas.sup, aes(x = H, y = C), color="gray") +
   geom_line(data = cotas.inf, aes(x = H, y = C), color="gray") + 
   xlim(limits = c(0.99875, 0.9990)) +  
   ylim(limits = c(0.0024, 0.003)) + 
+  geom_rect(aes(xmin = 0.99875, xmax = 0.9990, ymin = 0.0024, ymax = 0.003), 
+            fill = "blue", alpha = 0.01, inherit.aes = FALSE) + 
   xlab("H") +
   ylab("C") +
   theme(plot.title = element_text(hjust=0.5)) + 
@@ -91,12 +93,12 @@ ggplot(PC, aes(x = PC1, y = PC2)) + geom_point() +
   geom_hline(yintercept = y.pc.75.2, linetype="dashed", color = "black") + 
   geom_vline(xintercept = x.pc.75.1, linetype="dashed", color = "black") + 
   geom_vline(xintercept = x.pc.75.2, linetype="dashed", color = "black") + 
-  geom_label_repel(data = median.pca, aes(x = PC1, y = PC2, label = name),
-    fontface = 'bold', color = 'red',
-    box.padding = unit(0.35, "lines"),
-    point.padding = unit(0.5, "lines"),
-    segment.color = 'grey50'
-  ) +
+  #geom_label_repel(data = median.pca, aes(x = PC1, y = PC2, label = name),
+  #  fontface = 'bold', color = 'red',
+  #  box.padding = unit(0.35, "lines"),
+  #  point.padding = unit(0.5, "lines"),
+  #  segment.color = 'grey50'
+  #) +
   geom_rect(data = rect90, aes(xmin = xmin, xmax = xmax, ymin = ymin, ymax = ymax), 
             fill = "red", alpha = 0.1, inherit.aes = FALSE) +
   xlab(TeX("$\\Omega_1$")) +
@@ -129,10 +131,24 @@ rect90$C[rect90$C > 1] = 1
 ggplot(HC, aes(x = H, y = C)) +
   geom_line(data = cotas.sup, aes(x = H, y = C), color="gray") +
   geom_line(data = cotas.inf, aes(x = H, y = C), color="gray") +
+  geom_rect(aes(xmin = 0.99875, xmax = 0.9990, ymin = 0.0024, ymax = 0.003), 
+            fill = "blue", alpha = 0.01, inherit.aes = FALSE) + 
+  geom_point(size = 1) +
+  geom_polygon(data = rect90, aes(x = H, y = C), fill = "red", alpha = 1, inherit.aes = FALSE) +
+  xlim(limits = c(0.9985, 1)) + 
+  ylim(limits = c(0, 0.004)) + 
+  xlab("H") +
+  ylab("C") +
+  theme(plot.title = element_text(hjust=0.5)) + 
+  theme_clean(base_size = 12, base_family = "serif") 
+
+ggplot(HC, aes(x = H, y = C)) +
+  geom_line(data = cotas.sup, aes(x = H, y = C), color="gray") +
+  geom_line(data = cotas.inf, aes(x = H, y = C), color="gray") +
   geom_polygon(data = rect90, aes(x = H, y = C), fill = "red", alpha = 0.4, inherit.aes = FALSE) +
   geom_rect(aes(xmin = 0.99875, xmax = 0.9990, ymin = 0.0024, ymax = 0.003), 
             fill = "blue", alpha = 0.01, inherit.aes = FALSE) + 
-  geom_point() +
+  geom_point(size = 4) +
   xlim(limits = c(0.99875, 0.9990)) +  
   ylim(limits = c(0.0024, 0.003)) + 
   xlab("H") +

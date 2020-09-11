@@ -60,7 +60,7 @@ pca.histogram <- function(){
     ggtitle("First Component Histogram") +
     xlab("") +
     ylab("") +
-    geom_histogram(aes(x = PC1, y = ..density..), binwidth = 1, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+    geom_histogram(aes(x = PC1, y = ..density..), binwidth = 1, fill="#212529", color="#343a40", alpha=0.9) +
     facet_grid(. ~ value) + 
     theme_few(base_size = 35, base_family = "serif") +  
     theme(plot.title = element_text(hjust=0.5)) 
@@ -92,3 +92,5 @@ plot.pca.histogram <- function(HC, D, N){
   
   return(p)
 }
+
+pca.histogram()
