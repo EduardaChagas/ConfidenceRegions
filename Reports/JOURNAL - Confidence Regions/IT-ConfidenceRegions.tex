@@ -8,15 +8,13 @@
 %\endlocaldefs
 
 \usepackage[author-year]{amsrefs}
-\usepackage{bm,bbm}
+\usepackage{bm,bbm, amsmath}
 \usepackage{siunitx}
-\usepackage{hyperref} 
+\usepackage{verbatim}
 
-\usepackage{natbib}
 %\usepackage{amssymb}
 \usepackage{enumerate}
 \usepackage{color}
-\usepackage{url}
 
 \usepackage[caption=false]{subfig}
 \usepackage{graphicx}
@@ -24,6 +22,7 @@
 \usepackage{booktabs}
 \usepackage{float}
 \usepackage[figuresright]{rotating}
+\usepackage{todonotes}
 
 
 \usepackage{comment}   
@@ -37,7 +36,6 @@
 \title{Confidence Regions for Information-Theoretic Descriptors of Time Series}
 \runtitle{Confidence Regions}
 
-%%% ACF Eduarda é a primeira autora; editar os endereços
 \author{\fnms{Eduarda T.\ C.} \snm{Chagas}\ead[label=e1]{eduarda.chagas@dcc.ufmg.br}}
 \and
 \author{\fnms{Marcelo} \snm{Queiroz}\corref{}\ead[label=e2]{marceloqao@gmail.com}}
@@ -54,17 +52,18 @@
 \address{Victoria University of Wellington\\
 PO Box 600\\
 Wellington 6140, New Zealand \printead{e7}}
-\affiliation{School of Mathematics and Statistics}
-
+\affiliation{School of Mathematics and Statistics\\
+Victoria University of Wellington\\
+New Zealand}
 
 \runauthor{E.\ Chagas}
 
 \begin{abstract}
-The \citeauthor{Bandt2002Permutation} methodology has been used with success in time series analysis.
-It consists in computing Information-Theoretic descriptors, from a histogram of ordinal patterns, which lie in a 2D manifold: the Entropy-Complexity plane.
-So far, the analysis of the dynamics underlying the time series has been performed using two reference points: those corresponding to a deterministic and to white noise time series.
-In this paper, we provide confidence regions for white noise models, and we used these regions as a method for analyzing PRNGs randomness.
-These regions allow testing whether a sequence belongs to one of these models.
+The\citeauthor{PermutationEntropyBandtPompe} methodology has been used successfully in the analysis of time series.
+It consists of computing information theory descriptors, using a histogram of ordinal patterns, which are found in a 2D variety: the Entropy-Complexity plane.
+So far, the analysis of the dynamics underlying the time series has been carried out from two reference points: those corresponding to a deterministic time series and a series of white noise.
+In this article, we provide a first proposal for the construction of empirical confidence regions in the Entropy-Complexity plane for white noise models and we use these regions to verify whether we can capture the randomness of PRNGs in short sequences.
+The proposed methodology showed consistency and coherence in its results, managing to discriminate sequences of true random samples, capturing the randomness of generators previously analyzed in the literature and proving to be robust the addition of correlation structures.
 \end{abstract}
 
 \begin{keyword}[class=MSC]
@@ -73,24 +72,27 @@ These regions allow testing whether a sequence belongs to one of these models.
 \end{keyword}
 
 \begin{keyword}
-\kwd{Nonparametric time series analysis}
-\kwd{ordinal patterns}
+\kwd{Random number generators}
+\kwd{Bandt–Pompe approach}
+\kwd{Entropy-complexity plane}
 \kwd{Information Theory}
 \end{keyword}
 
 \end{frontmatter}
 
-\tableofcontents
+%\tableofcontents
 
 \input{Chapters/Introduction}
+\input{Chapters/relatedWork}
+\input{Chapters/Background}
 \input{Chapters/Methodology}
+\input{Chapters/ExperimentalSetup}
 \input{Chapters/Results}
 \input{Chapters/Conclusions}
 \input{Chapters/Source}
 \input{Chapters/acknowledgements}
-
-\bibliographystyle{abbrvnat}
 \bibliography{references}
+\input{Chapters/Additionalresult}
 
 \end{document}
 

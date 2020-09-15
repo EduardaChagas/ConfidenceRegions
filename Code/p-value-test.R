@@ -1,6 +1,6 @@
 ########################################################################################################
 # Author: Eduarda Chagas
-# Date : Aug 5, 2020
+# Date : Sep 15, 2020
 # Contact: eduarda.chagas@dcc.ufmg.br
 ########################################################################################################
 
@@ -32,11 +32,9 @@ calculate.p.value.samples <- function(samples, N, D){
   
   p.values = rep(0, dim(samples)[1])
   
-  
   attach(PC)
   for(i in 1:dim(samples)[1]){
-    print(i)
-    
+    #print(i)
     test = TRUE
     step.loop = 0
     region.test = 1.001

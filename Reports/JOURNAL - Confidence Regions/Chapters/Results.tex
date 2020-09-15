@@ -1,139 +1,48 @@
 \section{Results}\label{Sec:Results}
 
-In this section, we describe the descriptive analysis of representative points in relation to the confidence regions, as well as revisiting hypotheses of white noise present in the literature.
-Empirical experiments on the behavior of an emblematic sample when injecting correlation structures are also presented.
+\subsection{Descriptive analysis of empirical confidence regions}
 
-We employed the following factors in this study:
-\begin{itemize}
-\item Time series length $T\in\mathcal T=\{10^3, \num[scientific-notation=true]{5 e4}\}$,
-\item Embedding dimension $D\in\mathcal D=\{3, 4, 5, 6\}$,and
-\item Exponent of the $f^{-k}$ noise $k\in\mathcal K=\{0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.5, 1,\\ 1.5, 2, 2.5, 3\}$.
-\item Time delay $\tau=\{1,10,30,50\}$.
-\end{itemize}
-%There were no significant differences in data in repeated experiments with time delays $\tau=\{1,10,30,50\}$. 
-%Therefore, we obtained $1000$ independent series for each point in the factors set $\mathcal T\times \mathcal D\times \mathcal K$.
-
-The data generation and analyses were performed using the \texttt R platform \cite{Rmanual} v.~3.6.3.
-We used the \texttt{ggplot2} library \cite{ggplot2Wickman} for generating the plots.
-
-\subsection{Descriptive analysis of representative data}
-
-For the construction of the confidence regions presented in this work we use:
-\begin{itemize}
-    \item An set of $104596$ points in the $H \times C$ plane, referring to sequences of length $T = 1000$, for each combination of the factors $\mathcal T \times \mathcal D \times \mathcal{\tau}$, and
-    \item  An another set of $2093$ points in the $H \times C$ plane, referring to sequences of length $T = 50000$, for each combination of factors $\mathcal T \times \mathcal D \times \mathcal{\tau}$.
-\end{itemize}
-Since the results involving the variation of the time delay parameter did not show a significant difference in repeated experiments, we don't consider it as a determinating factor during the execution of the algorithm.
-On the other hand, we consider two determining variables during the generation of such sub-spaces: the embedding dimension and the length of the sequence.
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{Figures/Points-PDF.png}
-    \caption{White noise samples considered during the construction of the proposed confidence regions.}
-    \label{fig:white-noise}
-\end{figure}
-
-In Fig.~\ref{fig:HC-PCA} we show the results obtained for $T = 50000$ in the scenarios of $D = 3$ and $D = 6$ in the new space defined by the PCA, together with the quantiles of $90\%$, $95\%$, $99\%$ and $99.9\%$.
+The regions used as a reference in this work are obtained through true random sequences, where we extract the empirical distribution of white noises in the Entropy-Complexity plane.
+In Fig.~\ref{fig:HC-PCA} we show the results obtained for $T = 50000$ in the scenarios of $D = 3$ and $D = 6$ in the new space defined by the PCA, together with the quantiles of $\SI{90}{\percent}$, $\SI{95}{\percent}$, $\SI{99}{\percent}$, and $\SI{99.9}{\percent}$.
 We also show the projection of the $H \times C$ plane limits in this new representation space, as well as identifying the median of each data set, the latter being represented as the red dots present in the graphs.
 
-\begin{figure}[H]
+\begin{figure}
 	\centering
 	\includegraphics[width=.45\linewidth]{Figures/HC-PCA-Trozos-D3N50k.png}
 	\includegraphics[width=.45\linewidth]{Figures/HC-PCA-Trozos-D6N50k.png}
-	\caption{}
+	\caption{Representation of truly random sequences with length $T = 50.000$ in the PCA space for $D = 3$ and $D = 6$, and the quantiles of $\SI{90}{\percent}$, $\SI{95}{\percent}$, $\SI{99}{\percent}$, and $\SI{99.9}{\percent}$.}
 	\label{fig:HC-PCA}
 \end{figure} 
 
 As we can see in Fig.~\ref{fig:PCA-Hist} in the new representation space produced by the PCA, the data are not evenly distributed among the axes of the first main component, maintaining the character presented in the $H \times C$ plane, since such points tend to be concentrated close to the point $(1, 0)$.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=\linewidth]{PCA-hist-50k}
     \caption{Histogram of the PCA first component }
     \label{fig:PCA-Hist}
 \end{figure}
 
-%\textcolor{red}{An\'alise descritiva: alguns pontos de $\Theta$ representativos:} 
 \subsection{Testing White Noise in the confidence regions}
 
-To test the efficiency of the confidence region calculated, we tested its applicability on a set of truly random data generated physically not used by the algorithm during its construction. 
+To analyze the efficiency of the confidence region calculated, we tested its applicability on a set of true random data generated physically not used by the algorithm during its construction. 
 The results can be seen in Fig.~\ref{fig:RNG}.
 
-For small series, $N = 1000$, and $D = 3$ we managed to maintain exactly $99\%$ of the data in the confidence region of the same value, and as the dimension increased reach $96\%$ of the points.
-On the other hand, there was a very large loss of points located in the region with $95\%$ confidence as the dimension increased.
+For small series, $T = 1000$, and $D = 3$ we managed to maintain exactly $\SI{99}{\percent}$ of the data in the confidence region of the same value, and as the dimension increased reach $\SI{96}{\percent}$ of the points.
+On the other hand, there was a very large loss of points located in the region with $\SI{95}{\percent}$ confidence as the dimension increased.
 A reasonable explanation for this event is given in the choice of the parameter itself.
 It is known by definition that $D! << N$, which does not happen for such a sample size, thus presenting many missing patterns that lead to an unrepresentative probability distribution.
-For larger series, $N = 50000$, although we observed a small drop in the percentage of data present in the region with $99\%$ confidence, there was a significant increase in points in the region with $95\%$ confidence, showing between $90\%$ and $88\%$ of the points when we vary the embedding dimension.
+For larger series, $T = 50000$, although we observed a small drop in the percentage of data present in the region with $\SI{99}{\percent}$ confidence, there was a significant increase in points in the region with $\SI{95}{\percent}$ confidence, showing between $\SI{90}{\percent}$ and $\SI{88}{\percent}$ of the points when we vary the embedding dimension.
 
-\begin{table}[H]
-	\centering
-	\caption{Results found it for samples of true random numbers}
-	\label{tab:result1}
-	\begin{tabular}{c*{3}rr}
-		\toprule
-		Algorithm & \multicolumn{1}{c}{$N$} & \multicolumn{1}{c}{$D$} & \multicolumn{1}{c}{\SI{95}{\percent}} & \multicolumn{1}{c}{\SI{99}{\percent}}\\
-		\cmidrule(lr){1-1}
-		\cmidrule(lr){2-2}
-		\cmidrule(lr){3-3}
-		\cmidrule(lr){4-4}
-		\cmidrule(lr){5-5}
-		True-Random & 1000 & 3 & $0.98$ & $1$\\
-		&  & 4 & $0.98$ & $0.96$\\
-		&  & 5 & $1$ & $0.94$\\
-		&  & 6 & $0.97$ & $0.87$\\
-		\cmidrule(lr){1-5}
-		True-Random & 50000 & 3 & $0.97$ & $0.96$\\
-		&  & 4 & $0.94$ & $0.95$\\
-		&  & 5 & $0.97$ & $0.96$\\
-		&  & 6 & $0.98$ & $0.99$\\
-		\bottomrule
-	\end{tabular}
-\end{table}
-
-\begin{figure}[H]
+\begin{figure}
     \centering
     \includegraphics[width=\linewidth]{Figures/RNG-1000.pdf}
     \includegraphics[width=\linewidth]{Figures/RNG-50000.pdf}
-    \caption{White Noise in HC Plane}
+    \caption{Results of the analysis behavior of true random noises in the regions of confidence built.}
     \label{fig:RNG}
 \end{figure}
 
-\begin{comment}
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{Figures/fk-descriptive-analysis.pdf}
-    \caption{$f^{-k}$ noises in HC Plane}
-    \label{fig:fk}
-\end{figure}
-
-\end{comment}
-
-%\textcolor{red}{Justificar o tipo de an\'alise: regressão? bivariada clássica? não-paramétrica?}
-
-%\textcolor{red}{Regi\~oes de confian\c ca}
-
-\begin{comment}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{Figures/N50kBoxes95.png}
-    \caption{}
-    \label{fig:region95}
-\end{figure}
-
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=\linewidth]{Figures/N50kBoxes99.png}
-    \caption{}
-    \label{fig:region99}
-\end{figure}
-
-\end{comment}
-
-
-%\subsection{Analysis of the Empirical Confidence Regions}
-
-\subsection{Analyzing of the Empirical Confidence Regions Injecting Correlation}
+\subsection{Analyzing Robustness to Correlation Structures}
 % k=0 white
 % k=1 pink
 % k=2 brown
@@ -152,159 +61,237 @@ As we can observe in the plane as the correlation between the observations incre
 Fig.~\ref{fig:correlation}b. illustrates the degree of limit correlation structure that can be added in white noise to eliminate it from the regions of confidence, where the red dot represents the original "emblematic" series.
 When we have $k = 0$, the features of the sequence have a small variation, corroborating the premise that series of noise $f^{-k} = 0$ have a minimum correlation measure, not significantly changing the dynamics of the system.
 
-\begin{figure}[H]
+\begin{figure}
     \centering
 	\includegraphics[width=.48\linewidth]{Figures/Correlation-Analysis-dotted.pdf}
     \includegraphics[width=.48\linewidth]{Figures/Correlation-Analysis-point.pdf}
-    \caption{Correlation Structure Analysis
-    }
+    \caption{Correlation Structure Analysis}
     \label{fig:correlation}
 \end{figure}
-%In the following, we will present how the $(h,c)$ point of the ``emblematic'' sequence alters when injecting temporal correlation (by means of the $f^{-k}$ model).
-%, and determinism (by a convex combination with a sine function).
-%The $f^{-k}$: simulation
-
-\begin{comment}
-\subsection{Injecting Determinism}
-Consider the emblematic sequence $\bm x=(x_1,\dots,x_N)$, which is mapped onto the point $(h,c)$.
-In order to inject determinism in this sequence, we will analyze the effect of $\xi\in[0,1]$, by checking how the point $\big(h,c\big)(\xi)$ evolves in the $(H,C)$ plane, in which
-\begin{equation}
-\bm x'(j) = \xi \sin(10 \pi j/N) +(1-\xi) x_j.    
-\label{Eq:DeterminismXi}
-\end{equation}
-With this, when $\xi=0$ we have the original sequence $\bm x$ and, thus, the original emblematic point $(h,c)$;
-when $\xi=1$, we have pure determinism: five sine functions.
-\end{comment}
 
 \subsection{Revisiting the White Noise Hypothesis in the Literature}
 
+In this section, we evaluate the quality of the confidence regions preceded by HC-PCA with sequences of previously analyze generators in the literature with the Entropy-Complexity plane.
+For this, we produced $100$ sequences of length $T = \num[scientific-notation=true]{5 e4}$ for each generator present in table~\ref{Tab:Literature} and calculated the respective p-values for each configuration of $D = \{3, 4, 5, 6\}$.
+The results obtained can be seen in table~\ref{Tab:LiteratureComparations}, where we categorize the sets of sequences among those that did not reject (NR) the null hypothesis presented in the HC-PCA test and those that rejected (R).
 
-\begin{table}[H]
+Performing a comparative analysis of the results produced by tables~\ref{Tab:Literature} and~\ref{Tab:LiteratureComparations}, we can see that the proposed methodology of confidence regions can capture the random dynamics of the sequences produced by most of the analyzed generators well, although in our experiments we consider only short sequences.
+
+However, two results deserve special attention: the sequences produced by the generators fBm and Combo RNG.
+The first one, although it was not rejected by the analysis of~\cite{olivares2012contrasting}, presented low p-values, due to the characteristic point in the $H \times C$ plane where its sequences belong.
+For the case analyzed in~\cite{olivares2012contrasting} with $D = 6$, we verified that the produced sequences present an average of $H = 0.997$, therefore they do not belong to the empirical $\SI{95}{\percent}$ confidence region produced by HC-PCA.
+Analyzing the results produced by the Combo RNG, we can verify that only for $D = 3$ the proposed method can characterize the sequences produced as random.
+This is due to the fact that by presenting higher dimension values, we were able to analyze a greater number of ordinal patterns, which may not be presented in their entirety in short sequences.
+
+\begin{table}
+    \caption{Results of the sequences generated by the main PRNGs in the literature. 
+    The analyzed sequences have length $T=\num[scientific-notation = true]{5 e4}$.}
+    \label{Tab:LiteratureComparations}
+    \centering
+    \begin{tabular}{cccc}
+    \toprule
+		Algorithm & 
+		\multicolumn{1}{c}{$D$} & 
+		$p$-value &
+		HC-PCA\\
+		\cmidrule(lr){1-1}
+		\cmidrule(lr){2-2}
+		\cmidrule(lr){3-3}
+		\cmidrule(lr){4-4}
+        MOT & 3 & 0.305 & NR\\
+		& 4 & 0.572 & NR\\ 
+		& 5 & 0.455 & NR\\ 
+		& 6 & 0.508 & NR\\ 
+		\cmidrule(lr){1-4}
+        MWC & 3 & 0.501 & NR\\
+        & 4 & 0.477 & NR\\ 
+        & 5 & 0.496 & NR\\ 
+        & 6 & 0.496 & NR\\ 
+		\cmidrule(lr){1-4}
+		COM & 3 & 0.123 & NR\\
+		& 4 & 0.002 & R\\ 
+		& 5 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+		& 6 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+		\cmidrule(lr){1-4}
+		LEH & 3 & 0.531 & NR\\
+		& 4 & 0.515 & NR\\ 
+		& 5 & 0.495 & NR\\ 
+		& 6 & 0.501 & NR\\ 
+    \bottomrule
+    \end{tabular}
+    \begin{tabular}{|cccc}
+    \toprule
+		Algorithm & 
+		\multicolumn{1}{c}{$D$} & 
+		$p$-value &
+		HC-PCA\\
+		\cmidrule(lr){1-1}
+		\cmidrule(lr){2-2}
+		\cmidrule(lr){3-3}
+		\cmidrule(lr){4-4}
+		fGn & 3 & 0.521 & NR\\
+		& 4 & 0.519 & NR\\ 
+		& 5 & 0.498 & NR\\ 
+		& 6 & 0.470 & NR\\
+		\cmidrule(lr){1-4}
+		fBm & 3 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+		& 4 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+		& 5 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+		& 6 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+		\cmidrule(lr){1-4}
+		$f^{-k}$ & 3 & 0.482 & NR\\
+		& 4 & 0.520 & NR\\ 
+		& 5 & 0.513 & NR\\ 
+		& 6 & 0.508 & NR\\
+		\cmidrule(lr){1-4}
+		LCG & 3 & 0.009 & R\\ 
+		& 4 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+		& 5 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+		& 6 & \num[scientific-notation=true]{1.11 e-16} & R\\ 
+    \bottomrule
+    \end{tabular}
+\end{table}
+
+\begin{comment}
+\begin{table}
+    \caption{Results of literature PRNG references for time series of size $T = 50000$}
+    \label{Tab:LiteratureComparations}
+    \centering
+    \begin{tabular}{c*{3}rcccc}
+    \toprule
+		Algorithm & 
+		\multicolumn{1}{c}{$D$} & \multicolumn{1}{c}{\SI{95}{\percent}} & \multicolumn{1}{c}{\SI{99}{\percent}} & 
+		$p$-value &
+		HC-PCA & 
+		Literature Results & 
+		TestU01\\
+		\cmidrule(lr){1-1}
+		\cmidrule(lr){2-2}
+		\cmidrule(lr){3-3}
+		\cmidrule(lr){4-4}
+		\cmidrule(lr){5-5}
+		\cmidrule(lr){6-6}
+		\cmidrule(lr){7-7}
+		\cmidrule(lr){8-8}
+        MOT & 3 & 1 & 1 & 0.305 & NR & NR & \\
+		& 4 & 1 & 1 & 0.572  & & & \\ 
+		& 5 & 1 & 1 & 0.455 & & & \\ 
+		& 6 & 0.75 & 1 & 0.508 & & & \\ 
+		\cmidrule(lr){1-8}
+        MWC & 3 & 0.97 & 0.9625 & 0.501  & NR & NR & R\\
+        & 4 & 0.97 & 0.9825 & 0.477 & & & \\ 
+        & 5 & 0.9625 & 0.9625 & 0.496 & & & \\ 
+        & 6 & 0.9675 & 0.9625 & 0.496  & & & \\ 
+		\cmidrule(lr){1-8}
+		COM & 3 & 0.25 & 0.5 & 0.123 & NR & NR & \\
+		& 4 & 0 & 0 & 0.002 & R & & \\ 
+		& 5 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & & & \\ 
+		& 6 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16}  & & & \\ 
+		\cmidrule(lr){1-8}
+		LEH & 3 & 0.9825 & 0.98 & 0.531 & NR & NR & NR\\
+		& 4 & 0.9675 & 0.9775 &  0.515  & & & \\ 
+		& 5 & 0.9725 & 0.9775 &  0.495 & & & \\ 
+		& 6 & 0.9775 & 0.9825 & 0.501 & & & \\ 
+		\cmidrule(lr){1-8}
+		fGn & 3 & 0.9722 & 0.9874 & 0.521 & NR & NR & \\
+		& 4 & 0.9798 & 0.9773 & 0.519 & & & \\ 
+		& 5 & 0.9646 & 0.9773 & 0.498 & & & \\ 
+		& 6 & 0.9722 & 0.9545 & 0.470 & & & \\
+		\cmidrule(lr){1-8}
+		fBm & 3 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & R & NR & \\ 
+		& 4 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & & & \\ 
+		& 5 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & & & \\ 
+		& 6 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & & & \\ 
+		\cmidrule(lr){1-8}
+		$f^{-k}$ & 3 & 0.9525 & 0.96 & 0.482 & NR & NR &\\
+		& 4 & 0.975 & 0.9725 & 0.520 & & & \\ 
+		& 5 & 0.98 & 0.9675 & 0.513 & & & \\ 
+		& 6 & 0.9775 & 0.975 & 0.508 & & & \\
+		\cmidrule(lr){1-8}
+		LCG & 3 & 0.07 & 0.09 & 0.009 & R & R & R \\ 
+		& 4 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & & & \\ 
+		& 5 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & & & \\ 
+		& 6 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & & & \\ 
+    \bottomrule
+    \end{tabular}
+\end{table}
+\end{comment}
+
+\begin{comment}
+\begin{table}
 	\centering
-	\caption{Points inside the confidence regions}
+	\caption{Results of analysis of PRNGs with the proposed methodology}
 	\label{tab:resultFinal}
-	\begin{tabular}{c*{3}r}
+	\begin{tabular}{c*{3}rccc}
 		\toprule
-		Algorithm & \multicolumn{1}{c}{$D$} & \multicolumn{1}{c}{\SI{95}{\percent}} & \multicolumn{1}{c}{\SI{99}{\percent}}\\
+		Algorithm & 
+		\multicolumn{1}{c}{$D$} & 
+		\multicolumn{1}{c}{\SI{95}{\percent}} & \multicolumn{1}{c}{\SI{99}{\percent}} &  
+		$p$-value &
+		HC-PCA &   
+		TestU01\\
 		\cmidrule(lr){1-1}
 		\cmidrule(lr){2-2}
 		\cmidrule(lr){3-3}
 		\cmidrule(lr){4-4}
-		Wichmann-Hill & 3 & 0.97 & 0.96\\ 
-		Wichmann-Hill & 4 & 0.9675 & 0.9675\\ 
-		Wichmann-Hill & 5 & 0.9725 & 0.965\\ 
-		Wichmann-Hill & 6 & 0.97 & 0.97\\ 
-		%\cmidrule(lr){1-4}
-		%Marsaglia-Multicarry & 3 & 0.97 & 0.9625\\ 
-		%Marsaglia-Multicarry & 4 & 0.97 & 0.9825\\ 
-		%Marsaglia-Multicarry & 5 & 0.9625 & 0.9625\\ 
-		%Marsaglia-Multicarry & 6 & 0.9675 & 0.9625\\ 
-		\cmidrule(lr){1-4}
-		Super-Duper & 3 & 0.9675 & 0.975\\ 
-		Super-Duper & 4 & 0.9775 & 0.9725\\ 
-		Super-Duper & 5 & 0.9675 & 0.985\\ 
-		Super-Duper & 6 & 0.9825 & 0.965\\ 
-		\cmidrule(lr){1-4}
-		Knuth-TAOCP-2002 & 3 & 0.9775 & 0.9625\\ 
-		Knuth-TAOCP-2002 & 4 & 0.965 & 0.98\\ 
-		Knuth-TAOCP-2002 & 5 & 0.9625 & 0.9825\\ 
-		Knuth-TAOCP-2002 & 6 & 0.9725 & 0.96\\  
-		\cmidrule(lr){1-4}
-		Knuth-TAOCP & 3 & 0.975 & 0.9775\\ 
-		Knuth-TAOCP & 4 & 0.965 & 0.9725\\ 
-		Knuth-TAOCP & 5 & 0.9875 & 0.985\\ 
-		Knuth-TAOCP & 6 & 0.9725 & 0.975\\ 
-		\cmidrule(lr){1-4}
-		LEcuyer-CMRG & 3 & 0.98 & 0.98\\ 
-		LEcuyer-CMRG & 4 & 0.9675 & 0.9725\\ 
-		LEcuyer-CMRG & 5 & 0.965 & 0.9725\\ 
-		LEcuyer-CMRG & 6 & 0.9625 & 0.97\\ 
-		\cmidrule(lr){1-4}
-		pcg64 & 3 & 0.97 & 0.9675\\ 
-		pcg64 & 4 & 0.97 & 0.97\\ 
-		pcg64 & 5 & 0.9775 & 0.9625\\ 
-		pcg64 & 6 & 0.9575 & 0.9575\\ 
-		\cmidrule(lr){1-4}
-		Threefry & 3 & 0.9625 & 0.97\\ 
-		Threefry & 4 & 0.975 & 0.97\\ 
-		Threefry & 5 & 0.96 & 0.9625\\ 
-		Threefry & 6 & 0.965 & 0.955\\ 
-		\cmidrule(lr){1-4}
-		Xoroshiro128+ & 3 & 0.975 & 0.9825\\ 
-		Xoroshiro128+ & 4 & 0.995 & 0.9825\\ 
-		Xoroshiro128+ & 5 & 0.98 & 0.9725\\ 
-		Xoroshiro128+ & 6 & 0.9725 & 0.955\\ 
-		\cmidrule(lr){1-4}
-		MWC & 3 & 1 & 0.75\\
-		MWC & 4 & 0.25 & 0.25\\ 
-		MWC & 5 & 1 & 1\\ 
-		MWC & 6 & 0 & 0\\ 
-		\cmidrule(lr){1-4}
-		MOT & 3 & 1 & 1\\ 
-		MOT & 4 & 1 & 1\\ 
-		MOT & 5 & 1 & 1\\ 
-		MOT & 6 & 0.75 & 1\\ 
-		\bottomrule 
-	\end{tabular}
-	\begin{tabular}{c*{3}r}
-		\toprule
-		Algorithm & \multicolumn{1}{c}{$D$} & \multicolumn{1}{c}{\SI{95}{\percent}} & \multicolumn{1}{c}{\SI{99}{\percent}}\\
-		\cmidrule(lr){1-1}
-		\cmidrule(lr){2-2}
-		\cmidrule(lr){3-3}
-		\cmidrule(lr){4-4}
-		Xoshiro256+ (FOR) & 3 & 0.98 & 0.98\\ 
-		Xoshiro256+ (FOR) & 4 & 0.9675 & 0.965\\ 
-		Xoshiro256+ (FOR) & 5 & 0.9525 & 0.96\\ 
-		Xoshiro256+ (FOR) & 6 & 0.9775 & 0.975\\
-		\cmidrule(lr){1-4} 
-		Mersenne-Twister & 3 & 0.9725 & 0.97\\ 
-		Mersenne-Twister & 4 & 0.98 & 0.97\\ 
-		Mersenne-Twister & 5 & 0.9725 & 0.9775\\ 
-		Mersenne-Twister & 6 & 0.975 & 0.9725\\ 
-		\cmidrule(lr){1-4}
-		Randu & 3 & 0.2275 & 0.42\\ 
-		Randu & 4 & 0 & 0\\ 
-		Randu & 5 & 0 & 0\\ 
-		Randu & 6 & 0 & 0\\ 
-		\cmidrule(lr){1-4}
-		LCG & 3 & 0.07 & 0.09\\ 
-		LCG & 4 & 0 & 0\\ 
-		LCG & 5 & 0 & 0\\ 
-		LCG & 6 & 0 & 0\\ 
-		\cmidrule(lr){1-4}
-		LEH & 3 & 0.9825 & 0.98\\ 
-		LEH & 4 & 0.9675 & 0.9775\\ 
-		LEH & 5 & 0.9725 & 0.9775\\ 
-		LEH & 6 & 0.9775 & 0.9825\\ 
-		\cmidrule(lr){1-4}
-		fBm & 3 & 0 & 0\\ 
-		fBm & 4 & 0 & 0\\ 
-		fBm & 5 & 0 & 0\\ 
-		fBm & 6 & 0 & 0\\ 
-		\cmidrule(lr){1-4}
-		fGn & 3 & 0.9722 & 0.9874\\ 
-		fGn & 4 & 0.9798 & 0.9773\\ 
-		fGn & 5 & 0.9646 & 0.9773\\ 
-		fGn & 6 & 0.9722 & 0.9545\\
-		\cmidrule(lr){1-4}
-		$f^{-k}$ & 3 & 0.9525 & 0.96\\ 
-		$f^{-k}$ & 4 & 0.975 & 0.9725\\ 
-		$f^{-k}$ & 5 & 0.98 & 0.9675\\ 
-		$f^{-k}$ & 6 & 0.9775 & 0.975\\
-		\cmidrule(lr){1-4}
-		COM & 3 & 0.25 & 0.5\\ 
-		COM & 4 & 0 & 0\\ 
-		COM & 5 & 0 & 0\\ 
-		COM & 6 & 0 & 0\\ 
-		\cmidrule(lr){1-4}
-		CCC & 3 & 0 & 0\\ 
-		CCC & 4 & 0 & 0\\ 
-		CCC & 5 & 0 & 0\\ 
-		CCC & 6 & 0 & 0\\
+		\cmidrule(lr){5-5}
+		\cmidrule(lr){6-6}
+		\cmidrule(lr){7-7}
+		Wichmann-Hill & 3 & 0.97 & 0.96 & 0.478 & NR & R\\ 
+		& 4 & 0.9675 & 0.9675 & 0.513 & & \\ 
+		& 5 & 0.9725 & 0.965 & 0.501 & & \\ 
+		& 6 & 0.97 & 0.97 & 0.491 & & \\ 
+		\cmidrule(lr){1-7}
+		Super-Duper & 3 & 0.9675 & 0.975 & 0.496 & NR & R\\
+		& 4 & 0.9775 & 0.9725 & 0.512 & &\\ 
+		& 5 & 0.9675 & 0.985 & 0.525 & &\\ 
+		& 6 & 0.9825 & 0.965 & 0.507 & &\\ 
+		\cmidrule(lr){1-7}
+		Knuth-TAOCP-2002 & 3 & 0.9775 & 0.9625 & 0.513 & NR & NR\\ 
+		& 4 & 0.965 & 0.98 & 0.481 & &\\ 
+		& 5 & 0.9625 & 0.9825 & 0.494 & &\\ 
+		& 6 & 0.9725 & 0.96 & 0.479 & &\\  
+		\cmidrule(lr){1-7}
+		Knuth-TAOCP & 3 & 0.975 & 0.9775 & 0.480 & NR & NR\\
+		& 4 & 0.965 & 0.9725 & 0.519 & &\\ 
+		& 5 & 0.9875 & 0.985 & 0.531 & &\\ 
+		& 6 & 0.9725 & 0.975 & 0.515 & &\\ 
+		\cmidrule(lr){1-7}
+		LEcuyer-CMRG & 3 & 0.98 & 0.98 & 0.505 & NR & NR\\ 
+		& 4 & 0.9675 & 0.9725 & 0.490 & &\\ 
+		& 5 & 0.965 & 0.9725 & 0.512 & &\\ 
+		& 6 & 0.9625 & 0.97 & 0.524 & &\\ 
+		\cmidrule(lr){1-7}
+		Mersenne-Twister & 3 & 0.9725 & 0.97 & 0.506 & NR & NR\\ 
+		& 4 & 0.98 & 0.97 & 0.499 & &\\ 
+		& 5 & 0.9725 & 0.9775 & 0.524 & &\\ 
+		& 6 & 0.975 & 0.9725 & 0.502 & &\\ 
+		\cmidrule(lr){1-7}
+		Randu & 3 & 0.2275 & 0.42 & 0.032 & R & R\\ 
+		& 4 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & &\\ 
+		& 5 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & &\\ 
+		& 6 & 0 & 0 & \num[scientific-notation=true]{1.11 e-16} & &\\  
+		\cmidrule(lr){1-7}
+		pcg64 & 3 & 0.97 & 0.9675 & 0.510 & NR & NR\\
+		& 4 & 0.97 & 0.97 & 0.503 & &\\ 
+		& 5 & 0.9775 & 0.9625 & 0.508 & &\\ 
+		& 6 & 0.9575 & 0.9575 & 0.502 & &\\ 
+		\cmidrule(lr){1-7}
+		Threefry & 3 & 0.9625 & 0.97 & 0.491 & NR & NR\\ 
+		& 4 & 0.975 & 0.97 & 0.506 & &\\ 
+		& 5 & 0.96 & 0.9625 & 0.506 & &\\ 
+		& 6 & 0.965 & 0.955 & 0.473 & &\\ 
+		\cmidrule(lr){1-7}
+		Xoroshiro128+ & 3 & 0.975 & 0.9825 & 0.501 & NR & R\\ 
+		& 4 & 0.995 & 0.9825 & 0.493 & &\\ 
+		& 5 & 0.98 & 0.9725 & 0.503 & &\\ 
+		& 6 & 0.9725 & 0.955 & 0.513 & &\\
+		\cmidrule(lr){1-7}
+		Xoshiro256+ & 3 & 0.98 & 0.98 & 0.502 & NR & NR\\ 
+		& 4 & 0.9675 & 0.965 & 0.489 & &\\ 
+		& 5 & 0.9525 & 0.96 & 0.492 & &\\ 
+		& 6 & 0.9775 & 0.975 & 0.513 & &\\
 		\bottomrule
 	\end{tabular}
 \end{table}
-
-
-
+\end{comment}

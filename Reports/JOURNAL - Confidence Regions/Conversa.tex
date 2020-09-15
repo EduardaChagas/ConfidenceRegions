@@ -1,0 +1,45 @@
+\documentclass[paper=a4, fontsize=11pt]{scrartcl}
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath,amsfonts,amsthm,amssymb,bm,bbm}
+
+
+\begin{document}
+
+Empirical $p$-value of the sequence $\bm x'$ of length $N$ and embedding dimension $D$:
+\begin{description}
+    \item[Input: a sequence $\bm x'$ of length $N$ and  embedding dimension $D$]
+    \item[Setup: $M$ reference points in the $H \times C$ plane produced by sequences of length $N$ and embedding dimension $D$]
+    \begin{enumerate}
+        \item Compute $(h',c')$ the point in the $H\times C$ plane produced by $\bm x'$
+        \item Compute $b_{N,D}(\bm x')$: the smallest box which contains $(h',c')$ using the $M$ reference points
+            \begin{itemize}
+                \item the smallest $b_{N,D}(\bm x')$ is observed when $(h',c')$ ``coincides'' with the the point produced by the emblematic sequence;
+                \item the largest box is any box associated to $(h',c')$ ``outside'' the largest box produced by the $M$ reference points
+            \end{itemize}
+        \item The empirical $p$-value of $\bm x'$ wrt the null hypothesis blablabla is the percentage of reference points outside $b_{N,D}(\bm x')$
+    \end{enumerate}
+\end{description}
+
+Why one decision per configuration, and not a collective decision based on several values of $D$?
+
+Imagine the situation of having a sample $\bm x$ and checking if the mean of the underlying distribution that produced the data is zero.
+The simplest test statistic that we may use is a Student's-t Test.
+But we could also use a test based on the median (the notches of the boxplot).
+How do we integrate both evidences?
+It is difficult!
+It would lead us to Bonferroni-type tests, because we are using a single sample for several tests.
+
+The focus of this paper is \textbf{not} assessing the quality of PRNG.
+We are testing sequences in the configuration that appear in the literature.
+
+The data either provide evidence to \textbf{reject} the null hypothesis, or not.
+In the last case, we \textbf{do not} accept the null hypothesis; we just do not have enough evidence to reject it.
+
+About the textures.
+We assessed the trajectory of points $(h,c)$ computed over $z=\alpha w \cdot (1-\alpha) n_L$.
+It will be interesting to see 
+$z = m_\alpha (w) \cdot n_L$, where 
+$m_\alpha$ is the function that maps $[0,1]\mapsto [\alpha,1]$.
+
+\end{document}

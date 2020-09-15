@@ -16,6 +16,7 @@
 %%   Bernoulli
 %%   Annales de l'Institut Henri Poincar\'e - Probabilit\'es et Statistiques
 %%   Brazilian Journal of Probability and Statistics
+%%   Stochastic Systems
 %%
 %%   Institute of Mathematical Statistics, U.S.A.
 %%   Bernoulli Society
@@ -63,7 +64,7 @@
 % Requires Latex2e, ver.2000.06
 
 \def\imsfmt@name{imsart}
-\def\imsfmt@version{2009/08/13}
+\def\imsfmt@version{2014/10/16}
 
 \ProvidesFile{imsart.sty}
         [\imsfmt@version IMS article style (VS)]
@@ -98,6 +99,10 @@
 \DeclareOption{autosecdot}  {\@autosecdottrue}
 \DeclareOption{noautosecdot}{\AtBeginDocument{\@autosecdotfalse}}
 
+% do not print thanksref undefined marks
+\newif\if@noundefthanksref
+\DeclareOption{noundefthanksref}{\@noundefthanksreftrue}
+
 % Load amsmath style with corerect settings:
 \newif\if@load@amsmath
 \DeclareOption{amsmath}{\@load@amsmathtrue}
@@ -112,6 +117,10 @@
 % Load natbib with correct settings:
 \newif\if@load@natbib
 \DeclareOption{natbib}{\@load@natbibtrue}
+
+% When hyperref is loaded, makes a hyperlink only from year component of the cite command:
+\newif\if@linksfromyear\@linksfromyearfalse
+\DeclareOption{linksfromyear}{\@linksfromyeartrue}
 
 % For LNMS we need to create a TOC of book, so we will
 % enable writing to .aux
@@ -138,7 +147,7 @@
    \def\journal@id{-ss}
    \def\journal@name{Statistics Surveys }
    \def\journal@issn{ISSN: 1935-7516}
-   \def\journal@url{http://www.i-journals.org/ss}
+   \def\journal@url{http://projecteuclid.org/ssu}
    \AtEndOfPackage{\let\affiliation\@gobble}}
 
 % Information about journals
@@ -146,7 +155,7 @@
    \def\journal@id{-ejs}
    \def\journal@name{Electronic Journal of Statistics }
    \def\journal@issn{ISSN: 1935-7524}
-   \def\journal@url{http://www.i-journals.org/ejs}
+   \def\journal@url{http://projecteuclid.org/ejs}
    \AtEndOfPackage{\let\affiliation\@gobble}}
   
 \DeclareOption{lnms}{%
@@ -255,7 +264,7 @@
 
 \DeclareOption{sts}{%
    \def\journal@id{-sts}
-   \def\journal@name{Submitted to the Statistical Science }
+   \def\journal@name{Submitted to Statistical Science }
    \def\journal@url{http://www.imstat.org/sts/}
    \set@page@layout{32pc}{658pt}% 32pc * 55 line
    \@twosidetrue
@@ -267,7 +276,7 @@
 
 \DeclareOption{bj}{%
    \def\journal@id{-bj}
-   \def\journal@name{Submitted to the Bernoulli}
+   \def\journal@name{Submitted to Bernoulli}
    \def\journal@url{http://isi.cbs.nl/bernoulli/}
    \set@page@layout{32pc}{526pt}% 32pc * 44 line
    \@twosidetrue
@@ -297,6 +306,31 @@
    \@bjpslayouttrue
 }
 
+
+\DeclareOption{ssy}{%
+   \def\journal@id{-ssy}
+   \def\journal@name{Stochastic Systems }
+   \def\journal@url{http://www.i-journals.org/ssy/}
+   \def\copyrightowner@text{Institute of Mathematical Statistics}
+   \def\journal@issn{$\copyright$~\ims@href{http://www.imstat.org}{\copyrightowner@text}, \@copyrightyear}%
+   \set@page@layout{30pc}{550pt}% 30pc * 46 line
+   \@twosidetrue
+   \input{leqno.clo}% formula numbers at left
+   \@amsmath@leqnotrue
+   \@historyasfootnotetrue
+   \@keywordsasfootnotetrue
+   \@addressatendtrue
+   \@imslayouttrue
+   \@autosecdottrue
+   \@noundefthanksreftrue
+   \AtEndOfPackage{%
+      \setattribute{copyright}{text}{%
+         \url@fmt{}{\itshape}{\journal@name}{\journal@url}\break%
+         \@ifnonempty{\@pubyear\ \@volume\@issue\@pagerange\break}%
+         \doi@text\break%
+                                    }}
+   \AtBeginDocument{\def\thebibliography{\let\section\specialsection\old@thebibliography}}%
+}
 
 %% Layouts:
 % IMS journals AAP, AOP, AOS has a different layout:
@@ -588,7 +622,7 @@
 \def\thanks@hypertarget#1{}
 
 % Isvedame zymes
-\def\thanksref{\@ifnextchar[{\@tempswatrue\@thanksref}{\@tempswafalse\@thanksref[]}}
+\DeclareRobustCommand{\thanksref}{\@ifnextchar[{\@tempswatrue\@thanksref}{\@tempswafalse\@thanksref[]}}
 
 \def\@thanksref[#1]#2{%
   \if@tempswa% []
@@ -596,6 +630,7 @@
   \else%
     \let\@tempa\@empty%
     \thanksmark@fmt{\@for\@tempb:=#2\do{%
+       \csname thanksref@hook\endcsname%
        \@tempa\let\@tempa\thanksref@sep%
        \edef\@tempb{\expandafter\@firstofone\@tempb\@empty}%
        \thankref@hyperlink{\@tempb}}}%
@@ -792,6 +827,18 @@
 \let\@doi\relax
 
 \def\doi@base{http://dx.doi.org/}
+
+\protected\def\relateddoi{\@ifnextchar[{\@tempswatrue\@relateddoi}{\@tempswafalse\@relateddoi[]}}
+\def\@relateddoi[#1]#2#3{\protect\ims@href{\doi@base#3}{#3}}%
+
+\protected\def\relateddois{\@ifnextchar[{\@tempswatrue\@relateddois}{\@tempswafalse\@relateddois[]}}
+\def\@relateddois[#1]#2#3{%
+  \@thankslabel[#1]{#2}%
+  \bgroup%
+     \protected@xdef\@thanks{\@thanks\protect\thanks@thefnmark{#2thanks}%
+     \protect\@footnotetext{\thanks@hypertarget{#2}#3}}%
+  \egroup%
+}%
 
 % arXiv
 
@@ -1049,6 +1096,22 @@
   \fi
 }
 
+\def\qq#1{%
+  \bgroup%
+    \ifx.#1.\relax%
+      \ifmmode%
+        \mbox{\normalfont\textbf{???}}
+      \else%
+        \normalfont\textbf{???}\fi
+    \else%
+      \ifmmode%
+        \mbox{\normalfont\textbf{#1}}%
+      \else%
+        \normalfont\textbf{#1}%
+      \fi%
+    \fi%
+  \egroup%
+}
 
 % \phantomsection is defined in hyperref
 \let\phantomsection\relax
@@ -1058,7 +1121,7 @@
 % FRONT MATTER FORMATTING PARAMETERS
 
 \setattribute{frontmatter} {style} {\centering}
-\setattribute{title}       {style} {\centering}
+\setattribute{title}       {style} {\centering\def\\{\break}}
 \setattribute{author}      {style} {\centering}
 \setattribute{address}     {style} {\centering}
 \setattribute{abstract}    {style} {\normaltext}
@@ -1278,7 +1341,6 @@
   \ifx\reserved@a\@currenvir \else \hy@frontmatter\fi
   \bgroup%
     \no@harm%
-    \let\protect\relax%
     \xdef\@argi{#1}%
     \xdef\@title{#1}%
   \egroup%
@@ -1478,12 +1540,16 @@
 \def\syear#1{#1}
 \setvaluelist{month}{January,February,March,April,May,June,July,August,September,October,November,December}
 
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% KEYWORDS
 
 \newbox\keyword@box
 \newdimen\pre@kwd@depth
 
 \setattribute{keyword}{AMS}{AMS 2000 subject classifications:}
+\setattribute{keyword}{MSC}{MSC 2010 subject classifications:}
+\setattribute{keyword}{MSC2010}{MSC 2010 subject classifications:}
+
 \setattribute{keyword}{KWD}{Keywords and phrases:}
 % raktas=class
 \setattribute[default]{keyword}{class}{KWD}
@@ -1523,9 +1589,10 @@
 
 % \kwd[; ]{foo}
   \def\sep{\unskip\string, }%
+  \newif\if@firstkeywordinlist \@firstkeywordinlisttrue
 
   \DeclareRobustCommand*\kwd{\@ifnextchar[\@kwd{\@kwd[\kwd@sep]}}%
-  \def\@kwd[#1]#2{\unskip#1{#2}\addto@keywords@list{#2, }\let\kwd@sep\sep}%  
+  \def\@kwd[#1]#2{\unskip#1{#2}\if@firstkeywordinlist\addto@keywords@list{#2}\@firstkeywordinlistfalse\else\addto@keywords@list{, #2}\fi\let\kwd@sep\sep}%
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \maketitle
 % if \frontmatter is not used, we will redefine \maketitle
@@ -1598,8 +1665,7 @@
 
   \def\history@fmt{%
     \ifcase\history@exist\else%
-    \safe@footnotetext
-      \bgroup
+    \safe@footnotetext{%
         \nobreak%
         \history@style%
         \history@size%
@@ -1614,10 +1680,12 @@
         \ifx\@accepted\empty@data \else
           \accepted@prefix\@accepted \accepted@postfix%
         \fi
-        \history@postfix\par%
-      \egroup%
-  \fi
-  }
+        \history@postfix}%\par}%
+  \fi}
+
+
+
+
 
 \fi
 
@@ -1744,6 +1812,9 @@
     \keyword@fmt%
     \abstract@fmt%
     }
+
+  \def\contentsname@cmd{\specialsection*{\contentsname}}
+
 \fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Set up parameters for the STS journal layout:
@@ -2094,6 +2165,13 @@
 
 \def\@seccntformat#1{{\csname #1@prefix\endcsname\csname the#1\endcsname\csname#1@numbersep\endcsname\enspace}}
 
+
+\let\specialsection\section
+
+\@namedef{specialsection*}{\section*}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% sections: bjpslayout
+
 \if@bjpslayout
 
   \renewcommand\section{\@startsection {section}{1}{\z@}%
@@ -2151,7 +2229,7 @@
                                          {\normalsize\itshape}}
 
 % must be used for the appendix \section and \thebibliography
-  \newcommand\specialsection{\@startsection {section}{1}{\z@}%
+  \renewcommand\specialsection{\@startsection {section}{1}{\z@}%
                                    {\medskipamount}%
                                    {\smallskipamount}%
                                    {\normalsize\centering\MakeUppercase}}
@@ -2199,7 +2277,7 @@
                                          {\normalsize\itshape}}
 
 % must be used for the \thebibliography
-  \newcommand\specialsection{\@startsection {section}{1}{\z@}%
+  \renewcommand\specialsection{\@startsection {section}{1}{\z@}%
                                    {\bigskipamount}%
                                    {\smallskipamount}%
                                    {\normalsize\centering\MakeUppercase}}
@@ -2260,6 +2338,21 @@
 
 \fi
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% \thanksref will not print "??" if label is undefined
+
+\if@noundefthanksref
+
+   \AtBeginDocument{\let\sv@thankref@hyperlink\thankref@hyperlink}%
+
+   \def\thanksref@hook{%
+       \@ifundefined{r@\@tempb thanks}{%
+          \let\thankref@hyperlink\@gobble%
+          \let\@tempa\@empty}%
+          {\let\thankref@hyperlink\sv@thankref@hyperlink}%
+   }
+
+\fi
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% loading of amsmath
 
 \def\set@amsthm{
@@ -2340,7 +2433,92 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% thebibliography, loading natbib
 
+%%% \citefix -- fixes \NAT@citex (to make a hyperlink from year component in cite command).
+\def\citefix{%
+  \def\NAT@citex%
+    [##1][##2]##3{%
+    \NAT@sort@cites{##3}%
+    \let\@citea\@empty
+    \@cite{\let\NAT@nm\@empty\let\NAT@year\@empty
+      \@for\@citeb:=\NAT@cite@list\do
+      {\edef\@citeb{\expandafter\@firstofone\@citeb}%
+       \if@filesw\immediate\write\@auxout{\string\citation{\@citeb}}\fi
+       \@ifundefined{b@\@citeb\@extra@b@citeb}{\@citea%
+         {\reset@font\bfseries ?}\NAT@citeundefined
+                   \PackageWarning{natbib}%
+         {Citation `\@citeb' on page \thepage \space undefined}\def\NAT@date{}}%
+       {\let\NAT@last@nm=\NAT@nm\let\NAT@last@yr=\NAT@year
+       \NAT@parse{\@citeb}%
+        \ifNAT@longnames\@ifundefined{bv@\@citeb\@extra@b@citeb}{%
+          \let\NAT@name=\NAT@all@names
+          \global\@namedef{bv@\@citeb\@extra@b@citeb}{}}{}%
+        \fi
+       \ifNAT@full\let\NAT@nm\NAT@all@names\else
+         \let\NAT@nm\NAT@name\fi
+       \ifNAT@swa\ifcase\NAT@ctype
+         \if\relax\NAT@date\relax
+           \@citea\NAT@nmfmt{\NAT@nm}%
+           \hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+           \NAT@date\hyper@natlinkend
+         \else
+           \ifx\NAT@last@nm\NAT@nm\NAT@yrsep
+              \ifx\NAT@last@yr\NAT@year
+                \hyper@natlinkstart{\@citeb\@extra@b@citeb}\NAT@exlab
+                \hyper@natlinkend
+              \else\unskip\
+                \hyper@natlinkstart{\@citeb\@extra@b@citeb}\NAT@date
+                \hyper@natlinkend
+              \fi
+           \else
+             \@citea\NAT@nmfmt{\NAT@nm}%
+             \NAT@aysep\ 
+             \hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+             \NAT@date\hyper@natlinkend
+           \fi
+         \fi
+       \or\@citea\hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+           \NAT@nmfmt{\NAT@nm}\hyper@natlinkend
+       \or\@citea\hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+           \NAT@date\hyper@natlinkend
+       \or\@citea\hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+           \NAT@alias\hyper@natlinkend
+       \fi \def\@citea{\NAT@sep\ }%
+       \else\ifcase\NAT@ctype
+          \if\relax\NAT@date\relax
+            \@citea\hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+            \NAT@nmfmt{\NAT@nm}\hyper@natlinkend
+          \else
+          \ifx\NAT@last@nm\NAT@nm\NAT@yrsep
+              \ifx\NAT@last@yr\NAT@year
+                \hyper@natlinkstart{\@citeb\@extra@b@citeb}\NAT@exlab
+                \hyper@natlinkend
+              \else\unskip\
+                \hyper@natlinkstart{\@citeb\@extra@b@citeb}\NAT@date
+                \hyper@natlinkend
+              \fi
+           \else
+             \@citea\NAT@nmfmt{\NAT@nm}%
+             \ \NAT@@open\if*##1*\else##1\ \fi
+             \hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+             \NAT@date\hyper@natlinkend\fi
+          \fi
+         \or\@citea\hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+           \NAT@nmfmt{\NAT@nm}\hyper@natlinkend
+         \or\@citea\hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+           \NAT@date\hyper@natlinkend
+         \or\@citea\hyper@natlinkstart{\@citeb\@extra@b@citeb}%
+           \NAT@alias\hyper@natlinkend
+         \fi \if\relax\NAT@date\relax\def\@citea{\NAT@sep\ }%
+             \else\def\@citea{\NAT@@close\NAT@sep\ }\fi
+       \fi
+       }}\ifNAT@swa\else\if*##2*\else\NAT@cmt##2\fi
+       \if\relax\NAT@date\relax\else\NAT@@close\fi\fi}{##1}{##2}}%
+  \let\@citex\NAT@citex
+}
+
+
 \def\set@natbib{%
+  \if@linksfromyear \citefix \fi
   \let\bibfont\thebibliography@size
   \setlength\bibsep{0pt}}
 
@@ -2395,22 +2573,27 @@
 \define@key{bid}{doi}{}
 \define@key{bid}{pubmed}{}
 \define@key{bid}{pii}{}
+\define@key{bid}{issn}{}
 
 \def\bbl@bid#1{%
        \setkeys{bid}{#1}%
 }
 
+% for compatibility with old bibtex style
+\def\bdoi#1{\ignorespaces}
+
 %%%%%%%%% common@pub@types
 
 \def\common@pub@types{%
-  \def\AND{and }
-  \set@bibl@cmd{btitle}
+  \def\AND{and }%
+  \let\betal\@firstofone%
+  \set@bibl@cmd{btitle}%
   \let\byear\@firstofone%  
   \let\bpages\@firstofone%
   \let\bmisc\@firstofone%
   \let\bnote\@firstofone%
   \let\banumber\@firstofone%
-  \let\bmrnumber\MR
+  \let\bmrnumber\MR%
   \let\bid\bbl@bid%
   \set@bibl@cmd{bvolume}%
   \csname common@pub@types@hook\endcsname%
@@ -2450,10 +2633,12 @@
   \set@bibl@cmd{bseries}%
   \let\bpublisher\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
   \let\bisbn\@gobble%
 %
-  \let\btitle@style\itshape
+  \let\btitle@style\itshape%
 }
+
 
 %%%%%%%%% bincollection
 
@@ -2469,6 +2654,7 @@
   \set@bibl@cmd{bseries}%
   \let\bpublisher\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
   \let\bisbn\@gobble%
   \def\bauthor@hook{\let\beditor@style\relax}
 }
@@ -2486,6 +2672,7 @@
   \let\borganization\@firstofone%
   \let\bpublisher\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
   \let\bisbn\@gobble%
 }
 
@@ -2503,6 +2690,7 @@
   \set@bibl@cmd{bseries}%
   \let\bpublisher\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
   \let\bisbn\@gobble%
 %
   \let\btitle@style\itshape
@@ -2522,6 +2710,7 @@
   \let\bpublisher\@firstofone%
   \let\borganization\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
   \let\bisbn\@gobble%
 %
   \let\btitle@style\itshape
@@ -2538,7 +2727,9 @@
   \let\btype\@firstofone%
   \let\bnumber\@firstofone%
   \let\binstitution\@firstofone%
+  \let\bpublisher\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
 }
 
 %%%%%%%%% bmanual
@@ -2550,7 +2741,9 @@
   \let\bauthor\bbl@bauthor%
   \let\bedition\@firstofone%
   \let\borganization\@firstofone%
+  \let\bpublisher\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
   \let\bisbn\@gobble%
 }
 
@@ -2562,8 +2755,10 @@
   \common@pub@types%
   \let\bauthor\bbl@bauthor%
   \let\bschool\@firstofone%
+  \let\bpublisher\@firstofone%
   \let\btype\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
 }
 
 %%%%%%%%% phdthesis
@@ -2573,9 +2768,11 @@
 \def\@bphdthesis[#1]{%
   \common@pub@types%
   \let\bauthor\bbl@bauthor%
+  \let\bpublisher\@firstofone%
   \let\bschool\@firstofone%
   \let\btype\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
 }
 
 %%%%%%%%% bbooklet
@@ -2587,6 +2784,7 @@
   \let\bauthor\bbl@bauthor%
   \let\bhowpublished\@firstofone%
   \let\baddress\@firstofone%
+  \let\blocation\@firstofone%
 }
 
 %%%%%%%%% bunpublished
@@ -2607,6 +2805,12 @@
   \let\bauthor\bbl@bauthor%
   \let\bhowpublished\@firstofone%
 }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% \bptok
+
+\def\bptok#1{\ignorespaces}
+
+\ifx\OrigBibText\undefined \long\def\OrigBibText#1\endOrigBibText{}\fi
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% appendix
 
@@ -2678,6 +2882,8 @@
 %  \stitle{}
 %  \slink[doi]{}
 %  \slink[url]{http://lib.stat.cmu.edu/aoas/???/???}
+%  \sdatatype{.zip}
+%  \sfilename{foo.zip}
 %  \sdescription{}
 %\end{supplement}
 % \thesuppdoi{suppA}
@@ -2689,6 +2895,7 @@
 \def\sname#1{\def\@sname{#1}\def\@currentlabel{#1}}
 \def\stitle#1{\def\@stitle{#1}}
 \def\sdatatype#1{\def\@sdatatype{#1}}
+\def\sfilename#1{}
 \def\slink[#1]#2{\expandafter\def\csname slink@#1\endcsname{#2}}
 \def\sdescription#1{\def\@sdescription{#1}}
 
@@ -2757,9 +2964,11 @@
 
 \if@changetoc
 
+  \@ifundefined{contentsname@cmd}{\def\contentsname@cmd{\section*{\contentsname}}}{}
+
   \renewcommand\tableofcontents{%
       \nocontentsline
-      \section*{\contentsname}%   
+      \contentsname@cmd%
       \@starttoc{toc}%
       }
 
@@ -2835,6 +3044,33 @@
 \endinput
 %%
 %% History:
+2014.10.16 - added \qq{} 
+2014.10.13 - added \OrigBibText and \endOrigBibText 
+2014.07.30 - removed \raggedright from \relateddois 
+2014.07.23 - added \relateddoi and \relateddois
+2014.02.20 - "Submitted to the Bernoulli" changed to "Submitted to Bernoulli"; 
+2014.01.08 - "Submitted to the Statistical Science" changed to "Submitted to Statistical Science"; 
+2013.05.28 - keyword key MSC added (MSC 2010 subject classifications:);
+2013.03.06 - added \bpublisher for the \bmanual entry;
+2012.08.31 - bug fix in stslayout;
+2012.08.16 - added new bibliography commands;
+2012.04.10 - bug fix in stslayout;
+2010.03.13 - new option linksfromyear (makes a hyperlink only from year component of the cite command);
+2012.02.28 - SSY - references layout changed;
+2012.02.07 - new option noundefthanksref (SSY journal);
+2011.12.06 - empty command \sfilename added;
+2011.12.01 - when \title is centered, \\ is defined as \break;
+2011.11.28 - bugfix in \title command;
+           - \thanksref made robust;
+2011.11.15 - small fixes related to the webbib tagging;
+2011.11.15 - minor change: bug fix when contructing keywords list for pdf's metadata;
+2011.05.20 - SS journal url changed;
+2011.03.02 - SSY copyright fixed;
+2011.01.24 - \bdoi added;
+2010.09.07 - journal url changed for EJS journal;
+2010.08.03 - \tableofcontents fixed for the imslayout journals;
+2010.04.27 - support for the "Stochastic Systems" (ssy) added;
+2009.12.16 - \betal added
 2009.08.13 - support for the structured bibliography added (imsart-number.bst,imsart-nameyear.bst)
              options [numbers,sort&compress] from natbib package removed
 2009.05.21 - added new option "bjps"

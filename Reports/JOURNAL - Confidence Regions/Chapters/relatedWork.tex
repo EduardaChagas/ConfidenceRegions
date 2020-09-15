@@ -1,0 +1,55 @@
+\section{Entropy-Complexity plane in the literature}
+
+The first works on the characterization of white noises with permutation entropy arose from the need to discriminate them in relation to chaotic maps~\cites{rosso2013characterization, xiong2020complexity, olivares2012contrasting}.
+However, it was found that the measure of statistical complexity was able to efficiently quantify the performance of pseudorandom number generators, expanding the possibilities of using information theory descriptors with the Bandt-Pompe symbolization~\cites{larrondo2002statistical, gonzalez2005statistical}.
+
+Table~\ref{Tab:Literature} presents a summary of the main works in the literature that perform analysis of non-chaotic algorithmic generators, according to their features $(h, c)$.
+For this, we also provide the length $T$ and embedding dimension $D$ applied in the analysis of the time series.
+The following algorithmic generators were analyzed:
+\begin{itemize}
+    %\item[$-$] RNG available in Intel fortran compiler (FOR)
+    %\item[$-$] RNG available in Borland C++ compiler (CCC)
+    %\item[$-$] Matlab RAND function (MAT)
+    \item Mother RNG, available in Marsaglia website~\cite{marsaglia1994yet} (MOT);
+    \item Multiple with carry RNG (MWC)~\cite{marsaglia1994yet};
+    \item Combo RNG (COM)~\cite{marsaglia1994yet};
+    \item Lehmer RNG (LEH)~\cite{payne1969coding};
+    \item Fractional Gaussian noise with $\alpha = 0$ (fGn);
+    \item Fractional Brownian motion with $\alpha = 1.2$ (fBm);
+    \item $f^{-k}$ noise with $k = 0$;
+    \item Linear Congruential Generator (LCG)~\cite{knuth1997sorting}.
+\end{itemize}
+
+\begin{table}[H]
+    \caption{Result of the main works of white noise sequences analysis in the $H \times C$ plane.}
+    \label{Tab:Literature}
+    \centering
+    \begin{tabular}{llcccccc}
+    \toprule
+Reference & PRNG & $T$ & $D$ & $H$ & $C$ & Is white noise? & $p$-value\\ 
+\midrule
+\citeauthor{larrondo2002statistical} (\citeyear{larrondo2002statistical}) &  MOT & NA & 6 & $\cong 0.9969$ & $\cong 0$ & no & NA\\
+%&  FOR & NA & 6 & $\cong 0.997$ & $\cong 0$ & no & NA\\
+%&  CCC & NA & 6 & $\cong 0.997$ & $\cong 0$ & no & NA\\
+%&  MAT & NA & 6 & $\cong 0.997$ & $\cong 0$ & no & NA\\
+\cmidrule(lr){1-8}
+\citeauthor{gonzalez2005statistical} (\citeyear{gonzalez2005statistical})  &  MWC & 65536 & NA & $\cong 1$ & $0.3$ & yes & NA\\
+ &  MOT & 65536 & NA & $\cong 1$ & $0.3$ & yes & NA\\
+ &  COM & 65536 & NA & $\cong 1$ & $0.05$ & yes & NA\\
+\cmidrule(lr){1-8}
+\citeauthor{RandomNumberGeneratorsCausality} (\citeyear{RandomNumberGeneratorsCausality}) &  LEH & \num[scientific-notation=true]{5 e6} & 5 & NA & $10^{-4}$ & yes & NA\\
+ &  MOT & \num[scientific-notation=true]{5 e6} & 5 & NA & $10^{-4}$ & yes & NA\\
+ &  MWC & \num[scientific-notation=true]{5 e6} & 5 & NA & $10^{-4}$ & yes & NA\\
+\cmidrule(lr){1-8}
+\citeauthor{olivares2012contrasting} (\citeyear{olivares2012contrasting}) &  fGn & \num[scientific-notation=true]{2 e15} & 6 & $\cong 0.998$ & NA & yes & NA\\
+ & fBm & \num[scientific-notation=true]{2 e15} & 6 & $\cong 0.993$ & NA & yes & NA\\
+ & $f^{-k}$ & \num[scientific-notation=true]{2 e15} & 6 & $\cong 0.997$ & NA & yes & NA\\
+\cmidrule(lr){1-8}
+\citeauthor{rosso2013characterization} (\citeyear{rosso2013characterization}) &  LCG & \num[scientific-notation=true]{1 e7} & 6 & $0.997871$ & $0.005101$ & no & NA\\
+\cmidrule(lr){1-8}
+\citeauthor{xiong2020complexity} (\citeyear{xiong2020complexity}) &  fGn & \num[scientific-notation=true]{2 e17} & 6 & $\cong 1$ & $\cong 0$ & yes & NA\\
+ & $f^{-k}$ & \num[scientific-notation=true]{2 e17} & 6 & $\cong 1$ & $\cong 0$ & yes & NA\\
+\bottomrule
+    \end{tabular}
+\end{table}
+
