@@ -139,12 +139,12 @@ for(i in 1:11){
 figure = ggarrange(plots[[1]], plots[[2]], plots[[3]], 
                   plots[[4]], plots[[5]], plots[[6]], 
                   plots[[7]], plots[[8]], plots[[9]], 
-                  plots[[10]], plots[[11]], 
-                  ncol = 3, nrow = 4) + theme_void() 
+                  #plots[[10]], plots[[11]], 
+                  ncol = 3, nrow = 3) + theme_void() 
 
 pdf("h.pdf", width = 9, height = 9) 
 annotate_figure(figure,
-                bottom = text_grob("Patterns", face = "italic", size = 12),
+                #bottom = text_grob("Patterns", face = "italic", size = 12),
                 left = text_grob("Probability", rot = 90, face = "italic", size = 12)
 )
 dev.off() 
