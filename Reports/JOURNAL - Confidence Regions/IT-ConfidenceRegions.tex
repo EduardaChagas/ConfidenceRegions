@@ -74,6 +74,7 @@
 \usepackage{bm,bbm}
 \usepackage{booktabs}
 \usepackage{subfig}
+\usepackage{float}
 \graphicspath{{./Figures/}}
 
 \usepackage{todonotes}
@@ -81,6 +82,9 @@
 
 \DeclareSIUnit{\minusalphapercent}{(1-\alpha)\%}
 \DeclareSIUnit{\alphapercent}{\alpha\%}
+
+\newcommand{\Mycite}[1]{%
+ (\citeauthor{#1},~\citeyear{#1})}
 
 
 % Update article type if known
@@ -122,7 +126,7 @@
 
 \begin{document}
 
-\begin{frontmatter}
+% \begin{frontmatter}
 \maketitle
 
 \begin{abstract}
@@ -134,7 +138,7 @@ The proposed methodology showed consistency and coherence in its results, managi
 % Please include a maximum of seven keywords
 \keywords{Random number generators, Bandt–Pompe approach, Entropy-complexity plane, Information Theory}
 \end{abstract}
-\end{frontmatter}
+% \end{frontmatter}
 
 \input{Chapters/Introduction}
 \input{Chapters/relatedWork}

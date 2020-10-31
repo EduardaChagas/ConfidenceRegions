@@ -6,7 +6,7 @@ Through the space formed by this tuple of features, we were able to obtain regio
 \subsection{The Bandt-Pompe Methodology}
 
 Let ${\mathcal X} \equiv \{x_t\}_{t=1}^{T}$ be a real valued time series of length $T$, without ties. 
-As stated by \citeauthor{PermutationEntropyBandtPompe}~\ycite{PermutationEntropyBandtPompe} in their seminal work:  
+As stated by \Mycite{PermutationEntropyBandtPompe} in their seminal work:  
 \begin{quote}
 ``If the $\{x_t\}_{t=1}^{T}$ attain infinitely many values, it is common to replace them by a symbol sequence 
 $\Pi \equiv \{\pi_j\}$ with finitely many symbols, and calculate source entropy from it".
@@ -33,13 +33,13 @@ This mapping should be defined in a way that preserves the desired relation betw
 $x_t  \in {\mathbf X}^{(D,\tau)}_t$, and all $t \in T$ that share this pattern (also called motif) have to mapped to the same 
 ${\bm \pi}^{(D)}$. 
 The two most frequent ways to define the mapping ${\mathbf X}^{(D,\tau)} \mapsto {\bm \pi}^{(D)}$ are:  
-\begin{enumerate}[a)]
+\begin{enumerate}[label=\alph*)]
 \item ordering the ranks of the $x_t \in {\mathbf X}^{(D,\tau)}$ in chronological order 
        (\textit{Rank Permutation}) or,
 \item ordering the time indexes according to the ranks of $x_t \in {\mathbf X}^{(D,\tau)}$  
        (\textit{Chronological Index Permutation});
 \end{enumerate}
-       see details in \citeauthor{BPRepeatedValuesChaos}~\ycite{BPRepeatedValuesChaos}.
+       see details in \Mycite{BPRepeatedValuesChaos}.
 Without loss of generality, in the following we will only use the latter.
 
 Consider, for instance, the time series $\mathcal X = (1.8, 1.2, 3.2, 4.8, 4.2, 4.5, 2.3, 3.7, 1.2, .5)$ depicted in Fig.~\ref{Fig:IntroBP}.
@@ -71,7 +71,7 @@ This quantity is bounded in the unit interval, and is zero when $h(j)=1$ for som
 
 Although very expressive, the Normalized Shannon Entropy is not able to describe all possible underlying dynamics.
 In particular, for intermediate values of $H$, there is a wide variety of situations worth characterizing.
-To this aim, \citeauthor{LopezRuiz1995}~\ycite{LopezRuiz1995} proposed using $Q$, the disequilibrium, a measure of how far $\bm h$ is from an equilibrium or noninformative distribution.
+To this aim, \Mycite{LopezRuiz1995} proposed using $Q$, the disequilibrium, a measure of how far $\bm h$ is from an equilibrium or noninformative distribution.
 They employed the Euclidean distance between $\bm h$ and the uniform probability distribution function.
 
 With this, they proposed $C=HQ$ as a measure of the Statistical Complexity of the underlying dynamics.

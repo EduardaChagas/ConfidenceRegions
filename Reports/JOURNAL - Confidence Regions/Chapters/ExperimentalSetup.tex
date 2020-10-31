@@ -26,14 +26,17 @@ We used the \texttt{ggplot2} library \cite{ggplot2Wickman} for generating the pl
 
 \subsection{True Random Numbers}
 
-\todo[inline]{Gerador - Marcelo}
-
-Random numbers are used in many fields, from gambling to criptography, aiming to guarantee a secure, realistic or unpredictable behavihor. 
+Random numbers are used in many fields, from gambling to criptography, aiming to guarantee a secure, realistic or unpredictable behavior. 
 Pseudo randomic results can be achieved by software in a deterministic way. 
 But, some applications need actual random numbers (despite the somewhat elusive nature of actual randomness).
 Randomness can be observed in unpredictable real world phenomena like cathodic radiation or atmospheric noise.
-In this study we used two sources of real random numbers. 
-The first is based on vacuum states to generate random quantum numbers described by \citeauthor{RNGVacuumStates}~(\citeyear{RNGVacuumStates}), the second one is based on atmospheric noise captured by a cheap radio receiver presented at \url{www.random.org}.
+%In this study we used two sources of real random numbers. 
+%The first is based on vacuum states to generate random quantum numbers described by \citeauthor{RNGVacuumStates}~(\citeyear{RNGVacuumStates}), the second one is based on atmospheric noise captured by a cheap radio receiver presented at \url{www.random.org}.
+
+In this study we used two sources of random numbers, here called true random, both from physical phenomena observation and measurement.
+The first is based on vacuum states to generate random quantum numbers, the setup consists of an ordinary laser source to generate a local oscillator (LO), a half-wave plate, a polarizing beamsplitter (BPS), and two balanced detectors working together adding or subtracting the photocurrents results in a quadrature measurement of the LO or vacuum state. 
+The probability distribution of the vacuum state is binned into $2^n$ equal parts (bins of same size), than, assigning a fixed bit combination of length \textit{n} to each sample point in a given bin \citeauthor{RNGVacuumStates}~(\citeyear{RNGVacuumStates}). 
+The second one is based on atmospheric noise captured by a cheap radio receiver, started as a gambling engine, the randomness comes from an ordinary radio receiver that has no filter for static unwanted sounds caused by atmospheric noise, but perfect for random purposes, developed over a distributed setup with some radios located at different geographical locations sending random bits to a cloud server who process data and hosts random.org, the history, and some other information could be found at \cite{RandomOrg}.
 
 %Deixei as URLs pois não tenho o .bib ...
 
