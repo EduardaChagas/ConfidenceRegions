@@ -1,46 +1,48 @@
 \section{Introduction}\label{Sec:Intro}
 
 Time Series carry valuable information about the system which produces the data.
-Their analysis is usually based on two approaches \cite{TimeSeriesAnalysisCryerChan}: in the (natural) time and transformed domains (for instance, frequency and wavelet).
-In the context of time-domain analysis, a new methodology was proposed by \Mycite{PermutationEntropyBandtPompe}.
-Its approach is non-parametric and based on descriptors of Information Theory.
+Their analysis is usually based on two approaches \citep{TimeSeriesAnalysisCryerChan}: in the (natural) time and transformed domains (for instance, frequency and wavelet).
+In the context of time-domain analysis, a new methodology was proposed by \cite{PermutationEntropyBandtPompe}.
+Such approach is non-parametric and based on descriptors of Information Theory.
 Through this, the time series is transformed into ordinal patterns, with which a histogram is formed.
 Using such patterns, the resulting distribution becomes less sensitive to outliers and, as it does not depend on any model, can be applied to a variety of situations.
 
-The Bandt-Pompe methodology and its variants have been used successfully in the analysis of many types of dynamics, receiving so far more than \num{2500} citations, according to the Journal of Citation Records.
+The Bandt-Pompe methodology and its variants have been used successfully in the analysis of many types of dynamics, receiving so far more than \num{2500} citations, according to Web of Science\footnote{aqui informar a data da consulta, as palavras chave, e o valor exato}.
 We found works using such an approach in multiple areas of scientific knowledge such as, for example,
-the study of electroencephalography signals using wavelet decomposition~\cite{EEGAnalysisWaveletInformationTools},
-characterization of household appliances through their energy consumption~\cite{CharacterizationElectricLoadInformationTheoryQuantifiers},
- online signature classification and verification~\cite{ClassificationVerificationOnlineHandwrittenSignatures}.
+the study of electroencephalography signals using wavelet decomposition \citep{EEGAnalysisWaveletInformationTools},
+the characterization of household appliances through their energy consumption \citep{CharacterizationElectricLoadInformationTheoryQuantifiers},
+and online signature classification and verification \citep{ClassificationVerificationOnlineHandwrittenSignatures}.
 
-Each time series is described by a point in the range of $\mathbbm R^2$, the entropy complexity plane.
+Each time series is described by a point in a manifold of $\mathbbm R^2$, the entropy complexity plane $H\times C$.
 Two points are well known in this plane: those of white noise and a completely deterministic sequence.
-Through these references, we can characterize the time series according to the dynamics of its generating process.
-Based on this premise, studies with different applications managed to obtain relevant results from time series through information on the nature of the data provided by the $H \times C$ plane.
-Examples include the analysis of \Mycite{echegoyen2020permutation} in magnetoencephalography recordings of individuals suffering from mild cognitive impairment and individuals diagnosed with Alzheimer's disease by trajectories in the $H \times C$ plane,
-\Mycite{InformationTheoryPerspectiveNetworkRobustness} verified the effect of attacks on complex networks by displacing their points in the $H \times C$ plane,
-\Mycite{CharacterizationVehicleBehaviorInformationTheory} described the behavior of vehicles depending on the topology of cities, and
-\Mycite{Chagas2020Characterization} succeeded in expanding the use of such techniques for analyzing SAR texture images, making characterization, and classification of them.
-
+Through these references, we can characterize the time series according to the dynamics that generated the observed process.
+Based on this premise, studies with different applications managed to obtain relevant information about the nature of the data.
+Examples include the work by \cite{echegoyen2020permutation} in magnetoencephalography recordings of individuals suffering from mild cognitive impairment and individuals diagnosed with Alzheimer's disease.
+\cite{InformationTheoryPerspectiveNetworkRobustness} verified the effect of attacks on complex networks by the displacement of points in the $H \times C$ plane.
+\cite{CharacterizationVehicleBehaviorInformationTheory} described the behavior of vehicles depending on the topology of cities, and
+\cite{Chagas2020Characterization} succeeded in expanding the use of such techniques for analyzing textured images corrupted by speckle noise.
+\cite{LiborInvisibleHand} identified spurious interventions in the Libor market using the $H\times C$ plane representation.
 
 %and \citeauthor{StructuralChangesDataCommunicationWSN}~\ycite{StructuralChangesDataCommunicationWSN} employ Information-Theoretic measures to describe the evolution of wireless sensors networks.
 
-In the context of theoretical work, chaotic and random component analysis has been developed with the aim of improving the understanding of the plane's properties. We can cite as highlights:
-\Mycite{GeneralizedStatisticalComplexityMeasuresGeometricalAnalyticalProperties} analyzed the logistic chaotic map and discuss the boundaries of the $H \times C$ plane.~\citeyear{De_Micco_2009} studied chaotic components in pseudo-random number generators.
-\Mycite{DistinguishingNoiseFromChaos}  tackled the often hard problem of distinguishing chaos and noise.
-\Mycite{DistinguishingChaoticStochasticDynamicsTimeSeriesMultiscaleSymbolicApproach} used a multi-scale approach to analyze the interplay between chaotic and stochastic dynamics.
+Although the boundaries of the $H\times C$ are well-defined, a complete characterization of its intrinsic topology is an open problem.
+Several works have used deterministic and pseudorandom sequences aiming at understanding its properties.
+\cite{GeneralizedStatisticalComplexityMeasuresGeometricalAnalyticalProperties} analyzed the logistic chaotic map and discuss the boundaries of the $H \times C$ plane.
+\cite{De_Micco_2009} studied chaotic components in pseudorandom number generators.
+\cite{DistinguishingNoiseFromChaos}  tackled the often hard problem of distinguishing chaos and noise.
+\cite{DistinguishingChaoticStochasticDynamicsTimeSeriesMultiscaleSymbolicApproach} used a multi-scale approach to analyze the interplay between chaotic and stochastic dynamics.
+
 With the knowledge of the expected variability of such points, according to the underlying dynamics, we can make hypothesis tests for a wide variety of models.
-Some preliminary results can already be found in the literature.
-\Mycite{RandomNumberGeneratorsCausality} showed that the Entropy-Complexity plane ($H\times C$) is a good indicator of the results of Diehard tests for pseudorandom number generators.
-\Mycite{De_Micco_2008} assessed ways of improving pseudorandom sequences by their representation in this plane.
-\Mycite{LiborInvisibleHand} identified spurious interventions in the Libor market using the $H\times C$ plane representation.
+Results in this direction can be found in the literature.
+\cite{RandomNumberGeneratorsCausality} showed that the Entropy-Complexity plane ($H\times C$) is a good indicator of the results of Diehard tests for pseudorandom number generators.
+\cite{De_Micco_2008} assessed ways of improving pseudorandom sequences by their representation in this plane.
 
 Motivated by such works, in this paper we advance the state-of-the-art providing confidence regions for white noise points in the $H\times C$ plane.
-In the proposed approach, the input is a sequence of true random observations generated by a physical procedure, and the confidence regions are obtained by performing an orthogonal projection of the data onto a space of principal components analysis (PCA), thus eliminating the restrictions imposed by the curvilinear space of the Entropy-Complexity Plane.
+In the proposed approach, the input is a sequence of true random observations generated by a physical procedure, and the confidence regions are obtained by performing an orthogonal projection of the data onto the space of principal components, thus eliminating the restrictions imposed by the curvilinear space of the Entropy-Complexity Plane.
 Our contributions can be summarized as follows:
 \begin{itemize}
-    \item Provide the first contribution in construction that confidence regions in Entropy-Complexity Plane.
-    \item Evaluate the discrimination power of these regions in the analysis of small random sequences generated by physical procedures and pseudorandom generators (PRNGs).
+    \item We provide the first contribution in construction that confidence regions in Entropy-Complexity Plane.
+    \item We evaluate the discrimination power of these regions in the analysis of small random sequences generated by physical procedures and pseudorandom generators (PRNGs).
 \end{itemize}
 
 The paper is structured as follows: Section~\ref{Sec:Intro} introduces the elements of the study (the Bandt and Pompe methodology, the random deviates, and model).
