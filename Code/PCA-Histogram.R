@@ -56,11 +56,16 @@ pca.histogram <- function(){
   PC = melt(data = PC, id.vars = c(1,2), variable.name = "D")
   
   pdf("PCA-hist-50k.pdf", width = 32, height = 10)
+  
   p = ggplot(PC) +
     ggtitle("First Component Histogram") +
     xlab("") +
     ylab("") +
-    geom_histogram(aes(x = PC1, y = ..density..), binwidth = 1, fill="#212529", color="#343a40", alpha=0.9) +
+    geom_histogram(aes(x = PC1, y = ..density..), 
+                   bins = nclass.FD(PC$PC1[1:8372]), 
+                   fill="white", 
+                   color="black", 
+                   alpha=0.9) +
     facet_grid(. ~ value) + 
     theme_few(base_size = 35, base_family = "serif") +  
     theme(plot.title = element_text(hjust=0.5)) +
@@ -84,10 +89,14 @@ plot.pca.histogram <- function(HC, D, N){
   median.pca = data.frame(PC1 = pca.data$xmin[5], PC2 = pca.data$ymax[5])
   
   p = ggplot(PC) +
-      ggtitle(paste0("First Component Histogram - D = ", D, " & N = ", N)) +
+      ggtitle(paste0("First Component Histogram - D = ", italic(D), " & N = ", N)) +
       xlab("") +
       ylab("") +
-      geom_histogram(aes(x = PC1, y = ..density..), binwidth = 1, fill="#69b3a2", color="#e9ecef", alpha=0.9) +
+      geom_histogram(aes(x = PC1, y = ..density..), 
+                     bins = nclass.FD(PC$PC1), 
+                     fill="white", 
+                     color="black", 
+                     alpha=0.9) +
       theme_clean() + 
       theme(plot.title = element_text(hjust=0.5)) +
       xlim(limits=c(0, 0.6)) 
