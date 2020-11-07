@@ -1,0 +1,7 @@
+---
+title: "Study of the Empirical Distribution of Ties in Irrational Numbers"
+output: html_notebook
+---
+
+The purpose of this study is describing the distribution of ties in irrational numbers when considering sequences of embedding dimension $D$ (and $\tau=1$).
+The finding will help building a model for simulating such occurrences and, then, assessing imputation techniques in a Monte Carlo study.
