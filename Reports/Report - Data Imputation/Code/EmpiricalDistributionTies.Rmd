@@ -1,7 +1,290 @@
 ---
 title: "Study of the Empirical Distribution of Ties in Irrational Numbers"
+author: "Eduarda Chagas"
+date: "Nov 7, 2020"
 output: html_notebook
 ---
 
 The purpose of this study is describing the distribution of ties in irrational numbers when considering sequences of embedding dimension $D$ (and $\tau=1$).
 The finding will help building a model for simulating such occurrences and, then, assessing imputation techniques in a Monte Carlo study.
+
+```{r} 
+source('Bandt-Pompe.R')
+if(!require(ggpubr)){
+  install.packages("ggpubr")
+  require(ggpubr)
+}
+if(!require(ggplot2)){
+  install.packages("ggplot2")
+  require(ggplot2)
+}
+if(!require(ggthemes)){
+  install.packages("ggthemes")
+  require(ggthemes)
+}
+```
+
+### Analysis of the distribution of repeated symbols for sequences with N = 1000
+
+```{r} 
+e.data = read.table('../Data/e.txt', stringsAsFactors=FALSE, fileEncoding="latin1")
+pi.data = read.table('../Data/pi.txt', stringsAsFactors=FALSE, fileEncoding="latin1")
+sqrt2.data = read.table('../Data/sqrt2.txt', stringsAsFactors=FALSE, fileEncoding="latin1")
+
+e.vector = as.numeric(strsplit(as.character(e.data), "")[[1]])[3:100011]
+pi.vector = as.numeric(strsplit(as.character(pi.data), "")[[1]])[3:100011]
+sqrt2.vector = as.numeric(strsplit(as.character(sqrt2.data), "")[[1]])[3:100030]
+
+n.series = 100
+n.elements = 1000
+e.series = asplit(array(e.vector, c(n.elements, round(length(e.vector)/n.elements))), MARGIN = 2)
+pi.series = asplit(array(pi.vector, c(n.elements, round(length(pi.vector)/n.elements))), MARGIN = 2)
+sqrt2.series = asplit(array(sqrt2.vector, c(n.elements, round(length(sqrt2.vector)/n.elements))), MARGIN = 2)
+```
+
+```{r} 
+D = 3
+Tau = 1
+e.percent.D3 = pi.percent.D3 = sqrt2.percent.D3 = rep(0, n.series)
+
+for(i in 1:n.series){
+  elements = formationPattern(e.series[[i]], D, Tau, 1)
+  e.percent.D3[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(pi.series[[i]], D, Tau, 1)
+  pi.percent.D3[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
+  sqrt2.percent.D3[i] = percentual.equalities(elements)
+}
+
+data.D3 <- data.frame(
+  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
+  value = c(e.percent.D3, pi.percent.D3, sqrt2.percent.D3)
+)
+data.D3 %>%
+    ggplot(aes(x = value, fill = type)) +
+    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series/2) +
+    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
+    theme_few(base_size = 12, base_family = "serif") +
+    labs(fill = "") +
+    ggtitle('D = 3') + 
+    facet_grid(~type) +  
+    theme(plot.title = element_text(hjust=0.5))
+```
+
+
+```{r} 
+D = 4
+Tau = 1
+e.percent.D4 = pi.percent.D4 = sqrt2.percent.D4 = rep(0, n.series)
+
+for(i in 1:n.series){
+  elements = formationPattern(e.series[[i]], D, Tau, 1)
+  e.percent.D4[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(pi.series[[i]], D, Tau, 1)
+  pi.percent.D4[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
+  sqrt2.percent.D4[i] = percentual.equalities(elements)
+}
+
+data.D4 <- data.frame(
+  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
+  value = c(e.percent.D4, pi.percent.D4, sqrt2.percent.D4)
+)
+data.D4 %>%
+    ggplot(aes(x = value, fill = type)) +
+    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series/2) +
+    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
+    theme_few(base_size = 12, base_family = "serif") +
+    labs(fill="") +
+    ggtitle('D = 4') + 
+    facet_grid(~type) +  
+    theme(plot.title = element_text(hjust=0.5))
+```
+
+#### Normality test for N = 1000 with Shapiro-wilk 
+```{r} 
+cat(' (D = 3 & N = 1000) -> p-values: ', 
+    shapiro.test(data.D3[1:100,]$value)$p.value, " ", 
+    shapiro.test(data.D3[101:200,]$value)$p.value, " ", 
+    shapiro.test(data.D3[201:300,]$value)$p.value, '\n',
+    '(D = 4 & N = 1000) -> p-values: ', 
+    shapiro.test(data.D4[1:100,]$value)$p.value, " ", 
+    shapiro.test(data.D4[101:200,]$value)$p.value, " ", 
+    shapiro.test(data.D4[201:300,]$value)$p.value)
+```
+### Analysis of the distribution of repeated symbols for sequences with N = 10000
+
+```{r}
+n.series = 10
+n.elements = 10000
+e.series = asplit(array(e.vector, c(n.elements, round(length(e.vector)/n.elements))), MARGIN = 2)
+pi.series = asplit(array(pi.vector, c(n.elements, round(length(pi.vector)/n.elements))), MARGIN = 2)
+sqrt2.series = asplit(array(sqrt2.vector, c(n.elements, round(length(sqrt2.vector)/n.elements))), MARGIN = 2)
+```
+
+```{r} 
+D = 3
+Tau = 1
+e.percent.D3 = pi.percent.D3 = sqrt2.percent.D3 = rep(0, n.series)
+
+for(i in 1:n.series){
+  elements = formationPattern(e.series[[i]], D, Tau, 1)
+  e.percent.D3[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(pi.series[[i]], D, Tau, 1)
+  pi.percent.D3[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
+  sqrt2.percent.D3[i] = percentual.equalities(elements)
+}
+
+data.D3 <- data.frame(
+  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
+  value = c(e.percent.D3, pi.percent.D3, sqrt2.percent.D3)
+)
+data.D3 %>%
+    ggplot(aes(x = value, fill = type)) +
+    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series) +
+    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
+    theme_few(base_size = 12, base_family = "serif") +
+    labs(fill = "") +
+    ggtitle('D = 3') + 
+    facet_grid(~type) +  
+    theme(plot.title = element_text(hjust=0.5))
+```
+
+```{r} 
+D = 4
+Tau = 1
+e.percent.D4 = pi.percent.D4 = sqrt2.percent.D4 = rep(0, n.series)
+
+for(i in 1:n.series){
+  elements = formationPattern(e.series[[i]], D, Tau, 1)
+  e.percent.D4[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(pi.series[[i]], D, Tau, 1)
+  pi.percent.D4[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
+  sqrt2.percent.D4[i] = percentual.equalities(elements)
+}
+
+data.D4 <- data.frame(
+  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
+  value = c(e.percent.D4, pi.percent.D4, sqrt2.percent.D4)
+)
+data.D4 %>%
+    ggplot(aes(x = value, fill = type)) +
+    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series) +
+    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
+    theme_few(base_size = 12, base_family = "serif") +
+    labs(fill="") +
+    ggtitle('D = 4') + 
+    facet_grid(~type) +  
+    theme(plot.title = element_text(hjust=0.5))
+```
+
+```{r} 
+D = 5
+Tau = 1
+e.percent.D5 = pi.percent.D5 = sqrt2.percent.D5 = rep(0, n.series)
+
+for(i in 1:n.series){
+  elements = formationPattern(e.series[[i]], D, Tau, 1)
+  e.percent.D5[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(pi.series[[i]], D, Tau, 1)
+  pi.percent.D5[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
+  sqrt2.percent.D5[i] = percentual.equalities(elements)
+}
+
+data.D5 <- data.frame(
+  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
+  value = c(e.percent.D5, pi.percent.D5, sqrt2.percent.D5)
+)
+data.D5 %>%
+    ggplot(aes(x = value, fill = type)) +
+    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series) +
+    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
+    theme_few(base_size = 12, base_family = "serif") +
+    labs(fill="") +
+    ggtitle('D = 5') + 
+    facet_grid(~type) +  
+    theme(plot.title = element_text(hjust=0.5))
+```
+
+```{r} 
+D = 6
+Tau = 1
+e.percent.D6 = pi.percent.D6 = sqrt2.percent.D6 = rep(0, n.series)
+
+for(i in 1:n.series){
+  elements = formationPattern(e.series[[i]], D, Tau, 1)
+  e.percent.D6[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(pi.series[[i]], D, Tau, 1)
+  pi.percent.D6[i] = percentual.equalities(elements)
+}
+for(i in 1:n.series){
+  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
+  sqrt2.percent.D6[i] = percentual.equalities(elements)
+}
+
+data.D6 <- data.frame(
+  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
+  value = c(e.percent.D6, pi.percent.D6, sqrt2.percent.D6)
+)
+data.D6 %>%
+    ggplot(aes(x = value, fill = type)) +
+    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series) +
+    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
+    theme_few(base_size = 12, base_family = "serif") +
+    labs(fill="") +
+    ggtitle('D = 6') + 
+    facet_grid(~type) +  
+    theme(plot.title = element_text(hjust=0.5))
+```
+
+#### Normality test for N = 10000 with Shapiro-wilk 
+```{r} 
+cat(' (D = 3 & N = 10000) -> p-values: ', 
+    shapiro.test(data.D3[1:10,]$value)$p.value, " ", 
+    shapiro.test(data.D3[11:20,]$value)$p.value, " ", 
+    shapiro.test(data.D3[21:30,]$value)$p.value, '\n',
+    '(D = 4 & N = 10000) -> p-values: ', 
+    shapiro.test(data.D4[1:10,]$value)$p.value, " ", 
+    shapiro.test(data.D4[11:20,]$value)$p.value, " ", 
+    shapiro.test(data.D4[21:30,]$value)$p.value, '\n',
+    '(D = 5 & N = 10000) -> p-values: ', 
+    shapiro.test(data.D5[1:10,]$value)$p.value, " ", 
+    shapiro.test(data.D5[11:20,]$value)$p.value, " ", 
+    shapiro.test(data.D5[21:30,]$value)$p.value, '\n',
+    '(D = 6 & N = 10000) -> p-values: ', 
+    shapiro.test(data.D6[1:10,]$value)$p.value, " ", 
+    shapiro.test(data.D6[11:20,]$value)$p.value, " ", 
+    shapiro.test(data.D6[21:30,]$value)$p.value)
+```
+
+
+
+
+
+
+

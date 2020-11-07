@@ -25,18 +25,6 @@ FP <- function(n, dimension, delay){
   return(p)
 }
 
-percentual.equalities <- function(patterns){
-  n.patterns = dim(patterns)[1]
-  n.duplicated = 0
-  for(i in 1:n.patterns){
-    if(length(which(duplicated(patterns[i,]) == TRUE))){
-      n.duplicated = n.duplicated + 1
-      print(length(which(duplicated(patterns[i,]) == TRUE)))
-    }
-  }
-  return(n.duplicated/n.patterns)
-}
-
 formationPattern <- function(series, D, tau, option){
   
   i = 1
