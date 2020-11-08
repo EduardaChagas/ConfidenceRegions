@@ -2,6 +2,7 @@
 title: "Study of the Empirical Distribution of Ties in Irrational Numbers"
 author: "Eduarda Chagas"
 date: "Nov 7, 2020"
+
 output: html_notebook
 ---
 
@@ -288,3 +289,11 @@ cat(' (D = 3 & N = 10000) -> p-values: ',
 
 
 
+We have produced to files with Mathematica: e.txt, pi.txt, and sqrt2.txt. They contain expansions of these irrational numbers with $100,000$ digits.
+
+The exploratory data analysis consists of
+
+1. Read the numbers, and for each number:
+2. For each value of $D\in\{3,4,5,6\}$ (or embedding dimensions employed in the literature)
+3. Compute the number of tied sequences
+4. Return binary vectors with the position of the tied sequences

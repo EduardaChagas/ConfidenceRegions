@@ -50,7 +50,7 @@ With this, $\widetilde{\pi}^{(5)} = 51342$, and we increase the counting related
 The dash-dot line in Fig.~\ref{Fig:IntroBP} illustrates $\mathbf X_{1}^{(5,2)}$, i.e. the sequence of length $D=5$ starting at $x_1$ with lag $\tau=2$.
 In this case, $\mathbf X_{1}^{(5,2)}= (1.8, 3.2, 4.2, 2.3, 1.2)$, and the corresponding motif is $\widetilde{\pi}^{(5)}=51423$.
 
-\begin{figure}[H]
+\begin{figure}[hbt]
 \centering
 \includegraphics[width=.7\linewidth]{IntroBP}
 \caption{Illustration of the Bandt and Pompe coding}
@@ -79,6 +79,8 @@ A time series can then be mapped into a point in the $H\times C$ plane.
 
 \subsection{The Entropy-Complexity Plane}
 
+\textcolor{red}{Describe the boundaries}
+
 We illustrate the use of the Entropy-Complexity ($H\times C$) with the following time series:
 \begin{itemize}
 \item Colored $k$-noise: white ($k=0$), $k=-1/2$, pink ($k=1$), $k=3/2$, red ($k=2$), $=5/2$, and $k=3$;
@@ -89,14 +91,14 @@ In all cases, we used $D=6$ and $\tau=1$.
 Fig.~\ref{fig:Histograms} shows nine of the histograms produced by these series using the Mersenne-Twister pseudorandom number generator;
 we omitted those corresponding to the deterministic series, as they produce one and two nonzero bins.
 
-\begin{figure}[H]
+\begin{figure}[hbt]
     \includegraphics[width=\linewidth]{Figures/h.pdf}
 	\caption{Patterns histograms of selected time series, with $D=6$ and $\tau=1$}
 	\label{fig:Histograms}
 \end{figure}
 
 \begin{comment}
-\begin{figure}[H]
+\begin{figure}[hbt]
 \centering
 	\subfloat[Logistic map $r=3.6$]{\includegraphics[width=.3\linewidth]{h36}}\quad
 	\subfloat[Logistic map $r=4$]{\includegraphics[width=.3\linewidth]{h4}}\quad
@@ -116,7 +118,7 @@ The points due to $f^{-k}$ noises appear joined by dotted segments.
 It is noticeable that deterministic patterns have more complexity than random ones.
 Also, points related to $f^{-k}$ noises tend to clutter for $k<1$, having the highest entropy values, as can be seen in Fig.~\ref{fig:RightMostCorner}.
 
-\begin{figure}[H]
+\begin{figure}[hbt]
 \centering
 \includegraphics[width=\linewidth]{AllSystems}
 \caption{Eleven systems and their points in the $H\times C$ plane}\label{fig:AllSystems}
@@ -124,7 +126,7 @@ Also, points related to $f^{-k}$ noises tend to clutter for $k<1$, having the hi
 
 Fig.~\ref{fig:RightMostCorner} shows the rightmost lower corner of the $H\times C$ plane, emphasizing the location of the white ($k=0$), $k=-1/2$, and pink ($k=1$) noises.
 
-\begin{figure}[H]
+\begin{figure}[hbt]
 \centering
 \includegraphics[width=\linewidth]{RightMostCorner}
 \caption{White Noise, $f^{-1/2}$ and $f^{-1}$ noise points}\label{fig:RightMostCorner}
@@ -132,3 +134,4 @@ Fig.~\ref{fig:RightMostCorner} shows the rightmost lower corner of the $H\times 
 
 The focus of our study is to assess pure randomness by analyzing the empirical distribution of the points produced by true random sequences, providing regions of confidence in the $H \times C$ plane.
 
+\include{Chapters/relatedWork}
