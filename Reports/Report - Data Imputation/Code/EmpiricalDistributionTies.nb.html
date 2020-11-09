@@ -2068,29 +2068,29 @@ data.D6 %&gt;%
 <h4>Normality test for N = 10000 with Shapiro-wilk</h4>
 <!-- rnb-text-end -->
 <!-- rnb-chunk-begin -->
-<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KCcgKEQgPSAzICYgTiA9IDEwMDApIC0+IHAtdmFsdWVzOiAnLCBcbiAgICBzaGFwaXJvLnRlc3QoZGF0YS5EM1sxOjEwLF0kdmFsdWUpJHAudmFsdWUsIFwiIFwiLCBcbiAgICBzaGFwaXJvLnRlc3QoZGF0YS5EM1sxMToyMCxdJHZhbHVlKSRwLnZhbHVlLCBcIiBcIiwgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDNbMjE6MzAsXSR2YWx1ZSkkcC52YWx1ZSwgJ1xcbicsXG4gICAgJyhEID0gNCAmIE4gPSAxMDAwKSAtPiBwLXZhbHVlczogJywgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDRbMToxMCxdJHZhbHVlKSRwLnZhbHVlLCBcIiBcIiwgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDRbMTE6MjAsXSR2YWx1ZSkkcC52YWx1ZSwgXCIgXCIsIFxuICAgIHNoYXBpcm8udGVzdChkYXRhLkQ0WzIxOjMwLF0kdmFsdWUpJHAudmFsdWUsICdcXG4nLFxuICAgICcoRCA9IDUgJiBOID0gMTAwMCkgLT4gcC12YWx1ZXM6ICcsIFxuICAgIHNoYXBpcm8udGVzdChkYXRhLkQ1WzE6MTAsXSR2YWx1ZSkkcC52YWx1ZSwgXCIgXCIsIFxuICAgIHNoYXBpcm8udGVzdChkYXRhLkQ1WzExOjIwLF0kdmFsdWUpJHAudmFsdWUsIFwiIFwiLCBcbiAgICBzaGFwaXJvLnRlc3QoZGF0YS5ENVsyMTozMCxdJHZhbHVlKSRwLnZhbHVlLCAnXFxuJyxcbiAgICAnKEQgPSA2ICYgTiA9IDEwMDApIC0+IHAtdmFsdWVzOiAnLCBcbiAgICBzaGFwaXJvLnRlc3QoZGF0YS5ENlsxOjEwLF0kdmFsdWUpJHAudmFsdWUsIFwiIFwiLCBcbiAgICBzaGFwaXJvLnRlc3QoZGF0YS5ENlsxMToyMCxdJHZhbHVlKSRwLnZhbHVlLCBcIiBcIiwgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDZbMjE6MzAsXSR2YWx1ZSkkcC52YWx1ZSlcbmBgYCJ9 -->
-<pre class="r"><code>cat(&#39; (D = 3 &amp; N = 1000) -&gt; p-values: &#39;, 
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY2F0KCcgKEQgPSAzICYgTiA9IDEwMDAwKSAtPiBwLXZhbHVlczogJywgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDNbMToxMCxdJHZhbHVlKSRwLnZhbHVlLCBcIiBcIiwgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDNbMTE6MjAsXSR2YWx1ZSkkcC52YWx1ZSwgXCIgXCIsIFxuICAgIHNoYXBpcm8udGVzdChkYXRhLkQzWzIxOjMwLF0kdmFsdWUpJHAudmFsdWUsICdcXG4nLFxuICAgICcoRCA9IDQgJiBOID0gMTAwMDApIC0+IHAtdmFsdWVzOiAnLCBcbiAgICBzaGFwaXJvLnRlc3QoZGF0YS5ENFsxOjEwLF0kdmFsdWUpJHAudmFsdWUsIFwiIFwiLCBcbiAgICBzaGFwaXJvLnRlc3QoZGF0YS5ENFsxMToyMCxdJHZhbHVlKSRwLnZhbHVlLCBcIiBcIiwgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDRbMjE6MzAsXSR2YWx1ZSkkcC52YWx1ZSwgJ1xcbicsXG4gICAgJyhEID0gNSAmIE4gPSAxMDAwMCkgLT4gcC12YWx1ZXM6ICcsIFxuICAgIHNoYXBpcm8udGVzdChkYXRhLkQ1WzE6MTAsXSR2YWx1ZSkkcC52YWx1ZSwgXCIgXCIsIFxuICAgIHNoYXBpcm8udGVzdChkYXRhLkQ1WzExOjIwLF0kdmFsdWUpJHAudmFsdWUsIFwiIFwiLCBcbiAgICBzaGFwaXJvLnRlc3QoZGF0YS5ENVsyMTozMCxdJHZhbHVlKSRwLnZhbHVlLCAnXFxuJyxcbiAgICAnKEQgPSA2ICYgTiA9IDEwMDAwKSAtPiBwLXZhbHVlczogJywgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDZbMToxMCxdJHZhbHVlKSRwLnZhbHVlLCBcIiBcIiwgXG4gICAgc2hhcGlyby50ZXN0KGRhdGEuRDZbMTE6MjAsXSR2YWx1ZSkkcC52YWx1ZSwgXCIgXCIsIFxuICAgIHNoYXBpcm8udGVzdChkYXRhLkQ2WzIxOjMwLF0kdmFsdWUpJHAudmFsdWUpXG5gYGAifQ== -->
+<pre class="r"><code>cat(&#39; (D = 3 &amp; N = 10000) -&gt; p-values: &#39;, 
     shapiro.test(data.D3[1:10,]$value)$p.value, &quot; &quot;, 
     shapiro.test(data.D3[11:20,]$value)$p.value, &quot; &quot;, 
     shapiro.test(data.D3[21:30,]$value)$p.value, &#39;\n&#39;,
-    &#39;(D = 4 &amp; N = 1000) -&gt; p-values: &#39;, 
+    &#39;(D = 4 &amp; N = 10000) -&gt; p-values: &#39;, 
     shapiro.test(data.D4[1:10,]$value)$p.value, &quot; &quot;, 
     shapiro.test(data.D4[11:20,]$value)$p.value, &quot; &quot;, 
     shapiro.test(data.D4[21:30,]$value)$p.value, &#39;\n&#39;,
-    &#39;(D = 5 &amp; N = 1000) -&gt; p-values: &#39;, 
+    &#39;(D = 5 &amp; N = 10000) -&gt; p-values: &#39;, 
     shapiro.test(data.D5[1:10,]$value)$p.value, &quot; &quot;, 
     shapiro.test(data.D5[11:20,]$value)$p.value, &quot; &quot;, 
     shapiro.test(data.D5[21:30,]$value)$p.value, &#39;\n&#39;,
-    &#39;(D = 6 &amp; N = 1000) -&gt; p-values: &#39;, 
+    &#39;(D = 6 &amp; N = 10000) -&gt; p-values: &#39;, 
     shapiro.test(data.D6[1:10,]$value)$p.value, &quot; &quot;, 
     shapiro.test(data.D6[11:20,]$value)$p.value, &quot; &quot;, 
     shapiro.test(data.D6[21:30,]$value)$p.value)</code></pre>
 <!-- rnb-source-end -->
-<!-- rnb-output-begin eyJkYXRhIjoiIChEID0gMyAmIE4gPSAxMDAwKSAtPiBwLXZhbHVlczogIDAuMjE4MjIwNCAgIDAuNjM1OTA3MSAgIDAuNTk1NjA2MyBcbiAoRCA9IDQgJiBOID0gMTAwMCkgLT4gcC12YWx1ZXM6ICAwLjc3MTcxMzMgICAwLjA0NzQxNjcgICAwLjIxMjc2MzggXG4gKEQgPSA1ICYgTiA9IDEwMDApIC0+IHAtdmFsdWVzOiAgMC43NTk5NTc3ICAgMC4wMjk1MzMyNiAgIDAuMDU4OTMwNzEgXG4gKEQgPSA2ICYgTiA9IDEwMDApIC0+IHAtdmFsdWVzOiAgMC4zODU3MzU4ICAgMC4xMzU5ODAzICAgMC4yODc2NDkzXG4ifQ== -->
-<pre><code> (D = 3 &amp; N = 1000) -&gt; p-values:  0.2182204   0.6359071   0.5956063 
- (D = 4 &amp; N = 1000) -&gt; p-values:  0.7717133   0.0474167   0.2127638 
- (D = 5 &amp; N = 1000) -&gt; p-values:  0.7599577   0.02953326   0.05893071 
- (D = 6 &amp; N = 1000) -&gt; p-values:  0.3857358   0.1359803   0.2876493</code></pre>
+<!-- rnb-output-begin eyJkYXRhIjoiIChEID0gMyAmIE4gPSAxMDAwMCkgLT4gcC12YWx1ZXM6ICAwLjIxODIyMDQgICAwLjYzNTkwNzEgICAwLjU5NTYwNjMgXG4gKEQgPSA0ICYgTiA9IDEwMDAwKSAtPiBwLXZhbHVlczogIDAuNzcxNzEzMyAgIDAuMDQ3NDE2NyAgIDAuMjEyNzYzOCBcbiAoRCA9IDUgJiBOID0gMTAwMDApIC0+IHAtdmFsdWVzOiAgMC43NTk5NTc3ICAgMC4wMjk1MzMyNiAgIDAuMDU4OTMwNzEgXG4gKEQgPSA2ICYgTiA9IDEwMDAwKSAtPiBwLXZhbHVlczogIDAuMzg1NzM1OCAgIDAuMTM1OTgwMyAgIDAuMjg3NjQ5M1xuIn0= -->
+<pre><code> (D = 3 &amp; N = 10000) -&gt; p-values:  0.2182204   0.6359071   0.5956063 
+ (D = 4 &amp; N = 10000) -&gt; p-values:  0.7717133   0.0474167   0.2127638 
+ (D = 5 &amp; N = 10000) -&gt; p-values:  0.7599577   0.02953326   0.05893071 
+ (D = 6 &amp; N = 10000) -&gt; p-values:  0.3857358   0.1359803   0.2876493</code></pre>
 <!-- rnb-output-end -->
 <!-- rnb-chunk-end -->
 <!-- rnb-text-begin -->
