@@ -183,3 +183,26 @@ histogram <- function(series, D, tau = 1){
       theme_few(base_size = 14, base_family = "serif") 
   return(p)
 }
+
+#Calculated tied sequences
+
+percentual.equalities <- function(patterns){
+  n.patterns = dim(patterns)[1]
+  n.duplicated = 0
+  for(i in 1:n.patterns){
+    if(length(which(duplicated(patterns[i,]) == TRUE)))
+      n.duplicated = n.duplicated + 1
+  }
+  return(n.duplicated/n.patterns)
+}
+
+binary.equalities <- function(patterns){
+  n.patterns = dim(patterns)[1]
+  binary = rep(0, n.patterns)
+  for(i in 1:n.patterns){
+    if(length(which(duplicated(patterns[i,]) == TRUE)))
+      binary[i] = 1
+  }
+  return(binary)
+}
+

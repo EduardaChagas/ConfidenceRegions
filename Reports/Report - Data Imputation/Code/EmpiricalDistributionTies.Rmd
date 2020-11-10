@@ -1,16 +1,18 @@
 ---
 title: "Study of the Empirical Distribution of Ties in Irrational Numbers"
 author: "Eduarda Chagas"
-date: "Nov 7, 2020"
+date: "Nov 10, 2020"
 
 output: html_notebook
 ---
 
 The purpose of this study is describing the distribution of ties in irrational numbers when considering sequences of embedding dimension $D$ (and $\tau=1$).
 The finding will help building a model for simulating such occurrences and, then, assessing imputation techniques in a Monte Carlo study.
+Thus, in this report we will make an exploratory analysis of the data, analyzing the percentage of tied sequences for each embedding dimension value.
+
+### Load packages and sources
 
 ```{r} 
-source('Bandt-Pompe.R')
 if(!require(ggpubr)){
   install.packages("ggpubr")
   require(ggpubr)
@@ -23,277 +25,154 @@ if(!require(ggthemes)){
   install.packages("ggthemes")
   require(ggthemes)
 }
+source('Bandt-Pompe.R')
 ```
 
-### Analysis of the distribution of repeated symbols for sequences with N = 1000
+### Reading the numbers
+
+We have produced to files with Mathematica: e.txt, pi.txt, and sqrt2.txt. They contain expansions of these irrational numbers with $100,000$ digits.
 
 ```{r} 
-e.data = read.table('../Data/e.txt', stringsAsFactors=FALSE, fileEncoding="latin1")
-pi.data = read.table('../Data/pi.txt', stringsAsFactors=FALSE, fileEncoding="latin1")
-sqrt2.data = read.table('../Data/sqrt2.txt', stringsAsFactors=FALSE, fileEncoding="latin1")
+e.data = as.character(read.table('../Data/e.txt', stringsAsFactors=FALSE, fileEncoding="latin1"))
+pi.data = as.character(unlist(read.table('../Data/pi.txt', stringsAsFactors=FALSE, fileEncoding="latin1")))
+sqrt2.data = as.character(unlist(read.table('../Data/sqrt2.txt', stringsAsFactors=FALSE, fileEncoding="latin1")))
 
-e.vector = as.numeric(strsplit(as.character(e.data), "")[[1]])[3:100011]
-pi.vector = as.numeric(strsplit(as.character(pi.data), "")[[1]])[3:100011]
-sqrt2.vector = as.numeric(strsplit(as.character(sqrt2.data), "")[[1]])[3:100030]
-
-n.series = 100
-n.elements = 1000
-e.series = asplit(array(e.vector, c(n.elements, round(length(e.vector)/n.elements))), MARGIN = 2)
-pi.series = asplit(array(pi.vector, c(n.elements, round(length(pi.vector)/n.elements))), MARGIN = 2)
-sqrt2.series = asplit(array(sqrt2.vector, c(n.elements, round(length(sqrt2.vector)/n.elements))), MARGIN = 2)
+e.vector = as.numeric(unlist(strsplit(e.data, ""))[3:100011])
+pi.vector = as.numeric(unlist(strsplit(pi.data, ""))[3:100011])
+sqrt2.vector = as.numeric(unlist(strsplit(sqrt2.data, ""))[3:100030])
 ```
 
-```{r} 
-D = 3
-Tau = 1
-e.percent.D3 = pi.percent.D3 = sqrt2.percent.D3 = rep(0, n.series)
+### Computing the number of tied sequences for each value of $D\in\{3,4,5,6\}$
 
-for(i in 1:n.series){
-  elements = formationPattern(e.series[[i]], D, Tau, 1)
-  e.percent.D3[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(pi.series[[i]], D, Tau, 1)
-  pi.percent.D3[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
-  sqrt2.percent.D3[i] = percentual.equalities(elements)
-}
-
-data.D3 <- data.frame(
-  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
-  value = c(e.percent.D3, pi.percent.D3, sqrt2.percent.D3)
-)
-data.D3 %>%
-    ggplot(aes(x = value, fill = type)) +
-    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series/2) +
-    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
-    theme_few(base_size = 12, base_family = "serif") +
-    labs(fill = "") +
-    ggtitle('D = 3') + 
-    facet_grid(~type) +  
-    theme(plot.title = element_text(hjust=0.5))
-```
-
-
-```{r} 
-D = 4
-Tau = 1
-e.percent.D4 = pi.percent.D4 = sqrt2.percent.D4 = rep(0, n.series)
-
-for(i in 1:n.series){
-  elements = formationPattern(e.series[[i]], D, Tau, 1)
-  e.percent.D4[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(pi.series[[i]], D, Tau, 1)
-  pi.percent.D4[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
-  sqrt2.percent.D4[i] = percentual.equalities(elements)
-}
-
-data.D4 <- data.frame(
-  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
-  value = c(e.percent.D4, pi.percent.D4, sqrt2.percent.D4)
-)
-data.D4 %>%
-    ggplot(aes(x = value, fill = type)) +
-    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series/2) +
-    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
-    theme_few(base_size = 12, base_family = "serif") +
-    labs(fill="") +
-    ggtitle('D = 4') + 
-    facet_grid(~type) +  
-    theme(plot.title = element_text(hjust=0.5))
-```
-
-#### Normality test for N = 1000 with Shapiro-wilk 
-```{r} 
-cat(' (D = 3 & N = 1000) -> p-values: ', 
-    shapiro.test(data.D3[1:100,]$value)$p.value, " ", 
-    shapiro.test(data.D3[101:200,]$value)$p.value, " ", 
-    shapiro.test(data.D3[201:300,]$value)$p.value, '\n',
-    '(D = 4 & N = 1000) -> p-values: ', 
-    shapiro.test(data.D4[1:100,]$value)$p.value, " ", 
-    shapiro.test(data.D4[101:200,]$value)$p.value, " ", 
-    shapiro.test(data.D4[201:300,]$value)$p.value)
-```
-### Analysis of the distribution of repeated symbols for sequences with N = 10000
-
-```{r}
-n.series = 10
-n.elements = 10000
-e.series = asplit(array(e.vector, c(n.elements, round(length(e.vector)/n.elements))), MARGIN = 2)
-pi.series = asplit(array(pi.vector, c(n.elements, round(length(pi.vector)/n.elements))), MARGIN = 2)
-sqrt2.series = asplit(array(sqrt2.vector, c(n.elements, round(length(sqrt2.vector)/n.elements))), MARGIN = 2)
-```
 
 ```{r} 
 D = 3
 Tau = 1
-e.percent.D3 = pi.percent.D3 = sqrt2.percent.D3 = rep(0, n.series)
 
-for(i in 1:n.series){
-  elements = formationPattern(e.series[[i]], D, Tau, 1)
-  e.percent.D3[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(pi.series[[i]], D, Tau, 1)
-  pi.percent.D3[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
-  sqrt2.percent.D3[i] = percentual.equalities(elements)
-}
+e.elements.D3 = formationPattern(e.vector, D, Tau, 1)
+e.percent.D3 = percentual.equalities(e.elements.D3)
 
-data.D3 <- data.frame(
-  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
-  value = c(e.percent.D3, pi.percent.D3, sqrt2.percent.D3)
-)
-data.D3 %>%
-    ggplot(aes(x = value, fill = type)) +
-    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series) +
-    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
-    theme_few(base_size = 12, base_family = "serif") +
-    labs(fill = "") +
-    ggtitle('D = 3') + 
-    facet_grid(~type) +  
-    theme(plot.title = element_text(hjust=0.5))
+pi.elements.D3 = formationPattern(pi.vector, D, Tau, 1)
+pi.percent.D3 = percentual.equalities(pi.elements.D3)
+
+sqrt2.elements.D3 = formationPattern(sqrt2.vector, D, Tau, 1)
+sqrt2.percent.D3 = percentual.equalities(sqrt2.elements.D3)
+
+cat("Number of tied sequences \ne: ", round(e.percent.D3*100, 3), "%\npi: ", round(pi.percent.D3*100, 3), "%\nsqrt2: ", round(sqrt2.percent.D3*100, 3), "%\n")
 ```
 
 ```{r} 
 D = 4
-Tau = 1
-e.percent.D4 = pi.percent.D4 = sqrt2.percent.D4 = rep(0, n.series)
+e.elements.D4 = formationPattern(e.vector, D, Tau, 1)
+e.percent.D4 = percentual.equalities(e.elements.D4)
 
-for(i in 1:n.series){
-  elements = formationPattern(e.series[[i]], D, Tau, 1)
-  e.percent.D4[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(pi.series[[i]], D, Tau, 1)
-  pi.percent.D4[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
-  sqrt2.percent.D4[i] = percentual.equalities(elements)
-}
+pi.elements.D4 = formationPattern(pi.vector, D, Tau, 1)
+pi.percent.D4 = percentual.equalities(pi.elements.D4)
 
-data.D4 <- data.frame(
-  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
-  value = c(e.percent.D4, pi.percent.D4, sqrt2.percent.D4)
-)
-data.D4 %>%
-    ggplot(aes(x = value, fill = type)) +
-    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series) +
-    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
-    theme_few(base_size = 12, base_family = "serif") +
-    labs(fill="") +
-    ggtitle('D = 4') + 
-    facet_grid(~type) +  
-    theme(plot.title = element_text(hjust=0.5))
+sqrt2.elements.D4 = formationPattern(sqrt2.vector, D, Tau, 1)
+sqrt2.percent.D4 = percentual.equalities(sqrt2.elements.D4)
+
+cat("Number of tied sequences \ne: ", round(e.percent.D4*100, 3), "%\npi: ", round(pi.percent.D4*100, 3), "%\nsqrt2: ", round(sqrt2.percent.D4*100, 3), "%\n")
 ```
 
 ```{r} 
 D = 5
-Tau = 1
-e.percent.D5 = pi.percent.D5 = sqrt2.percent.D5 = rep(0, n.series)
+e.elements.D5 = formationPattern(e.vector, D, Tau, 1)
+e.percent.D5 = percentual.equalities(e.elements.D5)
 
-for(i in 1:n.series){
-  elements = formationPattern(e.series[[i]], D, Tau, 1)
-  e.percent.D5[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(pi.series[[i]], D, Tau, 1)
-  pi.percent.D5[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
-  sqrt2.percent.D5[i] = percentual.equalities(elements)
-}
+pi.elements.D5 = formationPattern(pi.vector, D, Tau, 1)
+pi.percent.D5 = percentual.equalities(pi.elements.D5)
 
-data.D5 <- data.frame(
-  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
-  value = c(e.percent.D5, pi.percent.D5, sqrt2.percent.D5)
-)
-data.D5 %>%
-    ggplot(aes(x = value, fill = type)) +
-    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series) +
-    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
-    theme_few(base_size = 12, base_family = "serif") +
-    labs(fill="") +
-    ggtitle('D = 5') + 
-    facet_grid(~type) +  
-    theme(plot.title = element_text(hjust=0.5))
+sqrt2.elements.D5 = formationPattern(sqrt2.vector, D, Tau, 1)
+sqrt2.percent.D5 = percentual.equalities(sqrt2.elements.D5)
+
+cat("Number of tied sequences \ne: ", round(e.percent.D5*100, 3), "%\npi: ", round(pi.percent.D5*100, 3), "%\nsqrt2: ", round(sqrt2.percent.D5*100, 3), "%\n")
 ```
 
 ```{r} 
 D = 6
-Tau = 1
-e.percent.D6 = pi.percent.D6 = sqrt2.percent.D6 = rep(0, n.series)
+e.elements.D6 = formationPattern(e.vector, D, Tau, 1)
+e.percent.D6 = percentual.equalities(e.elements.D6)
 
-for(i in 1:n.series){
-  elements = formationPattern(e.series[[i]], D, Tau, 1)
-  e.percent.D6[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(pi.series[[i]], D, Tau, 1)
-  pi.percent.D6[i] = percentual.equalities(elements)
-}
-for(i in 1:n.series){
-  elements = formationPattern(sqrt2.series[[i]], D, Tau, 1)
-  sqrt2.percent.D6[i] = percentual.equalities(elements)
-}
+pi.elements.D6 = formationPattern(pi.vector, D, Tau, 1)
+pi.percent.D6 = percentual.equalities(pi.elements.D6)
 
-data.D6 <- data.frame(
-  type = c(rep("e", n.series), rep("pi", n.series), rep("sqrt2", n.series)),
-  value = c(e.percent.D6, pi.percent.D6, sqrt2.percent.D6)
-)
-data.D6 %>%
-    ggplot(aes(x = value, fill = type)) +
-    geom_histogram(color="#e9ecef", alpha = 3.6, position = 'identity', bins = n.series) +
-    scale_fill_manual(values=c("#69b3a2", "#404080", "#d4bf08")) +
-    theme_few(base_size = 12, base_family = "serif") +
-    labs(fill="") +
-    ggtitle('D = 6') + 
-    facet_grid(~type) +  
-    theme(plot.title = element_text(hjust=0.5))
+sqrt2.elements.D6 = formationPattern(sqrt2.vector, D, Tau, 1)
+sqrt2.percent.D6 = percentual.equalities(sqrt2.elements.D6)
+
+cat("Number of tied sequences \ne: ", round(e.percent.D6*100, 3), "%\npi: ", round(pi.percent.D6*100, 3), "%\nsqrt2: ", round(sqrt2.percent.D6*100, 3), "%\n")
 ```
+### Analyzing the binary vectors with the position of the tied sequences
 
-#### Normality test for N = 10000 with Shapiro-wilk 
 ```{r} 
-cat(' (D = 3 & N = 10000) -> p-values: ', 
-    shapiro.test(data.D3[1:10,]$value)$p.value, " ", 
-    shapiro.test(data.D3[11:20,]$value)$p.value, " ", 
-    shapiro.test(data.D3[21:30,]$value)$p.value, '\n',
-    '(D = 4 & N = 10000) -> p-values: ', 
-    shapiro.test(data.D4[1:10,]$value)$p.value, " ", 
-    shapiro.test(data.D4[11:20,]$value)$p.value, " ", 
-    shapiro.test(data.D4[21:30,]$value)$p.value, '\n',
-    '(D = 5 & N = 10000) -> p-values: ', 
-    shapiro.test(data.D5[1:10,]$value)$p.value, " ", 
-    shapiro.test(data.D5[11:20,]$value)$p.value, " ", 
-    shapiro.test(data.D5[21:30,]$value)$p.value, '\n',
-    '(D = 6 & N = 10000) -> p-values: ', 
-    shapiro.test(data.D6[1:10,]$value)$p.value, " ", 
-    shapiro.test(data.D6[11:20,]$value)$p.value, " ", 
-    shapiro.test(data.D6[21:30,]$value)$p.value)
+e.binary.D3 = binary.equalities(e.elements.D3)
+e.binary.D4 = binary.equalities(e.elements.D4)
+e.binary.D5 = binary.equalities(e.elements.D5)
+e.binary.D6 = binary.equalities(e.elements.D6)
+
+n.elements = 100
+
+e.binary.df = data.frame('series' = c(e.binary.D3[1:n.elements], e.binary.D4[1:n.elements], e.binary.D5[1:n.elements], e.binary.D6[1:n.elements]),
+                         'elements' = rep(c(1:n.elements), 4),
+                         'D' = as.factor(c(rep(3, n.elements), rep(4, n.elements), rep(5, n.elements), rep(6, n.elements))))
+
+ggplot(e.binary.df, mapping = aes(x = elements, y = series, group = D, color = D)) + 
+    xlab("") + ylab("") +
+    ggtitle("e number") +
+    geom_line(position = position_dodge(0.8)) +
+    theme_few(base_size = 13, base_family = "serif") + 
+    facet_grid(facets = D~.) +
+    scale_y_continuous(breaks=c(0, 1)) +
+    theme(plot.title = element_text(hjust=0.5), legend.position = "none")
+```
+
+```{r} 
+pi.binary.D3 = binary.equalities(pi.elements.D3)
+pi.binary.D4 = binary.equalities(pi.elements.D4)
+pi.binary.D5 = binary.equalities(pi.elements.D5)
+pi.binary.D6 = binary.equalities(pi.elements.D6)
+
+n.elements = 100
+
+pi.binary.df = data.frame('series' = c(pi.binary.D3[1:n.elements], pi.binary.D4[1:n.elements], pi.binary.D5[1:n.elements], pi.binary.D6[1:n.elements]),
+                         'elements' = rep(c(1:n.elements), 4),
+                         'D' = as.factor(c(rep(3, n.elements), rep(4, n.elements), rep(5, n.elements), rep(6, n.elements))))
+
+ggplot(pi.binary.df, mapping = aes(x = elements, y = series, group = D, color = D)) + 
+    xlab("") + ylab("") +
+    ggtitle("pi number") +
+    geom_line(position = position_dodge(0.8)) +
+    theme_few(base_size = 13, base_family = "serif") + 
+    facet_grid(facets = D~.) +
+    scale_y_continuous(breaks=c(0, 1)) +
+    theme(plot.title = element_text(hjust=0.5), legend.position = "none")
+```
+
+```{r} 
+sqrt2.binary.D3 = binary.equalities(sqrt2.elements.D3)
+sqrt2.binary.D4 = binary.equalities(sqrt2.elements.D4)
+sqrt2.binary.D5 = binary.equalities(sqrt2.elements.D5)
+sqrt2.binary.D6 = binary.equalities(sqrt2.elements.D6)
+
+n.elements = 100
+
+sqrt2.binary.df = data.frame('series' = c(sqrt2.binary.D3[1:n.elements], sqrt2.binary.D4[1:n.elements], sqrt2.binary.D5[1:n.elements], sqrt2.binary.D6[1:n.elements]),
+                         'elements' = rep(c(1:n.elements), 4),
+                         'D' = as.factor(c(rep(3, n.elements), rep(4, n.elements), rep(5, n.elements), rep(6, n.elements))))
+
+ggplot(sqrt2.binary.df, mapping = aes(x = elements, y = series, group = D, color = D)) + 
+    xlab("") + ylab("") +
+    ggtitle("sqrt2 number") +
+    geom_line(position = position_dodge(0.8)) +
+    theme_few(base_size = 13, base_family = "serif") + 
+    facet_grid(facets = D~.) +
+    scale_y_continuous(breaks=c(0, 1)) +
+    theme(plot.title = element_text(hjust=0.5), legend.position = "none")
 ```
 
 
 
-
-
-
-
-We have produced to files with Mathematica: e.txt, pi.txt, and sqrt2.txt. They contain expansions of these irrational numbers with $100,000$ digits.
-
-The exploratory data analysis consists of
-
-1. Read the numbers, and for each number:
-2. For each value of $D\in\{3,4,5,6\}$ (or embedding dimensions employed in the literature)
-3. Compute the number of tied sequences
-4. Return binary vectors with the position of the tied sequences
+As we can see in the graphs above, the larger the dimension used, the greater the presence of patterns with repeated elements.
+When we have $D = 3$, we see that there is a greater tendency for the existence of sequential patterns with the $label = 0$ (that is, without repeated elements).
+However, as the dimension increases, this behavior is reversed.
+This fact occurs because we are analyzing numbers within the small range $[0, 9]$, so the larger the symbol considered, the greater the probability of the existence of equal elements to be grouped.
