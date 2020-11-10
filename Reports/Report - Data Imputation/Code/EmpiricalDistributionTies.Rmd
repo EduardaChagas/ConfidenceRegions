@@ -176,3 +176,33 @@ As we can see in the graphs above, the larger the dimension used, the greater th
 When we have $D = 3$, we see that there is a greater tendency for the existence of sequential patterns with the $label = 0$ (that is, without repeated elements).
 However, as the dimension increases, this behavior is reversed.
 This fact occurs because we are analyzing numbers within the small range $[0, 9]$, so the larger the symbol considered, the greater the probability of the existence of equal elements to be grouped.
+
+### Examples of tied patterns
+
+For illustration, follow we have presented some examples of tied sequences.
+How we can observe, the implementation used for Bandt-Pompe symbolization considers the same approach of the time-ordered algorithm.
+
+```{r} 
+sqrt2.patterns.D3 = formationPattern(sqrt2.vector, 3, 1, 0)
+sqrt2.binary.D3 = binary.equalities(sqrt2.elements.D3)
+print('Elements:')
+print(sqrt2.elements.D3[which(sqrt2.binary.D3 == 1)[1:10],])
+print('Patterns:')
+print(sqrt2.patterns.D3[which(sqrt2.binary.D3 == 1)[1:10],])
+```
+```{r} 
+e.patterns.D4 = formationPattern(e.vector, 4, 1, 0)
+e.binary.D4 = binary.equalities(e.elements.D4)
+print('Elements:')
+print(e.elements.D4[which(e.binary.D4 == 1)[1:10],])
+print('Patterns:')
+print(e.patterns.D4[which(e.binary.D4 == 1)[1:10],])
+```
+```{r} 
+pi.patterns.D6 = formationPattern(pi.vector, 6, 1, 0)
+pi.binary.D6 = binary.equalities(pi.elements.D6)
+print('Elements:')
+print(pi.elements.D6[which(pi.binary.D6 == 1)[1:10],])
+print('Patterns:')
+print(pi.patterns.D6[which(pi.binary.D6 == 1)[1:10],])
+```
