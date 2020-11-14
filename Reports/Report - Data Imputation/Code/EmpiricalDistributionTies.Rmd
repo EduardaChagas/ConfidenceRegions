@@ -2,8 +2,9 @@
 title: "Study of the Empirical Distribution of Ties in Irrational Numbers"
 author: "Eduarda Chagas"
 date: "Nov 10, 2020"
-
-output: html_notebook
+output:
+  html_document:
+    df_print: paged
 ---
 
 The purpose of this study is describing the distribution of ties in irrational numbers when considering sequences of embedding dimension $D$ (and $\tau=1$).
@@ -206,3 +207,57 @@ print(pi.elements.D6[which(pi.binary.D6 == 1)[1:10],])
 print('Patterns:')
 print(pi.patterns.D6[which(pi.binary.D6 == 1)[1:10],])
 ```
+
+# Monte Carlo study
+
+The purpose of the study is measuring the ability of imputation methods (list here which ones we will consider: I suggest the two best ones reported in the literature) to retrieve the underlying dynamic of a time series that has been *attacked*.
+In a loose sense, we will assess the *breakdown point* of the imputation techniques (study references for "breakdown poiont").
+The **attack** consists in introducing randomly repeated values in the sequence.
+
+```{r PSEUDOCODE eval=FALSE}
+# Define imputation techniques as functions
+I1 <- function(time_series, params=...){return(imputed_time_series)}
+I2 <- function(time_series){return(imputed_time_series)}
+
+# Define attack
+# Input:  "time_series" a time series without repetitions
+#         "d" embedding dimension
+#         "p" probability of attack
+AttackTimeSeries <- function(time_series, d, p) {
+  attacked_time_series <- time_series
+  foreach(d in time_series) { # Check the package foreach
+    if (runif(1) <= p) { # attack with probability p
+      select uniformly an observation in d, say at position i
+      select uniformly a position in d different from i, say j
+      replace d[j] <- d[i] # this introduces a repetition
+    }
+  }
+  return(attacked_time_series)
+}
+
+# Define the parameter space of the Monte Carlo study
+# My suggestion: white noise, for which we already have confidence intervals in the HxC plane
+
+N <- c(N1, N2, N3, ...) # lengths of the time series to be considered
+D <- c(D1, D2, D3, ...) # embedding dimensions to be considered
+P <- c(p1, p2, p3, ...) # probabilities of attack to be considered
+
+# Store all the points in the HxC plane of the following loop
+for(n in N){
+  for(d in D) {
+    for(p in P) {
+      
+      x <- white_noise_length_n # perhaps from the true noise we already have
+      hcx <- point_in_the_HC_plane(x)
+      x_attack <- AttackTimeSeries(x, d, p)
+      hcxattack <- point_in_the_HC_plane(x_attack)
+      
+    }
+  }
+}
+
+# Analyze the points, for instance:
+# Measure distances between pairs
+# Count the number of points inside the confidence regions
+```
+
