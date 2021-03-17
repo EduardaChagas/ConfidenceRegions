@@ -1,0 +1,50 @@
+\subsection{The Entropy-Complexity Plane in the Literature}\label{Sec:BPApplications}
+
+Initial works on the characterization of white noises with permutation entropy arose from the need to discriminate between them and chaotic maps \citep{rosso2013characterization, xiong2020complexity}.
+Notice that the logistic map has been used for pseudorandom number generation; cf. \citet{AnalyzingLogisticMapPseudorandomNumberGeneratorsforPeriodicityInducedbyFinitePrecisionFloatingPointRepresentation} and the references therein.
+It was found that the measure of statistical complexity was able to efficiently quantify the performance of pseudorandom number generators, expanding the possibilities of using Information Theory descriptors with the Bandt-Pompe symbolization \citep{larrondo2013statistical, gonzalez2005statistical}.
+
+Table~\ref{Tab:Literature} presents a summary of the main works in the literature that perform analysis of non-chaotic algorithmic generators, according to their features in the $H\times C$ plane.
+We also provide the length $T$ and embedding dimension $D$ of the time series under scrutiny.
+The following algorithmic generators were analyzed:
+\begin{itemize}
+	\item Mother RNG, available in Marsaglia's website \citep[MOT,][]{marsaglia1994yet};
+	\item Multiple with carry RNG \citep[MWC,][]{marsaglia1994yet};
+	\item Combo RNG \citep[COM,][]{marsaglia1994yet};
+	\item Lehmer RNG \citep[LEH,][]{payne1969coding};
+	\item Fractional Brownian motion (fBm) and fractional Gaussian noise (fGn); see \citet{bardet2003generators};
+	\item Colored noise with power spectrum $f^{-k}$ with $k \geq 0$~\citep{larrondo2012matlab};
+	\item Linear Congruential Generator \citep[LCG,][]{knuth1997sorting}.
+\end{itemize}
+
+
+\begin{table}[hbt]
+	\caption{Results of the main works of white noise sequences analysis in the $H \times C$ plane.}
+	\label{Tab:Literature}
+	\centering
+	\begin{tabular}{llcccc b{5.4em}}
+		\toprule
+		Reference & PRNG & $T$ & $D$ & $H$ & $C$ & Considered random? \\ 
+		\midrule
+		\citeauthor{larrondo2013statistical} (\citeyear{larrondo2013statistical}) &  MOT & NA & 6 & $\cong 0.9969$ & $\cong 0$ & no\\
+		\cmidrule(lr){1-7}
+		\citeauthor{gonzalez2005statistical} (\citeyear{gonzalez2005statistical})  &  MWC & 65536 & NA & $\cong 1$ & $0.3$ & yes \\
+		&  MOT & 65536 & NA & $\cong 1$ & $0.3$ & yes \\
+		&  COM & 65536 & NA & $\cong 1$ & $0.05$ & yes\\
+		\cmidrule(lr){1-7}
+		\citeauthor{RandomNumberGeneratorsCausality} (\citeyear{RandomNumberGeneratorsCausality}) &  LEH & \num[scientific-notation=true]{5 e6} & 5 & $\cong 1$ & $10^{-4}$ & yes \\
+		&  MOT & \num[scientific-notation=true]{5 e6} & 5 & $\cong 1$ & $10^{-4}$ & yes\\
+		&  MWC & \num[scientific-notation=true]{5 e6} & 5 & $\cong 1$ & $10^{-4}$ & yes\\
+		\cmidrule(lr){1-7}
+		\citeauthor{rosso2013characterization} (\citeyear{rosso2013characterization}) &  LCG & \num[scientific-notation=true]{1 e7} & 6 & $0.997871$ & $0.005101$ & no\\
+		\cmidrule(lr){1-7}
+		\citeauthor{xiong2020complexity} (\citeyear{xiong2020complexity}) &  fGn & \num[scientific-notation=true]{2 e17} & 6 & $\cong 1$ & $\cong 0$ & yes \\
+		& $f^{-k}$ & \num[scientific-notation=true]{2 e17} & 6 & $\cong 1$ & $\cong 0$ & yes \\
+		\bottomrule
+	\end{tabular}
+\end{table}
+
+None of these works provide $p$-values or hypothesis tests for their analysis.
+The focus of the articles is finding the set of descriptors that best discriminates chaos from noise.
+The authors make assessments about the randomness of sequence on ad hoc visual inspection of the point's location in the $H\times C$ plane.
+Our work fills such a gap for finite sequences of white noise and proposes a methodology that can be extended to any other situation.
