@@ -1,6 +1,6 @@
 \documentclass[12pt]{article}
 
-\usepackage[binary-units]{siunitx}
+\usepackage{siunitx}
 \usepackage{fouriernc}
 \usepackage{amsmath,amssymb}
 \usepackage{natbib}
@@ -149,9 +149,12 @@ In this work, we will use a model to achieve more general results.
 
 \citet{ANewVersatileDiscreteDistribution} proposes a flexible discrete model, the ``discretised beta'' law.
 The probability function of such a random variable is
+\begin{equation}
+\Pr(X  = x \mid \alpha, \beta, n_{\text{top}}, \zeta) = h(x) \exp\big\{ \alpha T_1(x) + \beta T_2(x) - A(\alpha, \beta) \big\},
+\label{Eq:Probdb}
+\end{equation}
+where $\zeta=\text{TRUE}$ denotes that the support starts in zero ($n_{\text{bot}}=0$), otherwise it starts in one ($n_{\text{bot}}=1$), and
 \begin{align}
-\Pr(X & = x \mid \alpha, \beta, n_{\text{top}}, \zeta) = h(x) \exp\big\{ \alpha T_1(x) + \beta T_2(x) - A(\alpha, \beta) \big\}, \\
-\intertext{where}
 x &\in \{n_{\text{bot}}, n_{\text{bot}}+1, \dots, n_{\text{top}}\},\\
 h(x) & =\frac{(n_{\text{top}} - n_{\text{bot}}+2)^2}{
 (x-n_{\text{bot}}+1)	(n_{\text{top}}-x+1)	},\\
@@ -163,10 +166,25 @@ A(\alpha,\beta) &= \log \bigg(
 \bigg).
 \end{align}
 This definition yields a model that belongs to the exponential family for any $\alpha,\beta\in\mathbbm R$.
-Denote this situation $X\sim\text{dbd}(\alpha,\beta)$.
+Denote this situation $X\sim\text{db}(\alpha,\beta, n_{\text{top}},\zeta)$.
 
-This model can also be related to the Beta distribution with parameters $\alpha$ and $\beta$.
-The probability function and other utilities as, for instance, the maximum likelihood estimator for $(\alpha,\beta)$ are implemented in the \texttt{dbd} package for \texttt{R}.
+If $\alpha,\beta>0$, we can relate the $\text{db}(\alpha,\beta, n_{\text{top}},\zeta)$ model with the (continuous) Beta distribution in the following manner:
+\begin{equation}
+\Pr(X=x \mid \alpha, \beta, n_{\text{top}}, \zeta) = 
+\frac{1}{\kappa} f\Big(
+\frac{x-n_{\text{bot}}+1}{n_{\text{top}}-n_{\text{bot}}+2}
+\Big),
+\label{Eq:Probdb}
+\end{equation}
+where
+$$
+\kappa = \sum_{i=n_{\text{bot}}}^{n_{\text{bot}}} f\Big(
+\frac{x-n_{\text{bot}}+1}{n_{\text{top}}-n_{\text{bot}}+2}
+\Big),
+$$
+and $f$ is the density of a Beta distribution with parameters $\alpha$ and $\beta$.
+
+The probability function and other utilities as, for instance, the maximum likelihood estimator for $(\alpha,\beta)$, are implemented in the \texttt{dbd} package for \texttt{R}.
 
 \section{Proposal}
 
@@ -181,21 +199,33 @@ We need
 \label{Eq:Problem}
 \end{equation}
 for all possible combinations of the sequence length $T$, embedding dimension $D$, and time delay $\tau$.
-Since we do not know the distribution of $(\mathfrak{H},\mathfrak{C})$, we will estimate~\eqref{Eq:Problem}.
+Since we do not know the distribution of $(\mathfrak{H},\mathfrak{C})$, we will model it.
+
+Denote $\mathcal H$ the operator that transforms $\mathcal X$ into its histogram $\bm h$.
+We want to know the joint distribution of $(\mathfrak{H}(\mathcal H(X)),\mathfrak{C}(\mathcal H(X)))$, where $X$ models the sequence $\mathcal X$.
+Unfortunately, even knowing the distribution of $X$ under the null hypothesis (a collection of iid random variables), modelling $\mathcal H(X)$ is difficult.
+
+All the patterns $(\pi_i)_{1\leq i\leq D!}$ are equally probable in the ideal white noise sequence.
+We then use the $\text{db}(\alpha,\beta)$ model, and set $\alpha=\beta=1$, $n_{\text{top}}=D!$, and $\zeta=\text{FALSE}$ to describe $\mathcal H(X)$ under white noise.
+With this, \eqref{Eq:Probdb} becomes $\Pr(\mathcal H(X)=\bm h)=(1/D!)_{1\leq i\leq D!}$ and, most importantly, given a histogram of patterns $\bm h$ we can estimate the model which produced it.
+Denote this situation $\mathcal H(X)\sim\text{db}_0$.
+
+Questions: given that $\mathcal H(X)\sim\text{db}_0$, what is the joint distribution of $(\mathfrak{H}(\mathcal H(X)),\mathfrak{C}(\mathcal H(X)))$?
 
 Assume that for each combination of $(T,D,\tau)$, we have access to $N_{T,D,\tau}$ (denoted as $N$ in the following) independent identically distributed sequences $\bm x_1,\bm x_2, \dots, \bm x_N$ of white noise.
 Each of these sequences produces a point in the $H\times C$ plane, namely $(h_1,c_1), (h_2,c_2), \dots , (h_N,c_N)$.
 But let's remind how these points are produced.
 
+
 The Bandt-Pompe symbolization transforms each sequence of values $\bm x_i$ into a sequence of symbols $\bm \pi_i$.
 We build a histogram of proportions $\bm h_i$ with the sequence of symbols $\bm \pi_i$.
-Now we assume that $\bm h_i$ is an outcome of size $N$ of $X\sim\text{dbd}(\alpha,\beta)$, and we compute $\widehat\alpha_i,\widehat\beta_i$.
+Now we assume that $\bm h_i$ is an outcome of size $N$ of $X\sim\text{db}(\alpha,\beta)$, and we compute $\widehat\alpha_i,\widehat\beta_i$.
 In this way, the sequences $\bm x_1,\bm x_2, \dots, \bm x_N$ become histograms $\bm h_1, \bm h_2, \dots, \bm h_N$ and, on the one hand, they become points $(h_1,c_1), (h_2,c_2), \dots , (h_N,c_N)$ and estimates $(\widehat\alpha_1,\widehat\beta_1), (\widehat\alpha_2,\widehat\beta_2), \dots , (\widehat\alpha_N,\widehat\beta_N)$.
-We may then use $\text{dbd}(\overline{\widehat{\alpha}_i},\overline{\widehat{\beta}_i})$ distribution as a model for the histograms.
+We may then use $\text{db}(\overline{\widehat{\alpha}_i},\overline{\widehat{\beta}_i})$ distribution as a model for the histograms.
 From there, we may obtain an estimate of the distribution of $(\mathfrak{H},\mathfrak{C})$.
 
-The problem was knowing $\Pr\big((\mathfrak{H},\mathfrak{C})\in S\big)$, but $\mathfrak{H}=\mathfrak{H}(X)$  and $\mathfrak{C} = \mathfrak{C}(X)$, and we may assume that $X\sim\text{dbd}(\alpha,\beta)$, and we may estimate $(\alpha,\beta)$.
-The problem becomes finding the distribution of $\big(\mathfrak{H}(X),\mathfrak{C}(X)\big)$ under $X\sim\text{dbd}(\alpha,\beta)$.
+The problem was knowing $\Pr\big((\mathfrak{H},\mathfrak{C})\in S\big)$, but $\mathfrak{H}=\mathfrak{H}(X)$  and $\mathfrak{C} = \mathfrak{C}(X)$, and we may assume that $X\sim\text{db}(\alpha,\beta)$, and we may estimate $(\alpha,\beta)$.
+The problem becomes finding the distribution of $\big(\mathfrak{H}(X),\mathfrak{C}(X)\big)$ under $X\sim\text{db}(\alpha,\beta)$.
 
 
 \bibliographystyle{agsm}
