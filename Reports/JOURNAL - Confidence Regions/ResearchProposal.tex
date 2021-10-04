@@ -151,7 +151,7 @@ In this work, we will use a model to achieve more general results.
 The probability function of such a random variable is
 \begin{equation}
 \Pr(X  = x \mid \alpha, \beta, n_{\text{top}}, \zeta) = h(x) \exp\big\{ \alpha T_1(x) + \beta T_2(x) - A(\alpha, \beta) \big\},
-\label{Eq:Probdb}
+\label{Eq:ProbdbExponential}
 \end{equation}
 where $\zeta=\text{TRUE}$ denotes that the support starts in zero ($n_{\text{bot}}=0$), otherwise it starts in one ($n_{\text{bot}}=1$), and
 \begin{align}
@@ -182,7 +182,12 @@ $$
 \frac{x-n_{\text{bot}}+1}{n_{\text{top}}-n_{\text{bot}}+2}
 \Big),
 $$
-and $f$ is the density of a Beta distribution with parameters $\alpha$ and $\beta$.
+and $f$ is the density of a Beta distribution with parameters $\alpha$ and $\beta$, i.e.,
+\begin{equation}
+	f(u;\alpha, \beta) = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} u^{\alpha-1} (1-u)^{\beta-1} \mathbbm 1_{(0,1)}(u).
+	\label{Eq:DensBeta}
+\end{equation}
+Denote this situation $U\sim\text{Beta}(\alpha,\beta)$.
 
 The probability function and other utilities as, for instance, the maximum likelihood estimator for $(\alpha,\beta)$, are implemented in the \texttt{dbd} package for \texttt{R}.
 
@@ -191,41 +196,94 @@ The probability function and other utilities as, for instance, the maximum likel
 Our aim is, given a time series $\mathcal X$, computing the point $(h,c)$ and being able to assign a likelihood to the hypothesis that $\mathcal X$ is white noise.
 In order to achieve that, we need the distribution of $(\mathfrak{H},\mathfrak{C})$, the bivariate random  variable that produced $(h,c)$, under $H_0:\mathcal X\text { is white noise}$.
 
-We do not have that information, but we may approach the problem as an inferential one.
-Let $S$ be any subset of the $H\times C$ plane.
-We need 
+\begin{itemize}
+\item[Q1:] What is the distribution of $(\mathfrak{H},\mathfrak{C})$ under $H_0:\mathcal X\text { is white noise}$?
+\begin{itemize}
+	\item $\bm X = (X_1,X_2,\dots,X_N)$ is white noise
+	\item Fix $\tau=1$ and define $D$
+	\item $\bm \pi=(\pi_1,\pi_2,\dots,\pi_{n-D})$ is the random sequence of patterns from $\bm X$. There are $D!$ possible patterns.
+	\item The patterns are not independent because some cannot follow others, but we may shuffle them to avoid such restriction.
+	\item $\bm h$ is the random histogram of proportions from $\bm \pi$
+	\item $(\mathfrak{H},\mathfrak{C})$ is the random point in the Entropy-Complexity plane computed from $\bm h$
+	\begin{itemize}	
+		\item $H^*$ is the operator that transforms the random vector $\bm h$ into the random variable $\mathfrak{H}$
+		\item $C^*$ is the operator that transforms the random vector $\bm h$ in to the random variable $\mathfrak{C}$
+		\item Notice that $H^*$ does not compute the entropy of $\bm h$, which is a fixed value; it produces a random variable from the random variable $\bm h$. The same holds for $C^*$; it does not compute the complexity.
+	\end{itemize}
+\end{itemize}
+\item[Q1:] What is the distribution of $
+	(\mathfrak{H},\mathfrak{C}) = 
+	\big(H^*(\bm h),C^*(\bm h)\big)$? Under $H_0$, $\bm h$ is (?) a collection of iid random variables taking values in $\{1, 2,\dots, D!\}$ with same probability $1/D!$ but, as they form a histogram, there must be a restriction on the sum of their values. I don't know how to go on from this point. Multinomial? Whichever the distribution of $\bm h$, how do we compute the distribution of $H^*(\bm h)$?
+\item[$\bullet$] Alternatively, instead of considering such a flexible discrete distribution, we may use a parametric model.
+\item[Q2:] What is the distribution of $
+(\mathfrak{H},\mathfrak{C}) = 
+\big(H^*(\bm h),C^*(\bm h)\big)$ when $\bm h\sim\text{db}(\alpha,\beta,1, D!)$?
+\item[] But we go back to a quantity, rather than to a random variable.
+\item[Q3:] Assume we have been able to compute the quantities $H^*(\alpha,\beta)$ and $C^*(\alpha,\beta)$ under the $\text{db}(\alpha,\beta,1, D!)$ model.
+\item[] We have the maximum likelihood estimator for $(\alpha,\beta)$, say $(\widehat\alpha,\widehat\beta)$.
+\item[] We know that the asymptotic distribution of $(\widehat\alpha,\widehat\beta)$ is a bivariate Gaussian law.
+\item[] How close are we to finding an approximate distribution for $
+(\mathfrak{H},\mathfrak{C})$ under $H_0$?
+\end{itemize}
+
+If $U\sim\text{Beta}(\alpha,\beta)$, then its entropy is
 \begin{equation}
-\Pr\big((\mathfrak{H},\mathfrak{C})\in S\big)
-\label{Eq:Problem}
+H(U) = \log\text{B}(\alpha,\beta) -
+(\alpha-1)\psi(\alpha) -(\beta-1) \psi(\beta) +(\alpha+\beta-2) \psi(\alpha+\beta),
+\label{Eq:HBeta}
 \end{equation}
-for all possible combinations of the sequence length $T$, embedding dimension $D$, and time delay $\tau$.
-Since we do not know the distribution of $(\mathfrak{H},\mathfrak{C})$, we will model it.
+in which we denoted
+$$
+\text{B}(\alpha,\beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
+$$
 
-Denote $\mathcal H$ the operator that transforms $\mathcal X$ into its histogram $\bm h$.
-We want to know the joint distribution of $(\mathfrak{H}(\mathcal H(X)),\mathfrak{C}(\mathcal H(X)))$, where $X$ models the sequence $\mathcal X$.
-Unfortunately, even knowing the distribution of $X$ under the null hypothesis (a collection of iid random variables), modelling $\mathcal H(X)$ is difficult.
+Also, if $U_1\sim\text{Beta}(\alpha_1,\beta_1)$ and
+$U_2\sim\text{Beta}(\alpha_2,\beta_2)$, then the Kullback-Leibler divergence between the models is
+\begin{multline}
+D_{\text{KL}}(U_1,U_2) = \log\frac{\text{B}(\alpha_2,\beta_2)}{\text{B}(\alpha_1,\beta_1)} +
+(\alpha_2-\alpha_1) \psi(\alpha) +
+(\beta_2-\beta_1) \psi(\beta) + \\
+(\alpha_2-\alpha_1+\beta_2-\beta_1) \psi(\alpha_1+\beta_1).
+\label{Eq:DKLBeta}
+\end{multline}
+With~\eqref{Eq:DKLBeta} we may obtain the Jensen-Shannon distance between $U\sim\text{Beta}(\alpha,\beta)$ and the Uniform distribution that is $V\sim\text{Beta}(1,1)$.
+The product between~\eqref{Eq:HBeta} and this Jensen-Shannon distance is the complexity.
 
-All the patterns $(\pi_i)_{1\leq i\leq D!}$ are equally probable in the ideal white noise sequence.
-We then use the $\text{db}(\alpha,\beta)$ model, and set $\alpha=\beta=1$, $n_{\text{top}}=D!$, and $\zeta=\text{FALSE}$ to describe $\mathcal H(X)$ under white noise.
-With this, \eqref{Eq:Probdb} becomes $\Pr(\mathcal H(X)=\bm h)=(1/D!)_{1\leq i\leq D!}$ and, most importantly, given a histogram of patterns $\bm h$ we can estimate the model which produced it.
-Denote this situation $\mathcal H(X)\sim\text{db}_0$.
-
-Questions: given that $\mathcal H(X)\sim\text{db}_0$, what is the joint distribution of $(\mathfrak{H}(\mathcal H(X)),\mathfrak{C}(\mathcal H(X)))$?
-
-Assume that for each combination of $(T,D,\tau)$, we have access to $N_{T,D,\tau}$ (denoted as $N$ in the following) independent identically distributed sequences $\bm x_1,\bm x_2, \dots, \bm x_N$ of white noise.
-Each of these sequences produces a point in the $H\times C$ plane, namely $(h_1,c_1), (h_2,c_2), \dots , (h_N,c_N)$.
-But let's remind how these points are produced.
-
-
-The Bandt-Pompe symbolization transforms each sequence of values $\bm x_i$ into a sequence of symbols $\bm \pi_i$.
-We build a histogram of proportions $\bm h_i$ with the sequence of symbols $\bm \pi_i$.
-Now we assume that $\bm h_i$ is an outcome of size $N$ of $X\sim\text{db}(\alpha,\beta)$, and we compute $\widehat\alpha_i,\widehat\beta_i$.
-In this way, the sequences $\bm x_1,\bm x_2, \dots, \bm x_N$ become histograms $\bm h_1, \bm h_2, \dots, \bm h_N$ and, on the one hand, they become points $(h_1,c_1), (h_2,c_2), \dots , (h_N,c_N)$ and estimates $(\widehat\alpha_1,\widehat\beta_1), (\widehat\alpha_2,\widehat\beta_2), \dots , (\widehat\alpha_N,\widehat\beta_N)$.
-We may then use $\text{db}(\overline{\widehat{\alpha}_i},\overline{\widehat{\beta}_i})$ distribution as a model for the histograms.
-From there, we may obtain an estimate of the distribution of $(\mathfrak{H},\mathfrak{C})$.
-
-The problem was knowing $\Pr\big((\mathfrak{H},\mathfrak{C})\in S\big)$, but $\mathfrak{H}=\mathfrak{H}(X)$  and $\mathfrak{C} = \mathfrak{C}(X)$, and we may assume that $X\sim\text{db}(\alpha,\beta)$, and we may estimate $(\alpha,\beta)$.
-The problem becomes finding the distribution of $\big(\mathfrak{H}(X),\mathfrak{C}(X)\big)$ under $X\sim\text{db}(\alpha,\beta)$.
+%We do not have that information, but we may approach the problem as an inferential one.
+%Let $S$ be any subset of the $H\times C$ plane.
+%We need 
+%\begin{equation}
+%\Pr\big((\mathfrak{H},\mathfrak{C})\in S\big)
+%\label{Eq:Problem}
+%\end{equation}
+%for all possible combinations of the sequence length $T$, embedding dimension $D$, and time delay $\tau$.
+%Since we do not know the distribution of $(\mathfrak{H},\mathfrak{C})$, we will model it.
+%
+%Denote $\mathcal H$ the operator that transforms $\mathcal X$ into its histogram $\bm h$.
+%We want to know the joint distribution of $(\mathfrak{H}(\mathcal H(X)),\mathfrak{C}(\mathcal H(X)))$, where $X$ models the sequence $\mathcal X$.
+%Unfortunately, even knowing the distribution of $X$ under the null hypothesis (a collection of iid random variables), modelling $\mathcal H(X)$ is difficult.
+%
+%All the patterns $(\pi_i)_{1\leq i\leq D!}$ are equally probable in the ideal white noise sequence.
+%We then use the $\text{db}(\alpha,\beta)$ model, and set $\alpha=\beta=1$, $n_{\text{top}}=D!$, and $\zeta=\text{FALSE}$ to describe $\mathcal H(X)$ under white noise.
+%With this, \eqref{Eq:Probdb} becomes $\Pr(\mathcal H(X)=\bm h)=(1/D!)_{1\leq i\leq D!}$ and, most importantly, given a histogram of patterns $\bm h$ we can estimate the model which produced it.
+%Denote this situation $\mathcal H(X)\sim\text{db}_0$.
+%
+%Questions: given that $\mathcal H(X)\sim\text{db}_0$, what is the joint distribution of $(\mathfrak{H}(\mathcal H(X)),\mathfrak{C}(\mathcal H(X)))$?
+%
+%Assume that for each combination of $(T,D,\tau)$, we have access to $N_{T,D,\tau}$ (denoted as $N$ in the following) independent identically distributed sequences $\bm x_1,\bm x_2, \dots, \bm x_N$ of white noise.
+%Each of these sequences produces a point in the $H\times C$ plane, namely $(h_1,c_1), (h_2,c_2), \dots , (h_N,c_N)$.
+%But let's remind how these points are produced.
+%
+%
+%The Bandt-Pompe symbolization transforms each sequence of values $\bm x_i$ into a sequence of symbols $\bm \pi_i$.
+%We build a histogram of proportions $\bm h_i$ with the sequence of symbols $\bm \pi_i$.
+%Now we assume that $\bm h_i$ is an outcome of size $N$ of $X\sim\text{db}(\alpha,\beta)$, and we compute $\widehat\alpha_i,\widehat\beta_i$.
+%In this way, the sequences $\bm x_1,\bm x_2, \dots, \bm x_N$ become histograms $\bm h_1, \bm h_2, \dots, \bm h_N$ and, on the one hand, they become points $(h_1,c_1), (h_2,c_2), \dots , (h_N,c_N)$ and estimates $(\widehat\alpha_1,\widehat\beta_1), (\widehat\alpha_2,\widehat\beta_2), \dots , (\widehat\alpha_N,\widehat\beta_N)$.
+%We may then use $\text{db}(\overline{\widehat{\alpha}_i},\overline{\widehat{\beta}_i})$ distribution as a model for the histograms.
+%From there, we may obtain an estimate of the distribution of $(\mathfrak{H},\mathfrak{C})$.
+%
+%The problem was knowing $\Pr\big((\mathfrak{H},\mathfrak{C})\in S\big)$, but $\mathfrak{H}=\mathfrak{H}(X)$  and $\mathfrak{C} = \mathfrak{C}(X)$, and we may assume that $X\sim\text{db}(\alpha,\beta)$, and we may estimate $(\alpha,\beta)$.
+%The problem becomes finding the distribution of $\big(\mathfrak{H}(X),\mathfrak{C}(X)\big)$ under $X\sim\text{db}(\alpha,\beta)$.
 
 
 \bibliographystyle{agsm}
