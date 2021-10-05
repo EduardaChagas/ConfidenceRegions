@@ -16,6 +16,7 @@
 	
 We already have purely empirical results about the confidence region of points in the $H\times C$ plane under white noise.
 In this work, we propose advancing such a knowledge by using a general model for discrete distributions.
+The work by \citet{OrdinalPatternProbabilities} is among the few that study theoretical (distributional) properties of these points; the article proves consistency and asymptotic normality of estimators.
 
 \section{Introduction}
 
@@ -201,7 +202,7 @@ In order to achieve that, we need the distribution of $(\mathfrak{H},\mathfrak{C
 \begin{itemize}
 	\item $\bm X = (X_1,X_2,\dots,X_N)$ is white noise
 	\item Fix $\tau=1$ and define $D$
-	\item $\bm \pi=(\pi_1,\pi_2,\dots,\pi_{n-D})$ is the random sequence of patterns from $\bm X$. There are $D!$ possible patterns.
+	\item $\bm \pi=(\pi_1,\pi_2,\dots,\pi_{n-D+1})$ is the random sequence of patterns from $\bm X$. There are $D!$ possible patterns.
 	\item The patterns are not independent because some cannot follow others, but we may shuffle them to avoid such restriction.
 	\item $\bm h$ is the random histogram of proportions from $\bm \pi$
 	\item $(\mathfrak{H},\mathfrak{C})$ is the random point in the Entropy-Complexity plane computed from $\bm h$
