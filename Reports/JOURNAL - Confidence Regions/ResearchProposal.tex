@@ -184,10 +184,10 @@ $$
 $$
 and $f$ is the density of a Beta distribution with parameters $\alpha$ and $\beta$, i.e.,
 \begin{equation}
-	f(u;\alpha, \beta) = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} u^{\alpha-1} (1-u)^{\beta-1} \mathbbm 1_{(0,1)}(u).
+	f(v;\alpha, \beta) = \frac{\Gamma(\alpha+\beta)}{\Gamma(\alpha)\Gamma(\beta)} v^{\alpha-1} (1-v)^{\beta-1} \mathbbm 1_{(0,1)}(v).
 	\label{Eq:DensBeta}
 \end{equation}
-Denote this situation $U\sim\text{Beta}(\alpha,\beta)$.
+Denote this situation $V\sim\text{Beta}(\alpha,\beta)$.
 
 The probability function and other utilities as, for instance, the maximum likelihood estimator for $(\alpha,\beta)$, are implemented in the \texttt{dbd} package for \texttt{R}.
 
@@ -226,9 +226,9 @@ In order to achieve that, we need the distribution of $(\mathfrak{H},\mathfrak{C
 (\mathfrak{H},\mathfrak{C})$ under $H_0$?
 \end{itemize}
 
-If $U\sim\text{Beta}(\alpha,\beta)$, then its entropy is
+If $V\sim\text{Beta}(\alpha,\beta)$, then its entropy is
 \begin{equation}
-H(U) = \log\text{B}(\alpha,\beta) -
+H(V) = \log\text{B}(\alpha,\beta) -
 (\alpha-1)\psi(\alpha) -(\beta-1) \psi(\beta) +(\alpha+\beta-2) \psi(\alpha+\beta),
 \label{Eq:HBeta}
 \end{equation}
@@ -236,18 +236,25 @@ in which we denoted
 $$
 \text{B}(\alpha,\beta) = \frac{\Gamma(\alpha)\Gamma(\beta)}{\Gamma(\alpha+\beta)}.
 $$
+We propose approximating the distribution of $\mathfrak{H}$ by the distribution of 
+\begin{equation}
+\widehat{H}(V)= \log\text{B}(\widehat\alpha,\widehat\beta) -
+(\widehat\alpha-1)\psi(\widehat\alpha) -(\widehat\beta-1) \psi(\widehat\beta) +(\widehat\alpha+\widehat\beta-2) \psi(\widehat\alpha+\widehat\beta),
+\end{equation}
+which is a transformation of a bivariate Gaussian distribution.
 
-Also, if $U_1\sim\text{Beta}(\alpha_1,\beta_1)$ and
-$U_2\sim\text{Beta}(\alpha_2,\beta_2)$, then the Kullback-Leibler divergence between the models is
+Also, if $V_1\sim\text{Beta}(\alpha_1,\beta_1)$ and
+$V_2\sim\text{Beta}(\alpha_2,\beta_2)$, then the Kullback-Leibler divergence between the models is
 \begin{multline}
-D_{\text{KL}}(U_1,U_2) = \log\frac{\text{B}(\alpha_2,\beta_2)}{\text{B}(\alpha_1,\beta_1)} +
+D_{\text{KL}}(V_1,V_2) = \log\frac{\text{B}(\alpha_2,\beta_2)}{\text{B}(\alpha_1,\beta_1)} +
 (\alpha_2-\alpha_1) \psi(\alpha) +
 (\beta_2-\beta_1) \psi(\beta) + \\
 (\alpha_2-\alpha_1+\beta_2-\beta_1) \psi(\alpha_1+\beta_1).
 \label{Eq:DKLBeta}
 \end{multline}
-With~\eqref{Eq:DKLBeta} we may obtain the Jensen-Shannon distance between $U\sim\text{Beta}(\alpha,\beta)$ and the Uniform distribution that is $V\sim\text{Beta}(1,1)$.
+With~\eqref{Eq:DKLBeta} we may obtain the Jensen-Shannon distance between $V\sim\text{Beta}(\alpha,\beta)$ and the Uniform distribution that is $U\sim\text{Beta}(1,1)$.
 The product between~\eqref{Eq:HBeta} and this Jensen-Shannon distance is the complexity.
+Our proposal consists in approximating the distribution of $\mathfrak{C}$ by the distribution of $\widehat{C}(V,U)$.
 
 %We do not have that information, but we may approach the problem as an inferential one.
 %Let $S$ be any subset of the $H\times C$ plane.
