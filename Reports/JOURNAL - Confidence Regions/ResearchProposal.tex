@@ -87,13 +87,13 @@ It is zero when $h(j)=1$ for some $j$ (and, thus, all other bins are zero), and 
 
 Although very expressive, the Normalized Shannon Entropy is not able to describe all possible underlying dynamics.
 In particular, for intermediate values of $H$, there is a wide variety of situations worth characterizing.
-To this aim, \citet{LopezRuiz1995} proposed using the disequilibrium  $Q$, a measure of how far $\bm h$ is from an equilibrium or noninformative distribution.
+To this aim, \citet{LopezRuiz1995} proposed using the disequilibrium  $Q$, a measure of how far $\bm h$ is from an equilibrium or non-informative distribution.
 They employed the Euclidean distance between $\bm h$ and the uniform probability distribution function.
 
-We opt for the Jensen-Shannon distance to the uniform distribution $\bm{u} = \big(\frac{1}{D!^2}, \dots, \frac{1}{D!^2}\big)$, as it is a measure of how similar the underlying dynamics is to a non-informative process.
+We opt for the Jensen-Shannon distance to the uniform distribution $\bm{u} = \big(\frac{1}{D!}, \dots, \frac{1}{D!}\big)$, as it is a measure of how similar the underlying dynamics is to a non-informative process.
 It is calculated as:
 \begin{equation}
-	Q'(\bm{h}, \bm{u}) = \sum_{\ell=1}^{D!^2} \Big(h_\ell \log\frac{h_\ell}{u_\ell} +
+	Q'(\bm{h}, \bm{u}) = \sum_{\ell=1}^{D!} \Big(h_\ell \log\frac{h_\ell}{u_\ell} +
 	u_\ell \log\frac{u_\ell}{h_\ell}
 	\Big).
 \end{equation}
