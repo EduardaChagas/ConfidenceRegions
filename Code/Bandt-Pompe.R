@@ -63,31 +63,31 @@ formationPattern <- function(series, D, tau, option){
 
 # Bandt-Pompe function ---------------------------------------------------------------------------------
 
-#bandt.pompe <- function(series, dimension, delay){
-#  dyn.load("BandtPompe.so")
-#  elements = formationPattern(series, dimension, delay, 1)
-#  element.size = dim(elements)[1]
-#  probability <- .Call("BandtPompe", elements, dimension, element.size)
-#  return(probability)
-#}
-
-
-bandt.pompe <- function(serie, dimension, delay){  
-  fat = factorial(dimension)
-  probability = rep(0, fat)
-  symbols = define.symbols(dimension)
-  p_patterns = formationPattern(serie, dimension, delay, 0)
-  n_symbols = dim(p_patterns)[1]
-  for(j in 1:n_symbols){
-    for(i in 1:fat){
-      if(all(p_patterns[j,] == symbols[i,])){ 
-        probability[i] = probability[i] + 1
-        break
-      }
-    }
-  }
-  return(probability/n_symbols)
+bandt.pompe <- function(series, dimension, delay){
+  dyn.load("BandtPompe.so")
+  elements = formationPattern(series, dimension, delay, 1)
+  element.size = dim(elements)[1]
+  probability <- .Call("BandtPompe", elements, dimension, element.size)
+  return(probability)
 }
+
+
+#bandt.pompe <- function(serie, dimension, delay){  
+#  fat = factorial(dimension)
+#  probability = rep(0, fat)
+#  symbols = define.symbols(dimension)
+#  p_patterns = formationPattern(serie, dimension, delay, 0)
+#  n_symbols = dim(p_patterns)[1]
+#  for(j in 1:n_symbols){
+#    for(i in 1:fat){
+#      if(all(p_patterns[j,] == symbols[i,])){ 
+#        probability[i] = probability[i] + 1
+#        break
+#      }
+#    }
+#  }
+#  return(probability/n_symbols)
+#}
 
 
 # Shannon Entropy function -------------------------------------------------------------------------------

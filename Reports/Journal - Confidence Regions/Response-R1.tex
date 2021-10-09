@@ -1,0 +1,60 @@
+\RequirePackage{xr}
+\externaldocument{paper}
+
+\documentclass[journal,onecolumn,draftcls,11pt]{IEEEtran}
+
+\usepackage{graphicx}
+\usepackage{subfigure}
+\usepackage{booktabs}
+\usepackage[T1]{fontenc}
+\usepackage[cmex10]{amsmath}
+\usepackage{amsfonts}
+\usepackage{color}
+\usepackage{bm,bbm}
+\usepackage{wasysym}
+\usepackage{texnames}
+\usepackage{url}
+\usepackage[boxed]{algorithm2e}   % AAB inserido
+\usepackage[listings, many]{tcolorbox}
+\usepackage[binary-units]{siunitx}
+\usepackage{multirow,bigstrut}
+\usepackage{capt-of}
+\usepackage{todonotes}
+\usepackage{enumitem}
+
+
+\begin{document}
+\title{International Statistical Review - Response Letter of Manuscript ID ISR-OA-160-20}
+
+\author{Eduarda~ T.~C.~Chagas,
+        Marcelo Queiroz,
+        Osvaldo A.\ Rosso,
+        Heitor S.\ Ramos,
+        Cristopher G.\ S. Freitas,
+        Leonardo V.\ Pereira,
+        Alejandro C.\ Frery}
+
+\maketitle
+
+\IEEEpeerreviewmaketitle
+
+\section{Co-Editor-in-Chief Requirements}
+
+\vskip3em\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Comment \#1]
+The editor has recommended a major revision, and I am inclined to agree. In particular, I would like to see a strong review component tied in with what you propose, and also a comparison of where your method stands in the literature. Substantiating the advantages through theory or simulation studies would be helpful as well. Please keep in mind that this is a review journal and that the paper must be accessible to more than the technical experts in the area.
+\end{tcolorbox}
+
+\section{Reviewer \#1}
+
+\vskip3em\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Comment \#1]
+In this paper the authors propose a quite elaborate method to test whether a discrete-time analog signal is white noise by locating it in the entropy-complexity plane (ECP). The description is didactic, detailed and well-written. However, I missed the rationale of using the ECP. I mean, what can be done in this way that cannot be done with the entropy alone? After all, entropy (horizontal axis of the ECP) is a measure of (pseudo-)randomness. For white noise, the normalized (permutation) entropy is 1, hence complexity is automatically 0 (see the definition domain of the ECP in Figures 2, 4 and 5). In other words, why use two measures that are not independent (since entropy sets the range of complexity), instead of only one (the entropy in this case)? So, unless the authors convincingly rebut this point, I cannot recommend the publication of this paper in ISR.
+\end{tcolorbox}
+
+\section{Reviewer \#2}
+
+\vskip3em\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Comment \#1]
+The paper address an interesting problem in time series. The manuscript presents a thorough review of the literature, and develops a proposed test for a wide array of models. Examples and simulation studies are clearly defined and their results are discussed. The paper is well written, and I have no major corrections to propose.
+\end{tcolorbox}
+
+\end{document}
+

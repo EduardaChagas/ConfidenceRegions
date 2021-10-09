@@ -25,16 +25,16 @@ if(!require(grid)){
 }
 
 rainbow_colors <- palette(c("#494947", #DarkGreen
-                            "#7494EA", #MutedDarkBlue
+                            "#FB4D3D", #BrightRed
                             "#B14AED", #Violet
                             "#44CCFF", #BrightLightBlue
                             "#35FF69", #BrightGreen
                             "#ED8438", #Orange
-                            "#E7AD99", #Pink
-                            "#C18C5D", #LightBrown
-                            "#BF6F00", #DarkYellow
-                            "#FB4D3D", #BrightRed
-                            "#495867") #DarkGray
+                            "#c41676", #Pink
+                            "#06470d", #verde escuro
+                            "#BF6F00") #DarkYellow
+                            #"#7494EA", #MutedDarkBlue
+                            #"#495867") #DarkGray
 )
 
 series.generator.fk <- function(pp, y, n, k){
@@ -56,7 +56,7 @@ series.generator.map <- function(r, x_0, n){
   Series
 }
 
-calculate.histogram <- function(ts, d, t, name.title){
+calculate.histogram <- function(ts, d, t, name.title, color_plot){
   fat = factorial(d)
   symbol = define.symbols(d)
   p.patterns = formationPattern(ts, d, t, 0)
@@ -74,7 +74,7 @@ calculate.histogram <- function(ts, d, t, name.title){
   index.rep = data.frame(i = index.rep)
   p = ggplot(index.rep) +
     geom_histogram(aes(x = i, y = ..density..),
-                   binwidth = 1, color = "#212529") +
+                   binwidth = 1, color = color_plot, fill = color_plot) +
     ggtitle(name.title) +
     theme_few(base_size = 12, base_family = "serif") +
     theme(plot.title = element_text(size = 12, hjust=0.5)) + 
@@ -127,13 +127,22 @@ series.periodic = sin(2*x) * cos(2*x)
 ## Histogram ----------------------------------------------------------------------------------------------
 plots = array(list(), 11)
 series = data.frame(series.fk, series.map, series.monotonic, series.periodic)
-names.title = c("White Noise", expression(f^{-1/2}), expression(f^{-1}),
-                expression(f^{-3/2}), expression(f^{-2}), expression(f^{-5/2}),
-                expression(f^{-3}), "Logistic Map, r = 3.6", "Logistic Map, r = 4",
-                expression(paste("log(", x + .1, ")")), expression(paste("sin(", 2 * x, ")", "cos(", 2 * x, ")")))
+names.title = c("White Noise", 
+                expression(italic(f)^{-1/2}), 
+                expression(italic(f)^{-1}),
+                expression(italic(f)^{-3/2}), 
+                expression(italic(f)^{-2}), 
+                expression(italic(f)^{-5/2}),
+                expression(italic(f)^{-3}),  
+                expression(paste("Logistic Map, ", italic(r), " = ", 3.6)), 
+                expression(paste("Logistic Map, ", italic(r), " = ", 4)),
+                expression(paste("log(", x + .1, ")")), 
+                expression(paste("sin(", 2 * x, ")")), 
+                expression(paste("cos(", 2 * x, ")")))
 
 for(i in 1:11){
-  plots[[i]] = calculate.histogram(series[,i], d, t, names.title[i])
+  plots[[i]] = calculate.histogram(series[,i], d, t, names.title[i], rainbow_colors[i])
+  cat('i: ', i, " color: ", rainbow_colors[i], '\n')
 }
 
 figure = ggarrange(plots[[1]], plots[[2]], plots[[3]], 
@@ -145,6 +154,6 @@ figure = ggarrange(plots[[1]], plots[[2]], plots[[3]],
 pdf("h.pdf", width = 9, height = 9) 
 annotate_figure(figure,
                 #bottom = text_grob("Patterns", face = "italic", size = 12),
-                left = text_grob("Probability", rot = 90, face = "italic", size = 12)
+                #left = text_grob("Probability", rot = 90, face = "italic", size = 12)
 )
 dev.off() 

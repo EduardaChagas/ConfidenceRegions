@@ -24,7 +24,7 @@ step1 <- ggplot(data=uv, aes(x=u, y=v)) +
   xlim(-3.5, 3.5) + ylim(-1.5, 1.5)  +
   xlab(expression(italic(u))) +
   ylab(expression(italic(v))) +
-  theme_clean(base_size = 30, base_family = "sans")
+  theme_clean(base_size = 30, base_family = "serif")
 
 # Confidence region at level a
 step2 <- ggplot(data=uv, aes(x=u, y=v)) +
@@ -45,7 +45,7 @@ step2 <- ggplot(data=uv, aes(x=u, y=v)) +
   xlim(-3.5, 3.5) + ylim(-1.5, 1.5)  +
   xlab(expression(italic(u))) +
   ylab(expression(italic(v))) +
-  theme_clean(base_size = 30, base_family = "sans")
+  theme_clean(base_size = 30, base_family = "serif")
 
 # Confidence region at level a
 step3 <- ggplot(data=uv, aes(x=u, y=v)) +
@@ -70,7 +70,7 @@ step3 <- ggplot(data=uv, aes(x=u, y=v)) +
   xlim(-3.5, 3.5) + ylim(-1.5, 1.5)  +
   xlab(expression(italic(u))) +
   ylab(expression(italic(v))) +
-  theme_clean(base_size = 30, base_family = "sans")
+  theme_clean(base_size = 30, base_family = "serif")
 
 ggsave(step1, filename = "../../Reports/JOURNAL - Confidence Regions/Figures/PvalueStep1.pdf", width = 8, height = 6)
 ggsave(step2, filename = "../../Reports/JOURNAL - Confidence Regions/Figures/PvalueStep2.pdf", width = 8, height = 6)

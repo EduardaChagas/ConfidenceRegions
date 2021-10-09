@@ -86,7 +86,7 @@
       geom_point(data = median, aes(x = H, y = C), colour = "red", size = 1) +
       #xlab("H") + ylab("C") + 
       xlab(expression(italic(H))) + ylab(expression(italic(C))) + 
-      theme_few(base_size = 25, base_family = "sans") +  
+      theme_few(base_size = 25, base_family = "serif") +  
       theme(plot.title = element_text(hjust=0.5),
             axis.text.x = element_text(angle = 30)) -> p
     
@@ -118,7 +118,7 @@
             label.x = expression(italic(H)), 
             label.y = expression(italic(C))) + 
     ggtitle(expression(italic(T)==1000)) +
-    theme_few(base_size = 30, base_family = "sans") + 
+    theme_few(base_size = 30, base_family = "serif") + 
     # theme(text=element_text(size=25, family="Times"), plot.title = element_text(hjust=0.5)) + 
     guides(colour = guide_legend(override.aes = list(size=3)))
   dev.off()
@@ -140,7 +140,7 @@
   ggarrange(p1, p2, p3, p4, ncol = 4, nrow = 1, common.legend = TRUE, legend = "right") + 
     ggtitle(expression(italic(T)==50000)) +
     xlab(expression(italic(H))) + ylab(expression(italic(C))) + 
-    theme_few(base_size = 30, base_family = "sans") + 
+    theme_few(base_size = 30, base_family = "serif") + 
     guides(colour = guide_legend(override.aes = list(size=3)))
   dev.off()
   

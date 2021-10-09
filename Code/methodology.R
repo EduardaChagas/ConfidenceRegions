@@ -24,7 +24,7 @@ if(!require(ggthemes)){
 
 D = 6
 N = 50000
-HC = read.csv("../Data/Regions-HC/HC_50k.csv")[,2:4]
+HC = read.csv("../Data/Regions-HC/HC-VALIDATION-D6-N50000.csv")[,2:4]
 index = which(HC$D == D)
 HC = HC[index[1:15], ]
 
@@ -104,7 +104,7 @@ step2 <-
             fill = "red", alpha = 0.1, inherit.aes = FALSE) +
   xlab(expression(PC[1])) +
   ylab(expression(PC[2])) + 
-  theme_clean(base_size = 50, base_family = "sans") +  
+  theme_clean(base_size = 50, base_family = "serif") +  
   theme(plot.title = element_text(hjust=0.5)) 
 
 
@@ -141,7 +141,7 @@ ggplot(HC, aes(x = H, y = C)) +
   xlab(expression(italic(H))) +
   ylab(expression(italic(C))) +
   theme(plot.title = element_text(hjust=0.5)) + 
-  theme_clean(base_size = 25, base_family = "sans") 
+  theme_clean(base_size = 25, base_family = "serif") 
 
 step3 <- ggplot(HC, aes(x = H, y = C)) +
   geom_line(data = cotas.sup, aes(x = H, y = C), color="gray") +
@@ -155,7 +155,7 @@ step3 <- ggplot(HC, aes(x = H, y = C)) +
   xlab(expression(italic(H))) +
   ylab(expression(italic(C))) +
   theme(plot.title = element_text(hjust=0.5)) + 
-  theme_clean(base_size = 50, base_family = "sans") 
+  theme_clean(base_size = 50, base_family = "serif") 
 
 ggsave(step1, filename = "../Reports/JOURNAL - Confidence Regions/Figures/step1.pdf", width = 14, height = 10)
 ggsave(step2, filename = "../Reports/JOURNAL - Confidence Regions/Figures/step2.pdf", width = 14, height = 10)

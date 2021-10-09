@@ -112,9 +112,9 @@ plot.HC.PCA.trozos <- function(N, dim, lengend ,x.lim = NULL, y.lim = NULL){
               fill = "yellow", alpha = 0.3, inherit.aes = FALSE) +
     #scale_color_discrete(name = expression(italic(D))) +
     #ggtitle(expression(italic(legend))) +
-    xlab(expression(PC[1])) + 
-    ylab(expression(PC[2])) + 
-    theme_few(base_size = 35, base_family = "sans") +  
+    xlab(expression(italic(PC[1]))) + 
+    ylab(expression(italic(PC[2]))) + 
+    theme_few(base_size = 35, base_family = "serif") +  
     theme(plot.title = element_text(hjust=0.5)) -> p
   
   if(is.null(x.lim)){

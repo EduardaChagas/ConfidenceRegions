@@ -24,6 +24,7 @@ for(i in names){
   dados <- c(dados, Data)
 }
 
+dados <- readBin('../Data/random.org/random_50k.bin',n=1e8,size="4",what ='integer')
 dados <- abs(dados/max(dados))
 write.csv(dados[1:50000], file = "../Data/random_sample.csv")
 
@@ -33,7 +34,7 @@ source("bandt_pompe/features.R")
 source("bandt_pompe/visibility.R")
 source("bandt_pompe/helpers.R")
 
-random_50k <- readBin('data/random_50k.bin',n=1e8,size="4",what ='integer')
+random_50k <- readBin('../Data/random.org/random_50k.bin',n=1e8,size="4",what ='integer')
 seq_50k <- abs(random_50k/max(random_50k))
 split_seq <- as.matrix(split(seq_50k, ceiling(seq_along(seq_50k)/50000)))
 ts = matrix(nrow = 50000, ncol = 104)
@@ -43,15 +44,16 @@ for(i in 1:104){
 }
 
 for(i in 1:104){
-  probs = bandt.pompe(ts[,i], 6, 1)
+  probs = bandt.pompe(ts[,i], 3, 1)
   h = shannon.entropy.normalized(probs)
   c = Ccomplexity(probs)
-  cat("i: ", i, " H: ", h, " C: ", c, "\n")
+  cat("i: ", i, " H: ", round(h, 9), " C: ", round(c, 9), "\n")
   
-  print(test.point(H = h, C = c, D = 6, N = 50000, region = 90))
+  if(round(h, 6) == round(0.999985292278035, 6) && round(c, 6) == round(0.0000145144384709536, 6))
+    print(i)
 }
 
-#H = 0.9989109
-#C = 0.002609346
+#H = 0.999985292278035
+#C = 1.45144384709536e-05
 
-write.csv(ts[,1], "Emblematic-series-D6-N50000.csv")
+write.csv(ts[,10], "../Data/Emblematic-serie-D3-N50000.csv")

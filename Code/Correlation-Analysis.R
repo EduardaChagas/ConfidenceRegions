@@ -85,13 +85,13 @@ correlation.analysis.point <- function(){
     geom_line(data = cotas.inf, aes(x = c2x, y = c2y), color="gray") + 
     geom_point(size = 1.5, alpha = .4) + 
     geom_point(data = HC.ts, aes(x = H, y = C), size = 1.5, alpha = .4, color = "red") + 
-    geom_label_repel(aes(label = paste("italic(k) ==", legend.names)),parse = TRUE, segment.size = 0.5, min.segment.length = 0, force = 18) +
+    geom_label_repel(aes(label = paste(expression(italic(k)), "==", legend.names)),parse = TRUE, segment.size = 0.5, min.segment.length = 0, force = 18) +
     scale_color_manual(values = rainbow_colors) +
     xlab(expression(italic(H))) +
     ylab(expression(italic(C))) +
     xlim(limits = c(min(HC.values$H, rect95$H, rect99$H), max(HC.values$H, rect95$H, rect99$H))) + 
     ylim(limits=c(0.002, max(HC.values$C, rect95$C, rect99$C))) + 
-    theme_few(base_size = 20, base_family = "sans")  + 
+    theme_few(base_size = 20, base_family = "serif")  + 
     theme(plot.title = element_text(hjust=0.5), legend.position="none")
   print(p)
   dev.off()
@@ -148,7 +148,7 @@ correlation.analysis.dotted <- function(){
     geom_polygon(data=rect99, aes(x = H, y = C), fill="green", alpha=0.2, inherit.aes = FALSE) +
     geom_line(data = cotas.sup, aes(x = c1x, y = c1y), color="gray") +
     geom_line(data = cotas.inf, aes(x = c2x, y = c2y), color="gray") + 
-    geom_label_repel(aes(label = paste("italic(k) ==", legend.names)),parse = TRUE, segment.size = 0.5, min.segment.length = 0, force = 18) +
+    geom_label_repel(aes(label = paste(expression(italic(k)), "==", legend.names)),parse = TRUE, segment.size = 0.5, min.segment.length = 0, force = 18) +
     geom_line(linetype="dotted") +
     geom_point(size = 1.5, alpha = .4) + 
     scale_color_manual(values = rainbow_colors) +
@@ -156,7 +156,7 @@ correlation.analysis.dotted <- function(){
     ylim(limits=c(0.002, max(HC.values$C, rect95$C, rect99$C))) + 
     xlab(expression(italic(H))) +
     ylab(expression(italic(C))) +
-    theme_few(base_size = 20, base_family = "sans")  + 
+    theme_few(base_size = 20, base_family = "serif")  + 
     theme(plot.title = element_text(hjust=0.5), legend.position="none")
   print(p)
   dev.off()
