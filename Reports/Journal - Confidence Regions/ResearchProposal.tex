@@ -2,12 +2,15 @@
 
 \usepackage{siunitx}
 \usepackage{fouriernc}
+\usepackage{color}
 \usepackage{amsmath,amssymb}
 \usepackage{natbib}
 \usepackage{bm,bbm}
 \usepackage{enumitem}
 \usepackage{graphicx}
 \graphicspath{{./Figures/}}
+
+\usepackage[indent=1cm]{parskip}
 
 \title{Research Proposal}
 
@@ -148,7 +151,7 @@ In this work, we will use a model to achieve more general results.
 
 \section{The Discretised Beta Distribution}
 
-\citet{ANewVersatileDiscreteDistribution} proposes a flexible discrete model, the ``discretised beta'' law.
+\citet{ANewVersatileDiscreteDistribution} proposes a flexible discrete model, the ``discretised Beta'' law.
 The probability function of such a random variable is
 \begin{equation}
 \Pr(X  = x \mid \alpha, \beta, n_{\text{top}}, \zeta) = h(x) \exp\big\{ \alpha T_1(x) + \beta T_2(x) - A(\alpha, \beta) \big\},
@@ -167,9 +170,9 @@ A(\alpha,\beta) &= \log \bigg(
 \bigg).
 \end{align}
 This definition yields a model that belongs to the exponential family for any $\alpha,\beta\in\mathbbm R$.
-Denote this situation $X\sim\text{db}(\alpha,\beta, n_{\text{top}},\zeta)$.
+Denote this situation $X\sim\text{dB}(\alpha,\beta, n_{\text{top}},\zeta)$.
 
-If $\alpha,\beta>0$, we can relate the $\text{db}(\alpha,\beta, n_{\text{top}},\zeta)$ model with the (continuous) Beta distribution in the following manner:
+If $\alpha,\beta>0$, we can relate the $\text{dB}(\alpha,\beta, n_{\text{top}},\zeta)$ model with the (continuous) Beta distribution in the following manner:
 \begin{equation}
 \Pr(X=x \mid \alpha, \beta, n_{\text{top}}, \zeta) = 
 \frac{1}{\kappa} f\Big(
@@ -196,14 +199,15 @@ The probability function and other utilities as, for instance, the maximum likel
 
 Our aim is, given a time series $\mathcal X$, computing the point $(h,c)$ and being able to assign a likelihood to the hypothesis that $\mathcal X$ is white noise.
 In order to achieve that, we need the distribution of $(\mathfrak{H},\mathfrak{C})$, the bivariate random  variable that produced $(h,c)$, under $H_0:\mathcal X\text { is white noise}$.
-
+We will work with this setup, but later we will relax this null hypothesis.
+%
 \begin{itemize}
 \item[Q1:] What is the distribution of $(\mathfrak{H},\mathfrak{C})$ under $H_0:\mathcal X\text { is white noise}$?
 \begin{itemize}
 	\item $\bm X = (X_1,X_2,\dots,X_N)$ is white noise
 	\item Fix $\tau=1$ and define $D$
 	\item $\bm \pi=(\pi_1,\pi_2,\dots,\pi_{n-D+1})$ is the random sequence of patterns from $\bm X$. There are $D!$ possible patterns.
-	\item The patterns are not independent because some cannot follow others, but we may shuffle them to avoid such restriction.
+	\item The patterns are not independent because some cannot follow others, but we may shuffle them to avoid such restriction. \textcolor{red}{Eduarda, come up with a proposal for this.}
 	\item $\bm h$ is the random histogram of proportions from $\bm \pi$
 	\item $(\mathfrak{H},\mathfrak{C})$ is the random point in the Entropy-Complexity plane computed from $\bm h$
 	\begin{itemize}	
@@ -214,18 +218,28 @@ In order to achieve that, we need the distribution of $(\mathfrak{H},\mathfrak{C
 \end{itemize}
 \item[Q1:] What is the distribution of $
 	(\mathfrak{H},\mathfrak{C}) = 
-	\big(H^*(\bm h),C^*(\bm h)\big)$? Under $H_0$, $\bm h$ is (?) a collection of iid random variables taking values in $\{1, 2,\dots, D!\}$ with same probability $1/D!$ but, as they form a histogram, there must be a restriction on the sum of their values. I don't know how to go on from this point. Multinomial? Whichever the distribution of $\bm h$, how do we compute the distribution of $H^*(\bm h)$?
+	\big(H^*(\bm h),C^*(\bm h)\big)$? 
+\item[$\bullet$] If we stick to $H_0$, $\bm h$ is a collection of random variables taking values in $\{1, 2,\dots, D!\}$ with same probability $1/D!$, but they are not independent.
+\item[$\bullet$] We may use the multinomial distribution, but how do we compute the distribution of $H^*(\bm h)$?
 \item[$\bullet$] Alternatively, instead of considering such a flexible discrete distribution, we may use a parametric model.
-\item[Q2:] What is the distribution of $
+\item[Q2:] We will ask a slightly different question: What is the distribution of $
 (\mathfrak{H},\mathfrak{C}) = 
-\big(H^*(\bm h),C^*(\bm h)\big)$ when $\bm h\sim\text{db}(\alpha,\beta,1, D!)$?
+\big(H^*(\bm h),C^*(\bm h)\big)$ when $\bm h\sim\text{dB}(\alpha,\beta,1, D!)$?
 \item[] But we go back to a quantity, rather than to a random variable.
-\item[Q3:] Assume we have been able to compute the quantities $H^*(\alpha,\beta)$ and $C^*(\alpha,\beta)$ under the $\text{db}(\alpha,\beta,1, D!)$ model.
+\item[Q3:] Assume we have been able to compute the quantities $H^*(\alpha,\beta)$ and $C^*(\alpha,\beta)$ under the $\text{dB}(\alpha,\beta,1, D!)$ model.
 \item[] We have the maximum likelihood estimator for $(\alpha,\beta)$, say $(\widehat\alpha,\widehat\beta)$.
 \item[] We know that the asymptotic distribution of $(\widehat\alpha,\widehat\beta)$ is a bivariate Gaussian law.
-\item[] How close are we to finding an approximate distribution for $
-(\mathfrak{H},\mathfrak{C})$ under $H_0$?
+\item[] We may calculate the joint distribution of $\big(H^*(\widehat\alpha, \widehat\beta) , C(\widehat\alpha, \widehat\beta)\big)$.
 \end{itemize}
+How close are we to finding an approximate distribution for $
+(\mathfrak{H},\mathfrak{C})$?
+Quite close, I believe.
+
+Let us see another interesting ingredient.
+We need to express both the entropy and the disequilibrium with respect to the uniform distribution of a $\text{dB}(\alpha,\beta,1,D!)$ sample.
+\citet{ShannonsEntropyinExponentialFamiliesStatisticalApplications} computes the Shannon entropy for any member of the exponential family, and we know from~\eqref{Eq:ProbdbExponential} that this is the case of this discrete distribution.
+
+Just for the sake of illustration, let us see what happens if we use a continuous Beta distribution rather than its discretised version.
 
 If $V\sim\text{Beta}(\alpha,\beta)$, then its entropy is
 \begin{equation}
@@ -248,8 +262,8 @@ Also, if $V_1\sim\text{Beta}(\alpha_1,\beta_1)$ and
 $V_2\sim\text{Beta}(\alpha_2,\beta_2)$, then the Kullback-Leibler divergence between the models is
 \begin{multline}
 D_{\text{KL}}(V_1,V_2) = \log\frac{\text{B}(\alpha_2,\beta_2)}{\text{B}(\alpha_1,\beta_1)} +
-(\alpha_2-\alpha_1) \psi(\alpha) +
-(\beta_2-\beta_1) \psi(\beta) + \\
+(\alpha_2-\alpha_1) \psi(\alpha_1) +
+(\beta_2-\beta_1) \psi(\beta_1) + \\
 (\alpha_2-\alpha_1+\beta_2-\beta_1) \psi(\alpha_1+\beta_1).
 \label{Eq:DKLBeta}
 \end{multline}
