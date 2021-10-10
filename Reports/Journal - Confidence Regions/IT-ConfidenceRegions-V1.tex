@@ -1,0 +1,86 @@
+\documentclass[alpha-refs]{wiley-article}
+
+\usepackage[binary-units]{siunitx}
+\usepackage{bm,bbm}
+\usepackage{booktabs}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{rotating}
+\graphicspath{{./Figures/}}
+\usepackage[linesnumbered,lined,boxed]{algorithm2e}
+\makeatletter
+\renewcommand{\@algocf@capt@plain}{above}% formerly {bottom}
+\makeatother
+\usepackage{undertilde}
+\usepackage{todonotes}
+\usepackage{comment}   
+
+\DeclareSIUnit{\minusalphapercent}{(1-\alpha)\%}
+\DeclareSIUnit{\alphapercent}{\alpha\%}
+
+\newcommand{\Mycite}[1]{%
+ (\citeauthor{#1},~\citeyear{#1})}
+
+\papertype{Original Article}
+
+\title{A Test for White Noise in the Entropy-Complexity Plane}
+
+\abbrevs{RNG, random number generator; PRNG, pseudorandom number generator; TWNRS, true white noise random sequence.}
+
+\author[1]{Eduarda T.\ C.\ Chagas}
+\author[2,3]{Marcelo Queiroz}
+\author[4]{Osvaldo A.\ Rosso}
+\author[1]{Heitor S.\ Ramos}
+\author[2]{Cristopher G.\ S. Freitas}
+\author[2]{Leonardo V.\ Pereira}
+\author[5]{Alejandro C.\ Frery}
+
+\contrib[]{All authors contributed equally.}
+
+% Include full affiliation details for all authors
+\affil[1]{Departamento de Ci\^encia da Computa\c c\~ao, Universidade Federal de Minas, Brazil}
+\affil[2]{Laborat\'orio de Computa\c c\~ao Cient\'ifica e An\'alise Num\'erica, Universidade Federal de Alagoas, Brazil}
+\affil[3]{Coordena\c c\~ao de Inform\'atica, Instituto Federal de Alagoas, Brazil}
+\affil[4]{Instituto de F\'isica, Universidade Federal de Alagoas, Brazil}
+\affil[5]{School of Mathematics and Statistics, Victoria University of Wellington, New Zealand}
+
+\corraddress{Eduarda T.\ C.\ Chagas, Departamento de Ci\^encia da Computa\c c\~ao, Universidade Federal de Minas, Brazil}
+\corremail{eduarda.chagas@dcc.ufmg.br}
+
+
+\fundinginfo{CNPq, Fapeal}
+
+% Include the name of the author that should appear in the running header
+\runningauthor{Eduarda T.\ C.\ Chagas et al.}
+
+\begin{document}	
+
+% \begin{frontmatter}
+\maketitle
+
+\begin{abstract}
+The \citeauthor{PermutationEntropyBandtPompe} methodology has been used successfully in the analysis of time series, 
+by computing Information Theory descriptors of the histogram of ordinal patterns.
+Such descriptors lie in a 2D manifold: the Entropy-Complexity plane.
+This article proposes the first approach that uses the entropy-complexity plane to test the white noise hypothesis.
+Our test is based on true white noise sequences obtained from physical devices.
+The proposed methodology provides consistent results, 
+managing to assess sequences of true random samples as random (adequate size), 
+rejecting correlated sequences (sound power), and
+capturing the randomness of generators previously analyzed in the literature.
+\keywords{Random number generators, Bandt–Pompe approach, Entropy-complexity plane, Time Series, Information Theory}
+\end{abstract}
+
+\input{Chapters/Introduction}
+\input{Chapters/Background}
+\input{Chapters/Methodology}
+\input{Chapters/Results}
+\input{Chapters/Conclusions}
+\input{Chapters/Source}
+\input{Chapters/acknowledgements}
+
+\printendnotes
+
+\bibliography{References}
+
+\end{document}
