@@ -5,6 +5,7 @@
 ################################################################################
 
 # Packages and sources ---------------------------------------------------------
+setwd("/home/eduarda/Desktop/Codes/Confidence Regions/ConfidenceRegions-master/Code")
 source("Bandt-Pompe.R")
 if(!require(ggplot2)) install.packages("ggplot2")
 if(!require(ggrepel)) install.packages("ggrepel")
@@ -15,7 +16,8 @@ set.seed(123)
 AttackElement <- function(e, d, p){
   if(runif(1) <= p){
     i = round(runif(1, max = d-1, min = 1), digits = 0)
-    e[i+1] = e[i] 
+    e[i] = e[i] - 0.002
+    e[i+1] = e[i+1] + 0.002
   }
   return(e)
 }
@@ -51,13 +53,14 @@ bandt.pompe.by.elements <- function(elements, dimension, delay){
 
 #Global variables --------------------------------------------------------------
 D = 3
+N = 50000
 tau = 1
-P = c(0.001, 0.005, 0.01, 0.015, 0.02, 0.025, 0.03) 
+P = seq(from = 0, to = 0.7, length.out = 20)
 
 h = rep(0, length(P) + 1)
 c = rep(0, length(P) + 1)
 
-ts = read.csv("../Data/Emblematic-serie-D3-N50000.csv")[,2]
+ts = read.csv("../Data/Minimum-serie-D3-N50000.csv")[,2]
 elements = formationPattern(ts, D, tau, 1)
 probs.ts = bandt.pompe(ts, D, tau)
 h[1] = shannon.entropy.normalized(probs.ts)
@@ -65,10 +68,10 @@ c[1] = Ccomplexity(probs.ts)
 
 for(i in 1:length(P)) {
   cat("i:" , i," P: ", P[i], "\n")
-  x_attack = AttackTimeSeries(ts, D, tau, P[i])
-  #x_attack = AttackPattern(elements, D, tau, P[i])
-  probs_attacks = bandt.pompe(x_attack, D, tau)
-  #probs_attacks = bandt.pompe.by.elements(x_attack, D, tau)
+  #x_attack = AttackTimeSeries(ts, D, tau, P[i])
+  x_attack = AttackPattern(elements, D, tau, P[i])
+  #probs_attacks = bandt.pompe(x_attack, D, tau)
+  probs_attacks = bandt.pompe.by.elements(x_attack, D, tau)
   h[i+1] = round(shannon.entropy.normalized(probs_attacks), 10)
   c[i+1] = round(Ccomplexity(probs_attacks), 10)
 }
@@ -82,16 +85,25 @@ legend.names = as.character(P)
 cotas.sup = data.frame("c1x" = readingMPR(D, 1), "c1y" = readingMPR(D, 2))
 cotas.inf = data.frame("c2x" = readingMPR(D, 3), "c2y" = readingMPR(D, 4))
 
-p = ggplot(data = hc_df, aes(x = H, y = C)) +
-  geom_line(data = cotas.sup, aes(x = c1x, y = c1y), color="gray") +               
-  geom_line(data = cotas.inf, aes(x = c2x, y = c2y), color="gray") + 
+#Confidence regions at the 95% and 99%
+hc.points = read.csv(paste0("../Data/Regions-HC/regions-hc-D", D, "-N", N, ".csv"))[2:4]
+rect95 = data.frame(H = hc.points$H[5:8], C = hc.points$C[5:8])
+rect99 = data.frame(H = hc.points$H[9:12], C = hc.points$C[9:12])
+
+p = ggplot(data = round(hc_df, 6), aes(x = H, y = C)) +
+  geom_polygon(data = rect95, aes(x = H, y = C), fill = "red", alpha=0.9, inherit.aes = FALSE) +
+  geom_polygon(data = rect99, aes(x = H, y = C), fill = "green", alpha=0.2, inherit.aes = FALSE) +
+  #geom_line(data = cotas.sup, aes(x = c1x, y = c1y), color="gray") +               
+  #geom_line(data = cotas.inf, aes(x = c2x, y = c2y), color="gray") + 
   geom_label_repel(aes(label = paste("italic(p) ==", legend.names)),parse = TRUE, segment.size = 0.5, min.segment.length = 0, force = 18) +
-  geom_line(linetype = "dotted") +
+  #geom_line(linetype = "dotted") +
   geom_point(size = 1.5, alpha = .4) + 
-  ggtitle(expression(italic('Time Series Attacked'))) +
-  #ggtitle(expression(italic('Patterns Attacked'))) +
-  xlim(limits = c(min(hc_df$H), max(hc_df$H))) + 
-  ylim(limits = c(min(hc_df$C), max(hc_df$C))) + 
+  #ggtitle(expression(italic('Time Series Attacked'))) +
+  ggtitle(expression(italic('Patterns Attacked (delta permutation)'))) +
+  #xlim(limits = c(min(hc_df$H), max(hc_df$H))) + 
+  #ylim(limits = c(min(hc_df$C), max(hc_df$C))) + 
+  xlim(limits = c(min(rect99$H), max(rect99$H))) + 
+  ylim(limits = c(min(rect99$C), max(rect99$C))) + 
   xlab(expression(italic(H))) +
   ylab(expression(italic(C))) +
   theme_few(base_size = 20, base_family = "serif")  + 

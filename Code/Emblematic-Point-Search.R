@@ -43,17 +43,23 @@ for(i in 1:104){
   ts[,i] = split_seq[[i]]
 }
 
+h = rep(0, 104)
+c = rep(0, 104)
+test_result = rep(FALSE, 104)
+
 for(i in 1:104){
+  print(i)
   probs = bandt.pompe(ts[,i], 3, 1)
-  h = shannon.entropy.normalized(probs)
-  c = Ccomplexity(probs)
-  cat("i: ", i, " H: ", round(h, 9), " C: ", round(c, 9), "\n")
-  
-  if(round(h, 6) == round(0.999985292278035, 6) && round(c, 6) == round(0.0000145144384709536, 6))
-    print(i)
+  h[i] = shannon.entropy.normalized(probs)
+  c[i] = Ccomplexity(probs)
+  test_result[i] = test.point(h[i], c[i], D, 50000, 99)
+  #cat("i: ", i, " H: ", round(h, 9), " C: ", round(c, 9), "\n")
+  #if(round(h, 6) == round(0.999985292278035, 6) && round(c, 6) == round(0.0000145144384709536, 6))
+  #  print(i)
 }
 
 #H = 0.999985292278035
 #C = 1.45144384709536e-05
 
 write.csv(ts[,10], "../Data/Emblematic-serie-D3-N50000.csv")
+write.csv(ts[,61], "../Data/Minimum-serie-D3-N50000.csv")
