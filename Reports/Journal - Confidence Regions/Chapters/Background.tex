@@ -69,12 +69,27 @@ The most frequently used feature for this is the Normalized Shannon entropy, def
 \end{equation}
 with the convention that terms in the summation for which $h(j)=0$ are null.
 This quantity is bounded in the unit interval. 
-It is zero when $h(j)=1$ for some $j$ (and, thus, all other bins are zero), and one when $h(j)=1/D!$ for every $j$ (the uniform probability distribution function).
+It is zero when $h(j)=1$ for some $j$ (and, thus, all other bins are zero), and one when $h(j)=1/D!$ for every $j$ (the uniform probability function).
 
 Although very expressive, the Normalized Shannon Entropy is not able to describe all possible underlying dynamics.
 In particular, for intermediate values of $H$, there is a wide variety of situations worth characterizing.
 To this aim, \citet{LopezRuiz1995} proposed using the disequilibrium  $Q$, a measure of how far $\bm h$ is from an equilibrium or noninformative distribution.
-They employed the Euclidean distance between $\bm h$ and the uniform probability distribution function.
+They employed the Euclidean distance between $\bm h$ and the uniform probability function.
+
+The Jensen-Shannon distance between $\bm h$ and the probability function $\bm u=(u(1), u(2), \dots, u(D!))$ stems as a more adequate measure of such a distance:
+\begin{equation}
+	Q'(\bm{h}, \bm{u}) = \sum_{\ell=1}^{D!} \Big(h(\ell) \log\frac{h(\ell)}{u(\ell)} +
+	u(\ell) \log\frac{u(\ell)}{h(\ell)}
+	\Big).
+	\label{eq:JensenShannon}
+\end{equation}
+This has been the preferred distance function since its proposal by \citet{Lamberti2004}.
+Most works consider the uniform distribution $\bm u = (1/D!, 1/D!, \dots, 1/D!)$ as the reference model.
+
+The quantity~\eqref{eq:JensenShannon} is also called ``disequilibrium.''
+The normalized disequilibrium is $ Q=Q'/\max\{Q'\}$, and we chose to work with the uniform probability distribution function as the equilibrium law.
+\textcolor{red}{[Eduarda:] alguma referência (dentre as que já citamos) e algumas propriedades? Alguma simplificação quando u é a uniforme?}
+
 
 With this, they proposed $C=HQ$ as a measure of the Statistical Complexity of the underlying dynamics.
 A time series can then be mapped into a point in the $H\times C$ plane.
