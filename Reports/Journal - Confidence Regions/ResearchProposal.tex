@@ -225,7 +225,6 @@ We will work with this setup, but later we will relax this null hypothesis.
 \item[Q2:] We will ask a slightly different question: What is the distribution of $
 (\mathfrak{H},\mathfrak{C}) = 
 \big(H^*(\bm h),C^*(\bm h)\big)$ when $\bm h\sim\text{dB}(\alpha,\beta,1, D!)$?
-\item[] But we go back to a quantity, rather than to a random variable.
 \item[Q3:] Assume we have been able to compute the quantities $H^*(\alpha,\beta)$ and $C^*(\alpha,\beta)$ under the $\text{dB}(\alpha,\beta,1, D!)$ model.
 \item[] We have the maximum likelihood estimator for $(\alpha,\beta)$, say $(\widehat\alpha,\widehat\beta)$.
 \item[] We know that the asymptotic distribution of $(\widehat\alpha,\widehat\beta)$ is a bivariate Gaussian law.
@@ -255,8 +254,15 @@ We propose approximating the distribution of $\mathfrak{H}$ by the distribution 
 \begin{equation}
 \widehat{H}(V)= \log\text{B}(\widehat\alpha,\widehat\beta) -
 (\widehat\alpha-1)\psi(\widehat\alpha) -(\widehat\beta-1) \psi(\widehat\beta) +(\widehat\alpha+\widehat\beta-2) \psi(\widehat\alpha+\widehat\beta),
+\label{eq:Hhat}
 \end{equation}
 which is a transformation of a bivariate Gaussian distribution.
+
+\textcolor{red}{Magdalena: el estimador de máxima verosimilitud de una transformación del parámetro, es la transformación del estimador de máxima verosimilitud $\widehat{\Psi(\theta)}=\Psi(\widehat\theta)$?}
+
+\textcolor{red}{¿Cuál es la distribución conjuta asintótica de $(\widehat\alpha,\widehat\beta$)? Sabemos que la media es $(\alpha,\beta)$, pero ¿cuál es la matriz de covarianza?}
+
+\textcolor{red}{Cuando la tengamos, ¿podemos resolver~\eqref{eq:Hhat}? Seguro que no. ¿Podemos aproximar la distribución?}
 
 Also, if $V_1\sim\text{Beta}(\alpha_1,\beta_1)$ and
 $V_2\sim\text{Beta}(\alpha_2,\beta_2)$, then the Kullback-Leibler divergence between the models is
