@@ -212,11 +212,11 @@ hlogistic36 <- histogram(series_map[,1], 6, delay,
                          expression("Logistic Map, "~italic(r)==3.6), rainbow_colors[8])
 hlogistic4 <- histogram(series_map[,2], 6, delay, expression("Logistic Map, "~italic(r)==4), rainbow_colors[9])
 
-pdf("../Reports/JOURNAL - Confidence Regions/Figures/h.pdf", width = 12, height = 12)
+#pdf("../Reports/JOURNAL - Confidence Regions/Figures/h.pdf", width = 12, height = 12)
 
 ggarrange(h0, h05, h1, h15, h2, h25, h3, hlogistic36, hlogistic4, 
           ncol = 3, nrow = 3)
-dev.off()
+#dev.off()
 
 #Gerando os gráficos
 subx <- 4500:5500
@@ -291,7 +291,7 @@ psincos <- qplot(x=subx2, y=series_periodic[subx2], geom="line", xlab="", ylab="
 
 #Plotando todos os gráficos gerados em um grid
 
-pdf("../Reports/JOURNAL - Confidence Regions/Figures/AllSystems.pdf", width = 15, height = 10)
+#pdf("../Reports/JOURNAL - Confidence Regions/Figures/AllSystems.pdf", width = 15, height = 10)
 grid.newpage()
 pushViewport(viewport(layout = grid.layout(5, 4)))
 vplayout <- function(x, y) viewport(layout.pos.row = x, layout.pos.col = y)
@@ -331,7 +331,7 @@ p = p +
   annotate("text", x = Entropy.Complexity$Entropy[3], y = Entropy.Complexity$Complexity[3], 
            label = as.character(expression(italic(f)^{-1})), parse =TRUE ,size = 7, vjust = -1)  + 
   xlab(expression(italic(H))) + ylab(expression(italic(C))) + 
-  theme_minimal(base_size = 25, base_family = "serif")  + 
-pdf("../Reports/JOURNAL - Confidence Regions/Figures/RightmostCorner.pdf", width = 15, height = 10)
+  theme_minimal(base_size = 25, base_family = "serif")  
+#pdf("../Reports/JOURNAL - Confidence Regions/Figures/RightmostCorner.pdf", width = 15, height = 10)
 print(p)
 dev.off()
