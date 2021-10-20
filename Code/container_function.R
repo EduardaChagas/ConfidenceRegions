@@ -36,7 +36,7 @@ plot_points_confidence_regions <- function(point, D=6, N=1000, interval=99){
     rect = data.frame(H = hc.points$H[5:8], C = hc.points$C[5:8])
   }
   
-  p = cotas(dimension)
+  p = cotas(D)
   p = p +
     geom_point(data = point, aes(x = H, y = C), size = 4) +
     geom_polygon(data = rect, aes(x = H, y = C), fill = "green", alpha=0.2, inherit.aes = FALSE) +
