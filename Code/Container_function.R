@@ -26,7 +26,7 @@ cotas <- function(dimension){
 }
 
 # Função que exibe o ponto no plano HC, suas cotas e região de confiança especificada
-plot_points_confidence_regions <- function(point, D=6, N=1000, interval=99){
+plot_points_confidence_regions <- function(p, point, D=6, N=1000, interval=99, zoom_x, zoom_y){
   
   hc.points = read.csv(paste0("../Data/Regions-HC/regions-hc-D", D, "-N", N, ".csv"))[2:4]
   
@@ -35,13 +35,11 @@ plot_points_confidence_regions <- function(point, D=6, N=1000, interval=99){
   }else if(interval == 95){
     rect = data.frame(H = hc.points$H[5:8], C = hc.points$C[5:8])
   }
-  
-  p = cotas(D)
   p = p +
     geom_point(data = point, aes(x = H, y = C), size = 4) +
     geom_polygon(data = rect, aes(x = H, y = C), fill = "green", alpha=0.2, inherit.aes = FALSE) +
-    xlim(limits = c(min(min(rect$H), min(point$H)), max(max(rect$H), max(point$H)))) +
-    ylim(limits = c(min(min(rect$C), min(point$C)), max(max(rect$C), max(point$C)))) +
+    xlim(limits = c(min(min(rect$H), min(point$H)) - zoom_x, max(max(rect$H), max(point$H)) +  zoom_x)) +
+    ylim(limits = c(min(min(rect$C), min(point$C)) - zoom_y, max(max(rect$C), max(point$C)) + zoom_y)) +
     xlab(expression(italic(H))) + ylab(expression(italic(C))) + 
     theme_minimal(base_size = 25, base_family = "serif")  
   
@@ -68,13 +66,15 @@ tau = 1
 N = 1000
 interval = 95
 
-# Obtenção da sequência e seu respectivo ponto no plano HC ---------------------
+# Obtenção da série e seu respectivo ponto no plano HC ---------------------
 ts = get_white_noise(N)
-probs.ts = bandt.pompe(ts[1,], D, tau)
+probs.ts = bandt.pompe(ts[2,], D, tau)
 h = shannon.entropy.normalized(probs.ts)
 c = Ccomplexity(probs.ts)
 point = data.frame(H = h, C = c)
 
 # Obtenção do plot -------------------------------------------------------------
-p = plot_points_confidence_regions(point, D, N)
+
+p = cotas(D)
+p = plot_points_confidence_regions(p, point, D, N, zoom_x = 0.1, zoom_y = 0.1)
 print(p)
