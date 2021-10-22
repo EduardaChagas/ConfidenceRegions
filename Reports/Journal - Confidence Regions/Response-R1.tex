@@ -1,42 +1,28 @@
-\RequirePackage{xr}
-\externaldocument{paper}
+\documentclass[alpha-refs]{wiley-article}
 
-\documentclass[journal,onecolumn,draftcls,11pt]{IEEEtran}
-
-\usepackage{graphicx}
-\usepackage{subfigure}
-\usepackage{booktabs}
-\usepackage[T1]{fontenc}
-\usepackage[cmex10]{amsmath}
-\usepackage{amsfonts}
-\usepackage{color}
-\usepackage{bm,bbm}
-\usepackage{wasysym}
-\usepackage{texnames}
-\usepackage{url}
-\usepackage[boxed]{algorithm2e}   % AAB inserido
-\usepackage[listings, many]{tcolorbox}
 \usepackage[binary-units]{siunitx}
-\usepackage{multirow,bigstrut}
-\usepackage{capt-of}
+\usepackage{bm,bbm}
+\usepackage{booktabs}
+\usepackage{subfig}
+\usepackage{float}
+\usepackage{rotating}
+\graphicspath{{./Figures/}}
+\usepackage[linesnumbered,lined,boxed]{algorithm2e}
+\makeatletter
+\renewcommand{\@algocf@capt@plain}{above}% formerly {bottom}
+\makeatother
+\usepackage{undertilde}
+\usepackage{tcolorbox}
 \usepackage{todonotes}
-\usepackage{enumitem}
-
+\usepackage{comment}   
 
 \begin{document}
-\title{International Statistical Review - Response Letter of Manuscript ID ISR-OA-160-20}
+\title{Manuscript ID ISR-OA-160-20}
 
-\author{Eduarda~ T.~C.~Chagas,
-        Marcelo Queiroz,
-        Osvaldo A.\ Rosso,
-        Heitor S.\ Ramos,
-        Cristopher G.\ S. Freitas,
-        Leonardo V.\ Pereira,
-        Alejandro C.\ Frery}
+\author{Eduarda T.\ C.\ Chagas, Marcelo Queiroz-Oliveira, Osvaldo A.\ Rosso, Heitor S.\ Ramos, Cristopher G.\ S. Freitas, and Alejandro C.\ Frery}
 
+\papertype{Response Letter}
 \maketitle
-
-\IEEEpeerreviewmaketitle
 
 \section{Co-Editor-in-Chief Requirements}
 
@@ -44,17 +30,40 @@
 The editor has recommended a major revision, and I am inclined to agree. In particular, I would like to see a strong review component tied in with what you propose, and also a comparison of where your method stands in the literature. Substantiating the advantages through theory or simulation studies would be helpful as well. Please keep in mind that this is a review journal and that the paper must be accessible to more than the technical experts in the area.
 \end{tcolorbox}
 
+We now state at the beginning of the Abstract that
+\begin{quote}
+	This article serves two purposes.
+	Firstly, it surveys the \citeauthor{PermutationEntropyBandtPompe} methodology for the statistical community, stressing topics that are open for research.
+	Secondly, it contributes towards a better understanding of the statistical properties of that approach for time series analysis.
+\end{quote}
+
 \section{Reviewer \#1}
 
 \vskip3em\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Comment \#1]
 In this paper the authors propose a quite elaborate method to test whether a discrete-time analog signal is white noise by locating it in the entropy-complexity plane (ECP). The description is didactic, detailed and well-written. However, I missed the rationale of using the ECP. I mean, what can be done in this way that cannot be done with the entropy alone? After all, entropy (horizontal axis of the ECP) is a measure of (pseudo-)randomness. For white noise, the normalized (permutation) entropy is 1, hence complexity is automatically 0 (see the definition domain of the ECP in Figures 2, 4 and 5). In other words, why use two measures that are not independent (since entropy sets the range of complexity), instead of only one (the entropy in this case)? So, unless the authors convincingly rebut this point, I cannot recommend the publication of this paper in ISR.
 \end{tcolorbox}
 
+We would like to stress the following paragraph from our Introduction:
+\begin{quote}
+	The \num{2,160} citations received by the seminal paper appeared in \num{780} venues indexed by the Web of Science.
+	Among them, the journals belong to \num{127} categories, spanning from Multidisciplinary Physics (\SI{24}{\percent} of the publications) to Zoology (only one of the of citing articles).
+	There are \num{22} citing articles from journals that belong to the Statistics \& Probability category.
+	Five of these articles appeared in \textit{Stochastic Environmental Research and Risk Assessment}, 
+	two in the \textit{Journal of Time Series Analysis} and in 
+	\textit{Theory and Applications of Time Series Analysis},
+	and each of the remaining ten appeared in a different journal.
+	Most of these articles relate successful applications of the Bandt and Pompe methodology, except \cite{OrdinalPatternProbabilities} that obtained the sample entropy's properties under zero-mean Gaussian processes.
+	It is also noteworthy that, in this category of publications, \cite{DistributionsofOrderPatternsofIntervalMaps} provided a formal and more general proof of the structure of the boundary of the $H\times C$ manifold than that obtained by \cite{martin2006generalized}.
+	The lack of attention that the Bandt and Pompe approach has received by the Probability \& Statistics community confirms that it is a fertile research avenue waiting to explore.
+\end{quote}
+
 \section{Reviewer \#2}
 
 \vskip3em\begin{tcolorbox}[colback=red!5!white,colframe=red!75!black,title=Comment \#1]
 The paper address an interesting problem in time series. The manuscript presents a thorough review of the literature, and develops a proposed test for a wide array of models. Examples and simulation studies are clearly defined and their results are discussed. The paper is well written, and I have no major corrections to propose.
 \end{tcolorbox}
+
+\bibliography{References}
 
 \end{document}
 
