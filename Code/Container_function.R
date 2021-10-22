@@ -6,6 +6,7 @@
 
 # Packages and sources ---------------------------------------------------------
 source("Bandt-Pompe.R")
+source("p-value-test.R")
 if(!require(ggplot2)) install.packages("ggplot2")
 if(!require(ggthemes)) install.packages("ggthemes")
 
@@ -161,4 +162,8 @@ p +
              col="red", size=2) + 
   xlim(.91, .945) +
   ylim(.05, .25)
+#### Calcular o p-valor de x.patched
+
+
+
 
