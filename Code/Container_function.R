@@ -68,9 +68,10 @@ interval = 95
 
 # Obtenção da série e seu respectivo ponto no plano HC ---------------------
 ts = get_white_noise(N)
-probs.ts = bandt.pompe(ts[2,], D, tau)
-h = shannon.entropy.normalized(probs.ts)
-c = Ccomplexity(probs.ts)
+x <- ts[2,]
+probs.ts = bandt.pompe(x, D, tau)
+(h = shannon.entropy.normalized(probs.ts))
+(c = Ccomplexity(probs.ts))
 point = data.frame(H = h, C = c)
 
 # Obtenção do plot -------------------------------------------------------------
@@ -78,3 +79,86 @@ point = data.frame(H = h, C = c)
 p = cotas(D)
 p = plot_points_confidence_regions(p, point, D, N, zoom_x = 0.1, zoom_y = 0.1)
 print(p)
+
+# Here begins the disaster by Alejandro
+
+## New point 1: reverse the time series
+rev.ts <- rev(x)
+probs.rev.ts <- bandt.pompe(rev.ts, D, tau)
+(hrev = shannon.entropy.normalized(probs.rev.ts))
+(crev = Ccomplexity(probs.rev.ts))
+### The point did not change (that's good)
+
+## New point 2: add logistic map
+
+logistic.map <- function(r, x, N, M){
+  ## r: bifurcation parameter
+  ## x: initial value
+  ## N: number of iteration
+  ## M: number of iteration points to be returned
+  z <- 1:N
+  z[1] <- x
+  for(i in c(1:(N-1))){
+    z[i+1] <- r *z[i]  * (1 - z[i])
+  }
+  ## Return the last M iterations 
+  z[c((N-M):N)]
+}
+
+x.logistic.map <- logistic.map(2.9, .5, 5000, 999)
+
+p.logistic.map <- bandt.pompe(x.logistic.map, D, tau)
+(h.logistic.map = shannon.entropy.normalized(p.logistic.map))
+(c.logistic.map = Ccomplexity(p.logistic.map))
+### Yes! We're far fom (h,c)
+
+
+## Now begins the fun; let's mix x (ts[2,]) and x.logistic.map
+
+alpha <- 1- 11*.Machine$double.eps
+x.mix <- (1-alpha)*x+alpha*x.logistic.map
+
+probs.mix = bandt.pompe(x.mix, D, tau)
+(hmix = shannon.entropy.normalized(probs.mix))
+(cmix = Ccomplexity(probs.mix))
+
+p + 
+  geom_point(data=data.frame(hmix, cmix), 
+             aes(x=hmix, y=cmix), 
+             col="red", size=3) +
+  xlim(.91, .945) +
+  ylim(0.05, .25)
+### Close to getting something interesting here
+
+## Now begins the fun 2; let's add a sine
+
+xsin <- sin((1:1000)/1000 * 16*pi)
+
+alpha <- .2
+x.mix <- (1-alpha)*x+alpha*xsin
+
+probs.mix = bandt.pompe(x.mix, D, tau)
+(hmix = shannon.entropy.normalized(probs.mix))
+(cmix = Ccomplexity(probs.mix))
+
+p + 
+  geom_point(data=data.frame(hmix, cmix), 
+             aes(x=hmix, y=cmix), 
+             col="red", size=2)
+### Nothing interesting adding the sine: the point walks through a line
+
+## Now a patch from the chaotic map
+
+x.patched <- c(x[1:990], x.logistic.map[991:1000])
+
+probs.patched = bandt.pompe(x.patched, D, tau)
+(h.patched = shannon.entropy.normalized(probs.patched))
+(c.patched = Ccomplexity(probs.patched))
+
+p + 
+  geom_point(data=data.frame(h.patched, c.patched), 
+             aes(x=hmix, y=cmix), 
+             col="red", size=2) + 
+  xlim(.91, .945) +
+  ylim(.05, .25)
+
