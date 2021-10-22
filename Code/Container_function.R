@@ -89,6 +89,7 @@ probs.rev.ts <- bandt.pompe(rev.ts, D, tau)
 (hrev = shannon.entropy.normalized(probs.rev.ts))
 (crev = Ccomplexity(probs.rev.ts))
 ### The point did not change (that's good)
+calculate.p.value.samples(data.frame(H = hrev, C = crev), N, D)
 
 ## New point 2: add logistic map
 
@@ -112,12 +113,13 @@ p.logistic.map <- bandt.pompe(x.logistic.map, D, tau)
 (h.logistic.map = shannon.entropy.normalized(p.logistic.map))
 (c.logistic.map = Ccomplexity(p.logistic.map))
 ### Yes! We're far fom (h,c)
+calculate.p.value.samples(data.frame(H = h.logistic.map, C = c.logistic.map), N, D)
 
 
 ## Now begins the fun; let's mix x (ts[2,]) and x.logistic.map
 
 alpha <- 1- 11*.Machine$double.eps
-x.mix <- (1-alpha)*x+alpha*x.logistic.map
+x.mix <- (1-alpha) * x + alpha * x.logistic.map
 
 probs.mix = bandt.pompe(x.mix, D, tau)
 (hmix = shannon.entropy.normalized(probs.mix))
@@ -130,6 +132,7 @@ p +
   xlim(.91, .945) +
   ylim(0.05, .25)
 ### Close to getting something interesting here
+calculate.p.value.samples(data.frame(H = hmix, C = cmix), N, D)
 
 ## Now begins the fun 2; let's add a sine
 
@@ -147,6 +150,7 @@ p +
              aes(x=hmix, y=cmix), 
              col="red", size=2)
 ### Nothing interesting adding the sine: the point walks through a line
+calculate.p.value.samples(data.frame(H = hmix, C = cmix), N, D)
 
 ## Now a patch from the chaotic map
 
@@ -163,6 +167,7 @@ p +
   xlim(.91, .945) +
   ylim(.05, .25)
 #### Calcular o p-valor de x.patched
+calculate.p.value.samples(data.frame(H = h.logistic.map, C = c.logistic.map), N, D)
 
 
 

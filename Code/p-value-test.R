@@ -179,4 +179,3 @@ p.value.all.rng <- function(){
   return(table.code)
 }
 
-p.value.all.prng()
