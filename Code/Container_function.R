@@ -239,12 +239,20 @@ for(count in 1:6){
     1000, 6)
 }
 
+Experiment.Increasing$percentage <- percentage.patch*100
+
 require(ggrepel)
 
 p +
-  geom_point(data=Experiment.Increasing, aes(x=h.patched, y=c.patched), 
+  geom_point(data=Experiment.Increasing, aes(x=h.patched, 
+                                             y=c.patched), 
              col="red", size=2) +
-  xlim(.905, .945)
+  geom_text_repel(data=Experiment.Increasing, aes(x=h.patched, 
+                                                  y=c.patched,
+                                                  label=paste0(as.character(percentage.patch*100), rep("%", 6))),
+                  direction = "y") +
+  xlim(.905, .945) +
+  ylim(0.05, 0.3)
 
 # Vamos reportar apenas o resultado de acrescentar ao final uma função crescente
 
