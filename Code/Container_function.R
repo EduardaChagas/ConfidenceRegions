@@ -84,12 +84,12 @@ print(p)
 # Here begins the disaster by Alejandro
 
 ## New point 1: reverse the time series
-rev.ts <- rev(x)
-probs.rev.ts <- bandt.pompe(rev.ts, D, tau)
-(hrev = shannon.entropy.normalized(probs.rev.ts))
-(crev = Ccomplexity(probs.rev.ts))
-### The point did not change (that's good)
-calculate.p.value.samples(data.frame(H = hrev, C = crev), N, D)
+# rev.ts <- rev(x)
+# probs.rev.ts <- bandt.pompe(rev.ts, D, tau)
+# (hrev = shannon.entropy.normalized(probs.rev.ts))
+# (crev = Ccomplexity(probs.rev.ts))
+# ### The point did not change (that's good)
+# calculate.p.value.samples(data.frame(H = hrev, C = crev), N, D)
 
 ## New point 2: add logistic map
 
@@ -107,7 +107,7 @@ logistic.map <- function(r, x, N, M){
   z[c((N-M):N)]
 }
 
-x.logistic.map <- logistic.map(2.9, .5, 5000, 999)
+x.logistic.map <- logistic.map(3.999999999999999, .5, 5000, 999)
 
 p.logistic.map <- bandt.pompe(x.logistic.map, D, tau)
 (h.logistic.map = shannon.entropy.normalized(p.logistic.map))
@@ -195,4 +195,56 @@ ExperimentPatched <- function(x, r, a, N, M, patch, plot.region) {
 
 # patch in .01 to .06 !!!
 ExperimentPatched(x, 4, .5, 5000, 999, .06, p)
+
+# Six points for illustration
+x.logistic.map <- logistic.map(3.99999, .5, 5000, 999)
+percentage.patch <- seq(.01, .06, by=.01)
+Experiment.Logistic.Map <- data.frame(h.patched=rep(0, 6),
+                                      c.patched=rep(0, 6),
+                                      pvalue.patched=rep(0, 6))
+for(count in 1:6){
+  patch <- percentage.patch[count]
+  
+  n.tail <- round(patch*1000)
+  x.patched <- c(x[1:(1000-n.tail)], 
+                 x.logistic.map[(1000-n.tail+1):1000])
+  probs.patched <- bandt.pompe(x.patched, 6, 1)
+  Experiment.Logistic.Map$h.patched[count] <- shannon.entropy.normalized(probs.patched)
+  Experiment.Logistic.Map$c.patched[count] <- Ccomplexity(probs.patched)
+  Experiment.Logistic.Map$pvalue.patched[count] <- calculate.p.value.samples(data.frame(H = h.patched, C = c.patched), 
+                            1000, 6)
+}
+
+p +
+  geom_point(data=Experiment.Logistic.Map, aes(x=h.patched, y=c.patched), col="red", size=2)
+
+# Trailing an increasing function
+x.increasing <- (1:1000)/1000
+percentage.patch <- seq(.01, .06, by=.01)
+Experiment.Increasing <- data.frame(h.patched=rep(0, 6),
+                                      c.patched=rep(0, 6),
+                                      pvalue.patched=rep(0, 6))
+for(count in 1:6){
+  patch <- percentage.patch[count]
+  
+  n.tail <- round(patch*1000)
+  x.patched <- c(x[1:(1000-n.tail)], 
+                 x.increasing[(1000-n.tail+1):1000])
+  probs.patched <- bandt.pompe(x.patched, 6, 1)
+  Experiment.Increasing$h.patched[count] <- shannon.entropy.normalized(probs.patched)
+  Experiment.Increasing$c.patched[count] <- Ccomplexity(probs.patched)
+  Experiment.Increasing$pvalue.patched[count] <- calculate.p.value.samples(
+    data.frame(H = Experiment.Increasing$h.patched[count], 
+               C = Experiment.Increasing$c.patched[count]), 
+    1000, 6)
+}
+
+require(ggrepel)
+
+p +
+  geom_point(data=Experiment.Increasing, aes(x=h.patched, y=c.patched), 
+             col="red", size=2) +
+  xlim(.905, .945)
+
+# Vamos reportar apenas o resultado de acrescentar ao final uma função crescente
 
