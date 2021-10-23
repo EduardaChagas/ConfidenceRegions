@@ -242,15 +242,18 @@ for(count in 1:6){
 Experiment.Increasing$percentage <- percentage.patch*100
 
 require(ggrepel)
+require("slowkow/ggrepel")
+devtools::install_github("slowkow/ggrepel")
+
 
 p +
   geom_point(data=Experiment.Increasing, aes(x=h.patched, 
                                              y=c.patched), 
              col="red", size=2) +
   geom_text_repel(data=Experiment.Increasing, aes(x=h.patched, 
-                                                  y=c.patched,
+                                                  y=c.patched, 
                                                   label=paste0(as.character(percentage.patch*100), rep("%", 6))),
-                  direction = "y") +
+                  direction = "y", nudge_y=-0.01, segment.size=0.25) +
   xlim(.905, .945) +
   ylim(0.05, 0.3)
 
