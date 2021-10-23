@@ -136,7 +136,7 @@ calculate.p.value.samples(data.frame(H = hmix, C = cmix), N, D)
 
 ## Now begins the fun 2; let's add a sine
 
-xsin <- sin((1:1000)/1000 * 16*pi)
+xsin <- sin((1:1000)/1000 * 4*pi)
 
 alpha <- .2
 x.mix <- (1-alpha)*x+alpha*xsin
@@ -162,13 +162,37 @@ probs.patched = bandt.pompe(x.patched, D, tau)
 
 p + 
   geom_point(data=data.frame(h.patched, c.patched), 
-             aes(x=hmix, y=cmix), 
+             aes(x=h.patched, y=c.patched), 
              col="red", size=2) + 
   xlim(.91, .945) +
   ylim(.05, .25)
 #### Calcular o p-valor de x.patched
-calculate.p.value.samples(data.frame(H = h.logistic.map, C = c.logistic.map), N, D)
+calculate.p.value.samples(data.frame(H = h.patched, C = c.patched), N, D)
 
+### Now I will encapsulate things
 
+ExperimentPatched <- function(x, r, a, N, M, patch, plot.region) {
+  
+  x.logistic.map <- logistic.map(r, a, N, M)
+  n.tail <- round(patch*length(x))
+  x.patched <- c(x[1:(length(x)-n.tail)], 
+                 x.logistic.map[(length(x)-n.tail+1):length(x)])
+  
+  probs.patched = bandt.pompe(x.patched, 6, 1)
+  
+  print((h.patched = shannon.entropy.normalized(probs.patched)))
+  print((c.patched = Ccomplexity(probs.patched)))
+  
+  print(plot.region + 
+    geom_point(data=data.frame(h.patched, c.patched), 
+               aes(x=h.patched, y=c.patched), 
+               col="red", size=2) + 
+    xlim(.91, .945) +
+    ylim(.05, .25))
+  #### Calcular o p-valor de x.patched
+  (calculate.p.value.samples(data.frame(H = h.patched, C = c.patched), length(x), 6))
+}
 
+# patch in .01 to .06 !!!
+ExperimentPatched(x, 4, .5, 5000, 999, .06, p)
 
