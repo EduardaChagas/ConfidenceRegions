@@ -260,3 +260,50 @@ ggsave(file="../../Confidence Regions/Reports/JOURNAL - Confidence Regions/Figur
 
 # Vamos reportar apenas o resultado de acrescentar ao final uma função crescente
 
+# Não sou gato, mas a curiosidade...
+
+x.increasing <- (1:1000)/1000
+percentage.patch <- seq(.01, 1, by=.01)
+Experiment.Increasing <- data.frame(h.patched=rep(0, 100),
+                                    c.patched=rep(0, 100),
+                                    pvalue.patched=rep(0, 100))
+for(count in 1:100){
+  patch <- percentage.patch[count]
+  
+  n.tail <- round(patch*1000)
+  x.patched <- c(x[1:(1000-n.tail)], 
+                 x.increasing[(1000-n.tail+1):1000])
+  probs.patched <- bandt.pompe(x.patched, 6, 1)
+  Experiment.Increasing$h.patched[count] <- shannon.entropy.normalized(probs.patched)
+  Experiment.Increasing$c.patched[count] <- Ccomplexity(probs.patched)
+  Experiment.Increasing$pvalue.patched[count] <- calculate.p.value.samples(
+    data.frame(H = Experiment.Increasing$h.patched[count], 
+               C = Experiment.Increasing$c.patched[count]), 
+    1000, 6)
+}
+
+Experiment.Increasing$percentage <- percentage.patch*100
+
+ggplot(Experiment.Increasing, aes(x=h.patched, y=c.patched)) +
+  geom_point() + 
+  theme_minimal()
+
+p +
+  geom_point(data=Experiment.Increasing, aes(x=h.patched, 
+                                             y=c.patched), col="red", size=2)
+### Normalization constant
+
+maxQprime <- function(D) {
+  dfactorial <- factorial(D)
+  return(
+    -2*(
+      (dfactorial+1)/dfactorial*log(dfactorial+1)-
+        2*log(2*dfactorial)+
+        log(dfactorial)
+    )
+  )
+}
+
+D <- 3:8
+
+plot(D, maxQprime(D))
