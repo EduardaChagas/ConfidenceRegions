@@ -199,7 +199,7 @@ Notice that the wrongly rejected TWNRS are all close to the point $(1,0)$.
 	\centering
 	\includegraphics[width=\linewidth]{Figures/RNG-1000.pdf}
 	\includegraphics[width=\linewidth]{Figures/RNG-50000.pdf}
-	\caption{New $100$ TRWNS and regions of confidence.}
+	\caption{New $100$ TRWNS and confidence regions.}
 	\label{fig:RNG}
 \end{figure}
 
@@ -207,6 +207,8 @@ We may then conclude that the test has good empirical size, provided $D!\ll T$, 
 
 
 \subsection{Test Power}
+
+\subsubsection{$H_1$: Correlated Noise}
 
 We assessed the power of the test by contrasting time series with different correlation structure (under the $f^{-k}$ model) in the $H \times C$ plane.
 Several studies in the literature have used this approach for identifying and characterizing randomness.
@@ -236,6 +238,27 @@ The same holds for all $k>3/10$.
 	\caption{Analysis of the test power with correlated $f^{-k}$ noise.}
 	\label{fig:correlation}
 \end{figure}
+
+\subsubsection{$H_1$: Patch of Deterministic Function}
+
+Consider the times series of length $T$ comprised of $T-[c100]$ white noise observations $x_1,x_2,\dots, x_{T-[c100]}$ followed by the signal $y_{T-[c100]+1}, y_{T-[c100]+2}, \dots, y_T$, in which $0\leq c \ll 1$ is the percentage of contamination.
+We will verify the behavior of our test for the case $T=1000$, and $y_t$ an increasing function on $t$.
+Fig.~\ref{Fig:PointsPatchedIncreasingFunction} shows the effect of such a contamination on the white noise time series whose point in the $H\times C$ plane appears in black.
+The Figure also shows the confidence region at \SI{99}{\percent}.
+
+\begin{figure}[hbt]
+\centering
+\includegraphics[width=.7\linewidth]{Figures/PointsPatchedIncreasingFunction}
+\caption{Effect of patching an increasing function at different levels to a white noise sequence.}\label{Fig:PointsPatchedIncreasingFunction}
+\end{figure}
+%%% The code that produces this figure starts at line 221, file "container_function.R"
+
+The original point is displaced, at all levels of contamination, to a region with smaller entropy and larger complexity.
+When the percentage of contamination is below approximately \SI{2}{\percent}, the test will not reject the null hypothesis at the \SI{99}{\percent}; in fact, the $p$-value is of around \SI{1.5}{\percent} for $c=0,0.01,0.02$.
+The $p$-value falls to orders of $10^{-6}$ when the contamination is of \SI{3}{\percent} and above.
+
+It is worth noticing that a test based solely on the entropy would have less power.
+In this case, the complexity component enables the test to reject the null hypothesis at small contamination percentages.
 
 \subsection{Revisiting the White Noise Hypothesis in the Literature}
 

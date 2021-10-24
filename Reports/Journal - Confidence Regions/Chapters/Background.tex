@@ -88,10 +88,15 @@ Most works consider the uniform distribution $\bm u = (1/D!, 1/D!, \dots, 1/D!)$
 
 The quantity~\eqref{eq:JensenShannon} is also called ``disequilibrium.''
 The normalized disequilibrium is $ Q=Q'/\max\{Q'\}$, and we chose to work with the uniform probability distribution function as the equilibrium law.
-\textcolor{red}{[Eduarda:] alguma referência (dentre as que já citamos) e algumas propriedades? Alguma simplificação quando u é a uniforme?}
-
+Under these conditions holds that
+$$
+\max\{Q'\} = -2\Big[
+\frac{D!+1}{D!} \log(D!+1) - 2 \log(2D!) + \log D!
+\Big].
+$$
 
 With this, they proposed $C=HQ$ as a measure of the Statistical Complexity of the underlying dynamics.
+Notice that both $H$ and $Q$ are normalized quantities, so also is $C$. 
 A time series can then be mapped into a point in the $H\times C$ plane.
 
 \subsection{The Entropy-Complexity Plane}\label{Sec:HCPlane}
@@ -154,6 +159,7 @@ Also, points related to $f^{-k}$ noises tend to clutter for $k<1$, having the hi
 \end{figure}
 
 Fig.~\ref{fig:RightMostCorner} shows the rightmost lower corner of the $H\times C$ plane, emphasizing the location of the white ($k=0$), $k=1/2$, and pink ($k=1$) noises.
+In particular, notice that the point associated to white noise is not at $(1,0)$, as consequence of being obtained from a finite rather than infinite length sequence.
 
 \begin{figure}[hbt]
 	\centering

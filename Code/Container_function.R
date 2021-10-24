@@ -256,6 +256,7 @@ p +
                   direction = "y", nudge_y=-0.01, segment.size=0.25) +
   xlim(.905, .945) +
   ylim(0.05, 0.3)
+ggsave(file="../../Confidence Regions/Reports/JOURNAL - Confidence Regions/Figures/PointsPatchedIncreasingFunction.pdf", width=12, height = 10)
 
 # Vamos reportar apenas o resultado de acrescentar ao final uma função crescente
 
