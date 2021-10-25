@@ -91,10 +91,10 @@ We split the power subsection in two, and added another study which illustrates 
 \begin{quote}
 	\subsubsection{$H_1$: Patch of Deterministic Function}
 	
-	Consider the times series of length $T$ comprised of $T-[c100]$ white noise observations $x_1,x_2,\dots, x_{T-[c100]}$ followed by the signal $y_{T-[c100]+1}, y_{T-[c100]+2}, \dots, y_T$, in which $0\leq c \ll 1$ is the percentage of contamination.
-	We will verify the behavior of our test for the case $T=1000$, and $y_t$ an increasing function on $t$.
-	Fig.~\ref{Fig:PointsPatchedIncreasingFunction} shows the effect of such a contamination on the white noise time series whose point in the $H\times C$ plane appears in black.
-	The Figure also shows the confidence region at \SI{99}{\percent}.
+Consider the times series of length $T$ comprised of $T-[c100]$ white noise observations $x_1,x_2,\dots, x_{T-[c100]}$ followed by the signal $y_{T-[c100]+1}, y_{T-[c100]+2}, \dots, y_T$, in which $0\leq c \ll 1$ is the percentage of contamination.
+We will verify the behavior of our test for the case $T=1000$, and $y_t$ an increasing function on $t$.
+Fig.~\ref{Fig:PointsPatchedIncreasingFunction} shows the effect of such contamination on the white noise time series whose point in the $H\times C$ plane appears in black.
+The Figure also shows the confidence region at \SI{99}{\percent}.
 	
 	\begin{figure}[hbt]
 		\centering
@@ -102,12 +102,12 @@ We split the power subsection in two, and added another study which illustrates 
 		\caption{Effect of patching an increasing function at different levels to a white noise sequence.}\label{Fig:PointsPatchedIncreasingFunction}
 	\end{figure}
 	
-	The original point is displaced, at all levels of contamination, to a region with smaller entropy and larger complexity.
-	When the percentage of contamination is below approximately \SI{2}{\percent}, the test will not reject the null hypothesis at the \SI{99}{\percent}; in fact, the $p$-value is of around \SI{1.5}{\percent} for $c=0,0.01,0.02$.
-	The $p$-value falls to orders of $10^{-6}$ when the contamination is of \SI{3}{\percent} and above. 
-	
-	It is worth noticing that a test based solely on the entropy would have less power.
-	In this case, the complexity component enables the test to reject the null hypothesis at small contamination percentages.
+At all levels of contamination, the original point is displaced to a region with smaller entropy and larger complexity.
+When the percentage of contamination is below approximately \SI{2}{\percent}, the test will not reject the null hypothesis at the \SI{1}{\percent} level of significance; in fact, the $p$-value is of around \SI{1.5}{\percent} for $c=0,0.01,0.02$.
+The $p$-value falls to orders of $10^{-6}$ when the contamination is of \SI{3}{\percent} and above.
+
+It is worth noticing that a test based solely on the entropy would have less power.
+In this case, the complexity component enables the test to reject the null hypothesis at small contamination percentages.
 \end{quote}
 
 
