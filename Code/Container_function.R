@@ -291,7 +291,8 @@ ggplot(Experiment.Increasing, aes(x=h.patched, y=c.patched)) +
 p +
   geom_point(data=Experiment.Increasing, aes(x=h.patched, 
                                              y=c.patched), col="red", size=2)
-### Normalization constant
+
+### Normalization constant (just to check it makes sense)
 
 maxQprime <- function(D) {
   dfactorial <- factorial(D)
