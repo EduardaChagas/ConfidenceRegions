@@ -15,6 +15,7 @@
 \usepackage{tcolorbox}
 \usepackage{todonotes}
 \usepackage{comment}   
+\usepackage{pdfpages}
 
 \begin{document}
 \title{Manuscript ID ISR-OA-160-20}
@@ -35,12 +36,14 @@ Please keep in mind that this is a review journal and that the paper must be acc
 
 We wholeheartedly agree.
 Our initial version did not make a clear statement of the article's nature.
-In order to improve this issue, we have introduced two changes.
-The first is a new title, namely
+In order to improve this issue, we have introduced several changes.
+
+We propose a new title:
 \begin{quote}
 Time Series Analysis with Bandt \& Pompe Symbolization and a Test for White Noise in the Entropy-Complexity Plane
 \end{quote}
-Second, we now state at the beginning of the Abstract that
+
+We now state at the beginning of the Abstract that
 \begin{quote}
 	This article serves two purposes.
 	Firstly, it surveys the \citeauthor{PermutationEntropyBandtPompe} methodology for the statistical community, stressing topics that are open for research.
@@ -49,23 +52,33 @@ Second, we now state at the beginning of the Abstract that
 
 We also updated the following paragraph from the Introduction:
 \begin{quote}
-	The \num{2,160} citations received by the seminal paper appeared in \num{780} venues indexed by the Web of Science.
-	Among them, the journals belong to \num{127} categories, spanning from Multidisciplinary Physics (\SI{24}{\percent} of the publications) to Zoology (only one of the of citing articles).
-	There are \num{22} citing articles from journals that belong to the Statistics \& Probability category.
-	Five of these articles appeared in \textit{Stochastic Environmental Research and Risk Assessment}, 
-	two in the \textit{Journal of Time Series Analysis} and in 
-	\textit{Theory and Applications of Time Series Analysis},
-	and each of the remaining ten appeared in a different journal.
-	Most of these articles relate successful applications of the Bandt and Pompe methodology, except \cite{OrdinalPatternProbabilities} that obtained the sample entropy's properties under zero-mean Gaussian processes.
-	It is also noteworthy that, in this category of publications, \cite{DistributionsofOrderPatternsofIntervalMaps} provided a formal and more general proof of the structure of the boundary of the $H\times C$ manifold than that obtained by \cite{martin2006generalized}.
-	The lack of attention that the Bandt and Pompe approach has received by the Probability \& Statistics community confirms that it is a fertile research avenue waiting to explore.
+The seminal paper has received \num{2,160} citations from articles published in \num{780} venues indexed by the Web of Science.
+Among them, the journals belong to \num{127} categories, spanning from Multidisciplinary Physics (\SI{24}{\percent} of the publications) to Zoology (only one of the citing articles).
+There are \num{22} citing articles from journals that belong to the Statistics \& Probability category.
+Five of these articles appeared in \textit{Stochastic Environmental Research and Risk Assessment}, 
+two in the \textit{Journal of Time Series Analysis} and in 
+\textit{Theory and Applications of Time Series Analysis}.
+Furthermore, each of the remaining ten appeared in a different journal.
+Most of these articles relate successful applications of the Bandt and Pompe methodology, except \cite{OrdinalPatternProbabilities} that obtained the sample entropy's properties under zero-mean Gaussian processes.
+It is also noteworthy that, in this category of publications, \cite{DistributionsofOrderPatternsofIntervalMaps} provided a formal and more general proof of the structure of the boundary of the $H\times C$ manifold than that obtained by \cite{martin2006generalized}.
+The lack of attention that the Bandt and Pompe approach has received by the Probability \& Statistics community confirms that it is a fertile research avenue waiting to explore.
 \end{quote}
+
+Finally, in the Conclusions, we state that:
+\begin{quote}
+Although the Bandt and Pompe approach does not replace classical techniques, it is a valuable and widespread approach with an immediate graphical appeal.
+Making statistical inference in the Entropy-Complexity plane is challenging, but its potential impact is huge.
+\end{quote}
+
+We added a new study on the test power; cf. the response to Reviewer~\#1 below.
 
 We hope these changes, which reflect our initial idea, make a clear point that this a contribution for the statistical community.
 
 We have made other changes to improve the manuscript readability and conciseness.
 For instance, we now provide explicit expressions for the normalized disequilibrium.
 In particular, as detailed below, we now illustrate the need of using the complexity.
+
+In order to facilitate the revision, we have included at the end of this letter a version in which additions to the previous round are blue, and deletions in red.
 
 \section{Reviewer \#1}
 
@@ -87,12 +100,14 @@ The discussion has been limited to the Physics literature, most markedly after t
 Going further in this direction would require introducing several concepts which may seem unfamiliar to this journal's readership.
 Nevertheless, being an relevant point, we opted for illustrating the need of both descriptors, entropy and complexity, with an example in the discussion of the test power.
 
-We split the power subsection in two, and added another study which illustrates the need of considering the complexity:
+We split the test power subsection in two, and added another study which illustrates the need of considering the complexity:
 \begin{quote}
-	\subsubsection{$H_1$: Patch of Deterministic Function}
+	\subsubsection{$H_1$: Patch of a Deterministic Function}
 	
 Consider the times series of length $T$ comprised of $T-[c100]$ white noise observations $x_1,x_2,\dots, x_{T-[c100]}$ followed by the signal $y_{T-[c100]+1}, y_{T-[c100]+2}, \dots, y_T$, in which $0\leq c \ll 1$ is the percentage of contamination.
 We will verify the behavior of our test for the case $T=1000$, and $y_t$ an increasing function on $t$.
+This kind of contamination appears, for instance, when imputing missing data by linear interpolation~\citep{ImputationforConsecutiveMissingValuesinNonStationaryTimeSeriesData}.
+
 Fig.~\ref{Fig:PointsPatchedIncreasingFunction} shows the effect of such contamination on the white noise time series whose point in the $H\times C$ plane appears in black.
 The Figure also shows the confidence region at \SI{99}{\percent}.
 	
@@ -106,8 +121,8 @@ At all levels of contamination, the original point is displaced to a region with
 When the percentage of contamination is below approximately \SI{2}{\percent}, the test will not reject the null hypothesis at the \SI{1}{\percent} level of significance; in fact, the $p$-value is of around \SI{1.5}{\percent} for $c=0,0.01,0.02$.
 The $p$-value falls to orders of $10^{-6}$ when the contamination is of \SI{3}{\percent} and above.
 
-It is worth noticing that a test based solely on the entropy would have less power.
-In this case, the complexity component enables the test to reject the null hypothesis at small contamination percentages.
+It is worth noticing that a test based solely on the entropy would have less power: it would only start rejecting when the contamination attains approximately \SI{6}{\percent} of the signal, or more.
+The complexity component enables the test to reject the null hypothesis at small contamination percentages.
 \end{quote}
 
 
@@ -121,6 +136,8 @@ The paper address an interesting problem in time series. The manuscript presents
 Thank you very much for your encouraging comments.
 
 \bibliography{References}
+
+\includepdf[pages=-]{diffR0R1.pdf}
 
 \end{document}
 
