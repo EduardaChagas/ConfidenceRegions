@@ -1,3 +1,4 @@
+% !TeX TS-program = pdflatex
 \documentclass[alpha-refs]{wiley-article}
 
 \usepackage[binary-units]{siunitx}
@@ -24,7 +25,7 @@
 
 \papertype{Original Article}
 
-\title{Time Series Analysis with Bandt \& Pompe Symbolization and a Test for White Noise in the Entropy-Complexity Plane}
+\title{White Noise Test from Ordinal Patterns in the Entropy-Complexity Plane}
 
 \abbrevs{RNG, random number generator; PRNG, pseudorandom number generator; TWNRS, true white noise random sequence.}
 
@@ -67,7 +68,7 @@ The \citeauthor{PermutationEntropyBandtPompe} methodology
 %has been used successfully in the analysis of time series. 
 %It 
 consists of computing
-Information Theory descriptors of the histogram of ordinal patterns. 
+Information Theory descriptors from the histogram of ordinal patterns. 
 Such descriptors lie in a 2D manifold: the Entropy-Complexity plane. 
 This article provides the first proposal
 of a test in the Entropy-Complexity plane for the
@@ -77,7 +78,7 @@ The proposed methodology provides consistent results:
 it assesses sequences of true random samples as random (adequate test size), 
 rejects correlated and contaminated sequences (sound test power), and
 captures the randomness of generators previously analyzed in the literature.
-\keywords{Random number generators, Bandt–Pompe approach, Entropy-complexity plane, Time Series, Information Theory}
+\keywords{Random number generators, Bandt–Pompe approach, Entropy-complexity plane, Ordinal Patterns, Time Series, Information Theory}
 \end{abstract}
 
 \section{Introduction}\label{Sec:Intro}
@@ -254,12 +255,6 @@ u(\ell) \log\frac{u(\ell)}{h(\ell)}
 \end{equation}
 This has been the preferred distance function since its proposal by \citet{Lamberti2004}.
 Most works consider the uniform distribution $\bm u = (1/D!, 1/D!, \dots, 1/D!)$ as the reference model.
-In this case, \eqref{eq:JensenShannon} becomes
-\begin{equation}
-Q'(\bm{h}, \bm{u}) = \sum_{\ell=1}^{D!} h(\ell) \log h(\ell) - \frac{1}{D!} \sum_{\ell=1}^{D!} \log h(\ell).
-\label{eq:JS-Uniform}
-\end{equation}
-The usual assumption in~\eqref{eq:JensenShannon} and~\eqref{eq:JS-Uniform} is $0\log 0=0$.
 
 The quantity~\eqref{eq:JensenShannon} is also called ``disequilibrium.''
 The normalized disequilibrium is $ Q=Q'/\max\{Q'\}$, and we chose to work with the uniform probability distribution function as the equilibrium law.
